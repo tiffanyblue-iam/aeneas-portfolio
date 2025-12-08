@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* AENEAS Studio – desert night sky + Green Place core */
+.aeneas-bg {
+  position: relative;
+  overflow: hidden;
+  /* 블랙 → 아주 살짝 그레이 → 다시 블랙 */
+  background:
+    radial-gradient(circle at 70% -10%, #065f46 0, rgba(6, 95, 70, 0.12) 30%, transparent 55%),
+    linear-gradient(to bottom, #02040a 0%, #050711 40%, #020308 100%);
+  color: #f9fafb;
+}
+
+
+/* 우주 별 레이어 */
+.aeneas-bg::before {
+  content: "";
+  position: fixed;
+  inset: -40px;
+  pointer-events: none;
+  z-index: 0;
+
+  /* 랜덤하게 흩어진 별들 – 큰 별(조금 밝게) + 중간 + 아주 작은 먼지까지 섞기 */
+  background-image:
+    /* BRIGHT STARS (눈에 잡히는 별들) */
+    radial-gradient(circle at 6% 18%, rgba(255, 255, 255, 0.45) 1.4px, transparent 1.4px),
+    radial-gradient(circle at 22% 11%, rgba(255, 255, 255, 0.40) 1.2px, transparent 1.2px),
+    radial-gradient(circle at 41% 14%, rgba(255, 255, 255, 0.48) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 63% 9%, rgba(255, 255, 255, 0.42) 1.3px, transparent 1.3px),
+    radial-gradient(circle at 81% 15%, rgba(255, 255, 255, 0.44) 1.4px, transparent 1.4px),
+    radial-gradient(circle at 93% 24%, rgba(255, 255, 255, 0.46) 1.5px, transparent 1.5px),
+
+    radial-gradient(circle at 12% 38%, rgba(255, 255, 255, 0.42) 1.3px, transparent 1.3px),
+    radial-gradient(circle at 32% 33%, rgba(255, 255, 255, 0.44) 1.4px, transparent 1.4px),
+    radial-gradient(circle at 55% 37%, rgba(255, 255, 255, 0.43) 1.3px, transparent 1.3px),
+    radial-gradient(circle at 77% 32%, rgba(255, 255, 255, 0.45) 1.4px, transparent 1.4px),
+    radial-gradient(circle at 88% 41%, rgba(255, 255, 255, 0.41) 1.2px, transparent 1.2px),
+
+    radial-gradient(circle at 18% 63%, rgba(255, 255, 255, 0.46) 1.4px, transparent 1.4px),
+    radial-gradient(circle at 39% 58%, rgba(255, 255, 255, 0.45) 1.4px, transparent 1.4px),
+    radial-gradient(circle at 61% 61%, rgba(255, 255, 255, 0.47) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 79% 57%, rgba(255, 255, 255, 0.43) 1.3px, transparent 1.3px),
+
+    radial-gradient(circle at 9% 82%, rgba(255, 255, 255, 0.43) 1.3px, transparent 1.3px),
+    radial-gradient(circle at 29% 86%, rgba(255, 255, 255, 0.44) 1.3px, transparent 1.3px),
+    radial-gradient(circle at 51% 89%, rgba(255, 255, 255, 0.46) 1.4px, transparent 1.4px),
+    radial-gradient(circle at 71% 84%, rgba(255, 255, 255, 0.42) 1.2px, transparent 1.2px),
+    radial-gradient(circle at 90% 88%, rgba(255, 255, 255, 0.44) 1.3px, transparent 1.3px),
+
+    /* MID STARS (중간 사이즈 – 밀도 채우기) */
+    radial-gradient(circle at 4% 27%, rgba(255, 255, 255, 0.28) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 14% 21%, rgba(255, 255, 255, 0.26) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 26% 18%, rgba(255, 255, 255, 0.30) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 35% 24%, rgba(255, 255, 255, 0.25) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 47% 19%, rgba(255, 255, 255, 0.29) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 57% 23%, rgba(255, 255, 255, 0.27) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 69% 18%, rgba(255, 255, 255, 0.28) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 76% 23%, rgba(255, 255, 255, 0.26) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 88% 19%, rgba(255, 255, 255, 0.29) 1.0px, transparent 1.0px),
+
+    radial-gradient(circle at 9% 47%, rgba(255, 255, 255, 0.27) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 19% 54%, rgba(255, 255, 255, 0.25) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 27% 44%, rgba(255, 255, 255, 0.29) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 37% 51%, rgba(255, 255, 255, 0.26) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 46% 46%, rgba(255, 255, 255, 0.28) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 56% 52%, rgba(255, 255, 255, 0.27) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 64% 44%, rgba(255, 255, 255, 0.26) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 73% 50%, rgba(255, 255, 255, 0.28) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 83% 46%, rgba(255, 255, 255, 0.25) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 92% 53%, rgba(255, 255, 255, 0.27) 1.0px, transparent 1.0px),
+
+    radial-gradient(circle at 7% 70%, rgba(255, 255, 255, 0.26) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 17% 77%, rgba(255, 255, 255, 0.24) 0.8px, transparent 0.8px),
+    radial-gradient(circle at 27% 67%, rgba(255, 255, 255, 0.27) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 36% 74%, rgba(255, 255, 255, 0.25) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 46% 69%, rgba(255, 255, 255, 0.28) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 56% 76%, rgba(255, 255, 255, 0.26) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 66% 71%, rgba(255, 255, 255, 0.27) 1.0px, transparent 1.0px),
+    radial-gradient(circle at 76% 77%, rgba(255, 255, 255, 0.25) 0.9px, transparent 0.9px),
+    radial-gradient(circle at 86% 72%, rgba(255, 255, 255, 0.27) 1.0px, transparent 1.0px),
+
+    /* TINY DUST (아주 작은 별/먼지 – 밀도 x3 역할) */
+    radial-gradient(circle at 3% 9%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 11% 4%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 19% 13%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 27% 6%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 35% 11%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 43% 5%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 51% 12%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 59% 6%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 67% 13%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 75% 7%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 83% 10%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 92% 8%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+
+    radial-gradient(circle at 6% 32%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 15% 43%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 24% 37%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 33% 41%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 42% 35%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 51% 40%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 60% 33%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 69% 39%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 78% 36%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 87% 42%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 96% 37%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+
+    radial-gradient(circle at 5% 58%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 14% 65%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 23% 60%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 32% 68%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 41% 62%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 50% 69%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 59% 63%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 68% 70%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 77% 65%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 86% 72%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 95% 67%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+
+    radial-gradient(circle at 8% 91%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 18% 95%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 28% 92%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 38% 96%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 48% 93%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 58% 97%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 68% 92%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 78% 95%, rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 88% 91%, rgba(255, 255, 255, 0.17) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 96% 96%, rgba(255, 255, 255, 0.15) 0.6px, transparent 0.6px);
+
+  background-repeat: no-repeat;
+  opacity: 0.55;
+  /* 전체 톤은 낮게 (너무 눈 아프지 않게) */
+  filter: blur(0.35px);
+  /* 살짝만 번져서 모니터 픽셀 느낌 제거 */
+}
+
+/* 추가 별 레이어 – 밀도 2배용 먼지 레이어 */
+.aeneas-bg::after {
+  content: "";
+  position: fixed;
+  inset: -40px;
+  pointer-events: none;
+  z-index: 0;
+
+  /* 작은 별/먼지 위주 – 기존보다 더 많이 뿌린 레이어 */
+  background-image:
+    radial-gradient(circle at 4% 12%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 9% 28%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 16% 7%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 21% 19%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 27% 31%, rgba(255, 255, 255, 0.23) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 33% 10%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 39% 24%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 45% 15%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 52% 5%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 60% 13%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 67% 4%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 73% 18%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 80% 9%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 88% 20%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 94% 8%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+
+    radial-gradient(circle at 6% 43%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 13% 54%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 20% 39%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 28% 49%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 35% 60%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 42% 44%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 50% 55%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 58% 40%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 66% 51%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 73% 62%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 81% 47%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 89% 58%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+
+    radial-gradient(circle at 5% 72%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 14% 83%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 23% 69%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 31% 79%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 40% 90%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 49% 75%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 57% 86%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 65% 71%, rgba(255, 255, 255, 0.20) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 74% 82%, rgba(255, 255, 255, 0.21) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 82% 93%, rgba(255, 255, 255, 0.19) 0.6px, transparent 0.6px),
+    radial-gradient(circle at 91% 78%, rgba(255, 255, 255, 0.22) 0.7px, transparent 0.7px);
+
+  background-repeat: no-repeat;
+  opacity: 0.45;
+  /* 전체 별 톤보다 살짝 낮게 */
+  filter: blur(0.35px);
+  /* 살짝 번지게 */
+}
+
+/* ───────────────── AENEAS octagon cards ───────────────── */
+
+.aeneas-oct {
+  position: relative;
+  padding: 1rem;
+  /* 모서리 살짝 깎인 8각형 */
+  clip-path: polygon(10px 0,
+      calc(100% - 10px) 0,
+      100% 10px,
+      100% calc(100% - 10px),
+      calc(100% - 10px) 100%,
+      10px 100%,
+      0 calc(100% - 10px),
+      0 10px);
+  background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+  border: 1px solid rgba(148, 163, 184, 0.65);
+  /* slate-400-ish */
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 18px 40px rgba(0, 0, 0, 0.85);
+}
+
+.aeneas-oct::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  clip-path: inherit;
+  border: 1px solid rgba(30, 64, 175, 0.55);
+  /* 살짝 푸른 보조 라인 */
+  opacity: 0.75;
+  pointer-events: none;
+}

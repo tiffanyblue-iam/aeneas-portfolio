@@ -5,6 +5,53 @@ import Image from "next/image";
 import { useState, useEffect, type ReactNode } from "react";
 import VisualPanelTabs from "./VisualPanelTabs";
 import { ModeId } from "./modes";
+import { motion, AnimatePresence } from "framer-motion";
+
+
+const ZIGZAG_HIGHLIGHT_KEYS = [
+  "톤과 구조 모두 타깃과 어긋나 있었습니다.",
+  "시장 조사부터 촬영 시스템·상세 구조까지 처음부터 판을 만들어야 하는 상황이었습니다.",
+];
+
+function highlightZigzagContext(text: string): ReactNode {
+  let nodes: ReactNode[] = [text];
+
+  ZIGZAG_HIGHLIGHT_KEYS.forEach((key, keyIndex) => {
+    const next: ReactNode[] = [];
+
+    nodes.forEach((node, nodeIndex) => {
+      // 이미 JSX( span )인 건 그대로 둔다
+      if (typeof node !== "string") {
+        next.push(node);
+        return;
+      }
+
+      const parts = node.split(key);
+
+      parts.forEach((part, partIndex) => {
+        if (part) next.push(part);
+
+        // 쪼갠 사이마다 하이라이트 span 삽입
+        if (partIndex < parts.length - 1) {
+          next.push(
+            <span
+              key={`${keyIndex}-${nodeIndex}-${partIndex}`}
+              className="text-[#F6FF6B] underline underline-offset-4 decoration-[#F6FF6B]/70"
+            >
+              {key}
+            </span>
+          );
+        }
+      });
+    });
+
+    nodes = next;
+  });
+
+  return nodes;
+}
+
+
 
 /** ─────────────────────────────────
  *  Global Typography Tokens
@@ -69,6 +116,9 @@ type ProjectDetail = {
   links?: { label: string; href: string }[];
 };
 
+// ───────────────────────
+//  프로젝트 텍스트 내용
+// ───────────────────────
 const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
   zigzag: {
     id: "zigzag",
@@ -81,8 +131,10 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     tools: "Photoshop, Illustrator, Figma, HTML/CSS",
     role:
       "시장 조사 · 스튜디오/모델 섭외 · 촬영 콘셉트 기획 · 상세페이지 구조 설계 및 퍼블리싱",
-    context:
-      "클라이언트는 10대 후반~20대 초반 여성 타깃을 노리고 있었지만, 기존 상세페이지는 20대 중후반 기준으로 구성되어 있어 톤과 구조 모두 타깃과 어긋나 있었습니다. 내부에 브랜딩·기획 리소스가 없어, 시장 조사부터 촬영 시스템·상세 구조까지 처음부터 판을 만들어야 하는 상황이었습니다.",
+    context: `클라이언트는 10대 후반~20대 초반 여성 타깃을 노리고 있었지만, 
+기존 상세페이지는 20대 중후반 기준으로 구성되어 있어 톤과 구조 모두 타깃과 어긋나 있었습니다. 
+내부에 브랜딩·기획 리소스가 없어, 시장 조사부터 촬영 시스템·상세 구조까지 처음부터 판을 만들어야 하는 상황이었습니다.`,
+
     goal: [
       "10대 후반~20대 초반 Z세대에 맞는 브랜드 톤과 촬영 콘셉트를 새로 정의할 것",
       "지그재그 환경에 맞는 상세페이지 구조를 템플릿화해, 촬영·디자인을 반복 제작 가능하게 할 것",
@@ -119,8 +171,30 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     tools: "Photoshop, HTML/CSS, Rakuten 관리툴",
     role:
       "사이트 UI 디자인 · 프로모션 배너 · 퍼블리싱 · SEO 구조 설계 및 운영",
-    context:
-      "일본 고객을 대상으로 하는 지마켓 글로벌/라쿠텐 스토어에서 상품 구조와 노출 전략이 제각각이라, 브랜드 인지와 구매 흐름이 끊기는 상황이었습니다. 라쿠텐 검색/SEO 룰을 이해하고, ‘일본 사용자가 편하게 느끼는 구조’와 ‘내부 운영 여건’을 동시에 맞춰야 했습니다.",
+    context: (
+      <>
+        일본 고객을 대상으로 하는 지마켓 글로벌/라쿠텐 스토어는
+        한국에서 쓰던 상세 구조를 거의 그대로 가져온 상태라,
+        일본 사용자 입장에서는 정보 순서와 표현 방식이 낯설었습니다.
+        게다가 라쿠텐 입점·운영은{" "}
+        <span className="text-amber-300">
+          기존에 다른 사업체가 진행하다가 중간에 포기된 상태
+        </span>
+        였고, 저는 그 이후에 합류해 구조를 처음부터 다시 잡는
+        리빌드 역할을 맡았습니다. 상품 구조·노출 전략도 카테고리마다
+        제각각이라 브랜드 인지와 구매 흐름이 끊기는 상황이었습니다.{" "}
+        <span className="text-amber-300">
+          국내와는 다른 일본 시장 특성과 라쿠텐 주 고객층의 UX 습관,
+          라쿠텐 검색/SEO 룰
+        </span>
+        을 먼저 이해한 뒤,{" "}
+        <span className="text-amber-300">
+          일본 사용자가 편하게 느끼는 정보 구조와
+          내부 운영 여건이 동시에 맞는 레이아웃
+        </span>
+        을 설계해야 했습니다.
+      </>
+    ),
     goal: [
       "라쿠텐 상위 스토어를 분석해 일본 고객이 익숙한 정보 구조와 노출 룰을 파악할 것",
       "리스트·상세·기획전 페이지를 일관된 UX로 재정리해 구매 흐름을 매끄럽게 만들 것",
@@ -144,7 +218,7 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
       },
     ],
     outcome:
-      "라쿠텐 검색에서의 노출과 기획전 유입이 점차 안정되었고,\n특정 카테고리에서는 전년 대비 매출 비중이 확대되었습니다.\n내부에서는 ‘일본 환경을 이해하고 맡길 수 있는 디자이너’로 포지셔닝되었습니다.",
+      "라쿠텐 환경에 맞는 레이아웃과 카테고리별 키워드 세트를 정리한 뒤,\n검색 노출과 기획전 유입이 점차 안정되었습니다.\n운영팀은 제가 만든 공통 템플릿(리스트·상세·기획전)에 맞춰 배너와 페이지를 반복 제작할 수 있게 되었고,\n내부에서는 ‘일본/라쿠텐 UX와 SEO 구조까지 설계할 수 있는 디자이너’로 포지셔닝되었습니다.",
   },
 
   travel: {
@@ -156,8 +230,32 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     tools: "Cafe24, Figma, Notion, Photoshop, Toss",
     role:
       "브랜드 코어 정의 · 웹 IA/와이어 설계 · 인스타/피드 시각 언어 설계 · 제휴 제안서/리포트 템플릿 제작",
-    context:
-      "인플루언서 협업을 중심으로 빠르게 상품을 검증해 온 브랜드였지만, 캠페인마다 톤과 구조가 달라 ‘같은 브랜드인가?’가 한 번에 인식되기 어려웠습니다. 운영도 사람 중심으로 돌아가서 담당자나 사업자 형태가 바뀔 때마다 메시지와 페이지 구조가 함께 흔들리는 상황이었습니다. 이런 환경에서 브랜드의 기준선을 세우고, 팀과 외부 파트너가 함께 따라갈 수 있는 시스템을 만드는 역할을 맡았습니다.",
+    context: (
+      <>
+        프로젝트는{" "}
+        <span className="text-amber-300">라우트웨이컨설팅 주식회사</span>가
+        운영하던 사이드 프로젝트{" "}
+        <span className="text-amber-300">RouteWorld</span>에서 시작되었습니다.
+        초기에는 뷰티 커머스로 출발했지만,
+        이후 호텔·여행 상품, 다시{" "}
+        <span className="text-amber-300">여행+라이프스타일 커머스</span>로
+        사업 축이 크게 바뀌어 왔습니다. 캠페인마다 타깃과 상품이 달라지면서
+        톤과 페이지 구조도 함께 흔들렸고, 프리미엄 호텔·리조트 브랜드를
+        지향하다가 IPSC 체험, 국내 숙소 등으로 피봇이 잦았습니다. 이런 환경에서
+        저는{" "}
+        <span className="text-amber-300">
+          계속 바뀌는 상품·사업자 구조 위에도 유지되는 브랜드 코어와
+          운영 시스템
+        </span>
+        을 설계하고, 어떤 캠페인이 와도 팀과 외부 파트너가 따라갈 수 있는
+        기준선을 만드는 역할을 맡았습니다. 이후 회사 사정으로
+        RouteWorld 사업은 정리되었지만,{" "}
+        <span className="text-amber-300">
+          방향 전환과 종료 과정까지 포함해 브랜드를 어떻게 핸들링했는지
+        </span>
+        가 이 프로젝트의 중요한 경험으로 남았습니다.
+      </>
+    ),
     goal: [
       "인플루언서 중심의 산발적인 운영에서, 브랜드·상품·숫자를 기준으로 한 운영 프레임으로 전환할 것",
       "팀원들이 따라올 수 있는 브리프 → 제작 → 리뷰 워크플로우를 만들고 역할과 책임을 명확히 할 것",
@@ -182,10 +280,15 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
       },
     ],
     outcome:
-      "리더와 사업자 구성이 바뀌는 상황에서도 브랜드 코어와 포지셔닝을 지키는 기준선이 생겼습니다.\n내부에서는 ‘이제 우리가 어떤 브랜드인지 설명하기 훨씬 쉬워졌다’는 피드백을 받았고,\n외부 호텔·체험 파트너에게도 동일한 소개 데크와 언어를 사용하면서 협업 논의가 훨씬 안정적으로 진행되고 있습니다.",
+      "뷰티 → 여행 → 여행+라이프스타일로 사업 축이 여러 번 바뀌는 동안에도,\n브랜드 코어 문장과 여정 맵, 제안서·피드 템플릿을 기준으로 캠페인과 제휴사가 바뀌어도 설명 구조를 유지할 수 있었습니다.\n리더·사업자 구성이 바뀌고 결국 RouteWorld 사업이 정리되는 과정까지,\n브랜드 기준선과 산출물 시스템을 문서와 템플릿으로 남겨 이후 AENEAS Studio 포트폴리오 설계의 기반이 되었습니다.",
   },
-};
+}; // 🔚 PROJECT_DETAILS 끝
 
+
+
+// ───────────────────────
+//  비주얼(이미지) 타입 & 데이터
+// ───────────────────────
 type ProjectVisual = {
   src: string;
   title: string;
@@ -203,8 +306,7 @@ const PROJECT_VISUALS: Record<ProjectId, ProjectVisual[]> = {
     {
       src: "/work/zigzag/02-overview-kv.jpg",
       title: "런칭 키 비주얼",
-      caption:
-        "지그재그 패션 카테고리 런칭을 위해 제작한 시즌 키 비주얼.",
+      caption: "지그재그 패션 카테고리 런칭을 위해 제작한 시즌 키 비주얼.",
     },
     {
       src: "/work/zigzag/03-brand-mood.png",
@@ -250,6 +352,7 @@ const PROJECT_VISUALS: Record<ProjectId, ProjectVisual[]> = {
       caption: "타이틀·설명·키워드 블록 구조 예시.",
     },
   ],
+
   travel: [
     {
       src: "/work/travel/01-brand-core.jpg",
@@ -268,6 +371,7 @@ const PROJECT_VISUALS: Record<ProjectId, ProjectVisual[]> = {
     },
   ],
 };
+
 
 /** ─────────────────────────────────
  *  바둑판 키보드 보드 공통 설정
@@ -429,9 +533,14 @@ export default function Home() {
   // 디테일 뷰: 텍스트 케이스 vs 비주얼
   const [detailView, setDetailView] = useState<"case" | "visual">("case");
 
+  // 클릭해서 크게 보는 이미지(없으면 null)
+  const [activeVisual, setActiveVisual] =
+    useState<ProjectVisual | null>(null);
+
   useEffect(() => {
-    // 프로젝트 바뀔 때마다 설명 뷰로 리셋
+    // 프로젝트 바뀔 때마다 설명 뷰 + 확대 이미지 리셋
     setDetailView("case");
+    setActiveVisual(null);
   }, [activeProject]);
 
   // 현재 활성 프로젝트 디테일
@@ -951,7 +1060,9 @@ export default function Home() {
                             Context &amp; Problem
                           </h4>
                           <p className={`${TYPE.projectBody} text-zinc-300`}>
-                            {activeProjectDetail.context}
+                            {activeProjectDetail.id === "zigzag"
+                              ? highlightZigzagContext(activeProjectDetail.context)
+                              : activeProjectDetail.context}
                           </p>
                         </div>
 
@@ -1011,14 +1122,25 @@ export default function Home() {
                       <div className="mt-2 grid gap-5 md:grid-cols-3">
                         {currentVisuals.map((visual) => (
                           <figure key={visual.title} className="space-y-3">
-                            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-black/60">
+                            <button
+                              type="button"
+                              onClick={() => setActiveVisual(visual)}
+                              className="group relative block w-full aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-black/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 focus:ring-offset-2 focus:ring-offset-black"
+                            >
                               <Image
                                 src={visual.src}
                                 alt={visual.title}
                                 fill
-                                className="object-cover"
+                                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                               />
-                            </div>
+                              {/* 오버레이 힌트 */}
+                              <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/35 group-hover:opacity-100">
+                                <span className="rounded-full border border-white/40 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-zinc-100">
+                                  Click to Zoom
+                                </span>
+                              </div>
+                            </button>
+
                             <figcaption className="space-y-1">
                               <p className="text-[13px] font-semibold text-zinc-100">
                                 {visual.title}
@@ -1031,12 +1153,86 @@ export default function Home() {
                         ))}
                       </div>
                     )}
+
+
+
                   </div>
                 </div>
               </div>
             )}
-
           </div>
+
+          {/* 확대 모달 – 모든 프로젝트 공통 */}
+          <AnimatePresence>
+            {activeVisual && (
+              <>
+                {/* 어두운 배경 */}
+                <motion.div
+                  key="overlay"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm"
+                  onClick={() => setActiveVisual(null)}
+                />
+
+                {/* 메인 패널 */}
+                <motion.div
+                  key="panel"
+                  initial={{ opacity: 0, scale: 0.6, y: 40 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{
+                    delay: 0.5,              // 0.5초 뒤에 시작
+                    duration: 0.5,           // 펼쳐지는 시간
+                    ease: [0.16, 1, 0.3, 1], // 점점 빨라지는 느낌
+                  }}
+                  className="fixed inset-0 z-[90] flex items-center justify-center p-4 md:p-8"
+                  onClick={() => setActiveVisual(null)}
+                >
+                  <div
+                    className="relative w-full max-w-6xl h-[88vh] rounded-3xl border border-white/16 bg-gradient-to-b from-zinc-900/95 to-black shadow-[0_40px_120px_rgba(0,0,0,0.9)] overflow-hidden"
+                    onClick={(e) => e.stopPropagation()} // 안쪽 클릭 시 닫히지 않게
+                  >
+                    {/* 닫기 버튼 */}
+                    <button
+                      type="button"
+                      onClick={() => setActiveVisual(null)}
+                      className="absolute right-4 top-4 z-[95] rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-zinc-100 shadow-lg hover:bg-black/90 md:right-6 md:top-5"
+                    >
+                      닫기 ✕
+                    </button>
+
+                    {/* 이미지 + 설명 */}
+                    <div className="relative h-full w-full">
+                      <Image
+                        src={activeVisual.src}
+                        alt={activeVisual.title}
+                        fill
+                        className="object-contain"
+                        sizes="(min-width: 1024px) 80vw, 100vw"
+                      />
+
+                      {/* 하단 텍스트 그라데이션 */}
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-4 md:p-6">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-400">
+                          Detail View
+                        </p>
+                        <p className="text-sm md:text-base font-semibold text-zinc-50">
+                          {activeVisual.title}
+                        </p>
+                        <p className="mt-1 text-xs md:text-sm text-zinc-200">
+                          {activeVisual.caption}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
           {/* ▲▲▲ 디테일 영역 끝 */}
         </section>
 

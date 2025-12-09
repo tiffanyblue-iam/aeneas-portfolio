@@ -122,12 +122,14 @@ export default function VisualPanelTabs({
                         <div className="relative flex-1 md:basis-1/3 flex items-stretch px-2 pb-2">
                             <div
                                 className="
-                  relative w-full
-                  rounded-2xl border border-zinc-700
-                  bg-gradient-to-b from-zinc-950 via-black to-zinc-950
-                  shadow-[0_18px_40px_rgba(0,0,0,0.9)]
-                  min-h-[260px] md:min-h-[320px]
-                "
+      relative w-full
+      rounded-[26px]
+      border-[3px] border-[#B0B0B0]/55
+      bg-[#050505]
+      shadow-[0_26px_60px_rgba(0,0,0,0.9)]
+      min-h-[260px] md:min-h-[320px]
+      overflow-hidden
+    "
                             >
                                 {/* 모서리 클램프 */}
                                 <div className="absolute -top-1 left-7 h-3.5 w-7 rounded-b-md bg-zinc-900 border border-zinc-700" />

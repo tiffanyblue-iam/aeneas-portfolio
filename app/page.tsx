@@ -586,48 +586,58 @@ export default function Home() {
    *  Studio Lab / Proposals Data
    *  ──────────────────────────────── */
 
+  type LabItemKind = "freelance" | "proposal" | "report";
+
   type LabItem = {
     id: string;
-    kind: "freelance" | "proposal" | "report";
-    badge: string;      // 카드 상단 라벨 (예: FREELANCE · WEB)
-    title: string;      // 프로젝트명
+    kind: LabItemKind;
+    badge: string;
+    title: string;
     period?: string;
     role: string;
-    summary: string;    // 2~3줄 요약
+    summary: string;
+    href?: string;   // 🔹 클릭 시 이동할 링크
+    cta?: string;    // 🔹 버튼 문구
   };
 
   const LAB_ITEMS: LabItem[] = [
     {
-      id: "freelance-1",
+      id: "global-vcc",
       kind: "freelance",
       badge: "FREELANCE · WEB",
-      title: "프리랜서 웹 프로젝트 01",
-      period: "연도 / 기간 입력",
-      role: "기획 · UX/UI · 퍼블리싱 등 역할 요약",
+      title: "Global VCC · 화상 영어 플랫폼 리뉴얼",
+      period: "2024 (약 3개월)",
+      role: "IA 설계 · UX/UI 디자인 · HTML/CSS 퍼블리싱",
       summary:
-        "이 카드에는 프리랜서 웹 프로젝트의 목적·핵심 타깃·어떤 식으로 해결했는지를 2~3줄로 정리해서 넣으면 됩니다.",
+        "복잡한 학원식 페이지를 ‘선별된 강사/커리큘럼/수강 신청 흐름’ 중심으로 재정리해, 과정·횟수·시간 선택과 견적 박스를 한 화면에서 이해할 수 있는 구조로 리빌딩했습니다.",
+      href: "https://tiffanyblue-iam.github.io/Project-VCC-website/",
+      cta: "사이트 보기",
     },
     {
-      id: "freelance-2",
+      id: "lawdidim",
       kind: "freelance",
-      badge: "FREELANCE · BRAND",
-      title: "프리랜서 브랜드/랜딩 프로젝트 02",
-      period: "연도 / 기간 입력",
-      role: "브랜드 방향성 · 카피 · 구조 설계 등",
+      badge: "FREELANCE · WEB",
+      title: "LawDidim · 회생·파산 법무사 랜딩",
+      period: "2024 (약 2개월)",
+      role: "UX 구조 설계 · 웹디자인 · 카피라이팅",
       summary:
-        "브랜드 포지셔닝과 랜딩 구조를 어떻게 설계했는지, 핵심 한두 포인트를 짧게 적어주세요.",
+        "회생·파산을 고민할 정도로 여유가 없는 사용자의 심리를 전제로, 최소한의 정보와 명확한 안내에 집중한 랜딩 페이지 흐름을 설계했습니다. 성공사례·후기·FAQ를 한 흐름으로 배치해 안심·신뢰를 우선했습니다.",
+      href: "https://www.lawdidim.com/",
+      cta: "사이트 보기",
     },
     {
-      id: "proposal-1",
+      id: "josun-routeworld",
       kind: "proposal",
       badge: "PROPOSAL · DECK",
-      title: "브랜드/웹 제안서",
-      period: "제안 연도 입력",
+      title: "Josun Palace × Routeworld · 인플루언서 공동구매 제안서",
+      period: "2023 (약 3주)",
       role: "제안 구조 설계 · 슬라이드 디자인",
       summary:
-        "클라이언트 브리프를 어떻게 구조화했고, 어떤 플로우로 제안서를 설계했는지 요약하는 영역입니다.",
+        "조선팰리스 비수기 객실을 메가급 인플루언서 공동구매로 판매하는 구조로, ADR 유지·폐쇄형 랜딩·혜택 중심 패키지 흐름으로 설계한 제안서입니다.",
+      // ⬇⬇ 여기 경로를 실제 파일 이름과 맞춰 주는 게 핵심
+      href: "/lab/routeworld_josun-palace.pdf",
+      cta: "PDF 제안서 열기",
     },
-    // ※ 나중에 이곳에 객체 하나 더 추가.
   ];
 
 
@@ -1246,7 +1256,7 @@ export default function Home() {
                 {/* 상단~하단 그라데이션 */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black" />
 
-                {/* ✅ 하단 레이어 이미지 – 섹션 최하단에서 위로 올라오면서 전체 노출 */}
+                {/* 하단 레이어 이미지 */}
                 <div
                   className="pointer-events-none absolute inset-x-0 bottom-0 h-[420px] opacity-80"
                   style={{
@@ -1259,7 +1269,7 @@ export default function Home() {
 
                 {/* 컨텐츠 래퍼 */}
                 <div className="relative z-10 mx-auto max-w-7xl px-8 md:px-16 pt-14 pb-4 space-y-10">
-                  {/* ✅ 상단 타이틀 – 좌측 타이틀 / 우측 설명, 세로 가운데 정렬 */}
+                  {/* 상단 타이틀 */}
                   <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     {/* 왼쪽: 라벨 + 큰 타이틀 */}
                     <div className="max-w-xl space-y-4">
@@ -1276,8 +1286,8 @@ export default function Home() {
                     {/* 오른쪽: 설명 + 키워드 */}
                     <div className="max-w-md space-y-3 md:text-right">
                       <p className={`${TYPE.sectionBody} text-zinc-300`}>
-                        프리랜서 웹·브랜딩 작업과 제안서를 모아서, <br />AENEAS가 경험을
-                        어떻게 겹겹이 쌓는지 보여주는 실험실입니다.
+                        프리랜서 웹·브랜딩 작업과 제안서를 모아, <br />
+                        AENEAS가 문제를 정의하고 경험을 설계하는 방식을 실험하는 구역입니다.
                       </p>
                       <p className="text-[12px] tracking-[0.18em] uppercase text-zinc-500">
                         FREELANCE · PROPOSAL · SYSTEM THINKING
@@ -1291,9 +1301,9 @@ export default function Home() {
                       <article
                         key={item.id}
                         className="flex h-full flex-col rounded-2xl border border-white/12
-                           bg-zinc-950/85 px-6 py-6
-                           shadow-[0_18px_50px_rgba(0,0,0,0.9)]
-                           backdrop-blur-sm"
+                  bg-zinc-950/85 px-6 py-6
+                  shadow-[0_18px_50px_rgba(0,0,0,0.9)]
+                  backdrop-blur-sm"
                       >
                         {/* 상단 배지 + 종류 포인트 컬러 */}
                         <div className="mb-4 flex items-center justify-between gap-2">
@@ -1321,7 +1331,9 @@ export default function Home() {
                               Period · {item.period}
                             </p>
                           )}
-                          <p className="text-[12px] text-zinc-400">Role · {item.role}</p>
+                          <p className="text-[12px] text-zinc-400">
+                            Role · {item.role}
+                          </p>
                         </div>
 
                         {/* 요약 */}
@@ -1338,14 +1350,24 @@ export default function Home() {
                                 ? "Deck / Proposal"
                                 : "Report"}
                           </span>
-                          <button
-                            type="button"
-                            className="inline-flex items-center gap-1 text-[12px] font-medium text-zinc-200 hover:text-emerald-300"
-                          >
-                            케이스 스터디 준비중
-                            <span className="translate-y-[1px]">↗</span>
-                          </button>
+
+                          {item.href ? (
+                            <a
+                              href={item.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 text-[12px] font-medium text-zinc-200 hover:text-emerald-300"
+                            >
+                              {item.cta ?? "열어보기"}
+                              <span className="translate-y-[1px]">↗</span>
+                            </a>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-[12px] text-zinc-500">
+                              케이스 스터디 준비중
+                            </span>
+                          )}
                         </div>
+
                       </article>
                     ))}
                   </div>
@@ -1354,7 +1376,7 @@ export default function Home() {
             </div>
           </section>
 
-          {/* ✅ STUDIO STATUS – 바로 아래에 붙게 같은 그룹 안에 둠 */}
+          {/* STUDIO STATUS */}
           <section className="mt-0 border-t border-white/7 pt-8 md:pt-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between w-full max-w-5xl mx-auto">
             <div className="space-y-2">
               <p className="text-xs font-medium text-emerald-400 tracking-[0.25em] uppercase">

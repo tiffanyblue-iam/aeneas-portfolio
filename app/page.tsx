@@ -672,7 +672,7 @@ export default function Home() {
               <span className="text-zinc-50">명확한 이야기, 선명한 UX,</span>{" "}
               그리고{" "}
               <span className="text-zinc-50">현실적인 런칭 플랜</span>이 필요한
-              브랜드를 위한 작은 스튜디오입니다. 첫 번째 데크부터 라이브
+              브랜드를 위한 작은 스튜디오. <br />첫 번째 데크부터 라이브
               사이트까지, 사막을 건너 다음 그린 플레이스에 도착할 때까지 함께
               걷습니다.
             </p>
@@ -709,8 +709,7 @@ export default function Home() {
                       AENEAS CONSTELLATION
                     </p>
                     <p className={`${TYPE.sectionBody} text-zinc-500`}>
-                      사막에서 그린 플레이스로 향하는 세 가지 작업 모드를
-                      별자리처럼 정리했습니다.
+                      사막에서 그린 플레이스로 향하는 세 가지 별자리 모드입니다.
                     </p>
                   </div>
                   <span className="rounded-full border border-zinc-200/35 px-3 py-1 text-[11px] tracking-[0.18em] text-zinc-200">

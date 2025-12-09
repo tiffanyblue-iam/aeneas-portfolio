@@ -109,7 +109,7 @@ type ProjectDetail = {
   clientType?: string;
   tools?: string;
   role: string;
-  context: string;
+  context: string | ReactNode;
   goal: string[];
   process: { label: string; body: string }[];
   outcome: string;
@@ -1061,7 +1061,7 @@ export default function Home() {
                           </h4>
                           <p className={`${TYPE.projectBody} text-zinc-300`}>
                             {activeProjectDetail.id === "zigzag"
-                              ? highlightZigzagContext(activeProjectDetail.context)
+                              ? highlightZigzagContext(activeProjectDetail.context as string)
                               : activeProjectDetail.context}
                           </p>
                         </div>

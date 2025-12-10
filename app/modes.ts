@@ -1,30 +1,6 @@
 // app/modes.ts
 
-export type ModeId = "brand" | "web" | "visual";
-
-type ModeConfig = {
-    id: ModeId;
-    tabLabel: string;
-    chipLabel: string;
-    sectionLabel: string;
-    heading: string;
-    body: string;
-    focus: string;
-    statusLabel: string;
-    routeLabel: string;
-    titleInTarget: string;
-    coreColor: string;        // 중앙 네온 코어 색 (rgba)
-    dotClass: string;         // 작은 상태 점 색
-    routeTextClass: string;   // ROUTE 상태 텍스트 색
-    buttonBorderClass: string;
-    buttonTextClass: string;
-    chipBorderClass: string;  // 상단 칩 테두리 색
-    chipShadowClass: string;  // 상단 칩 그림자 색
-    tabBg: string;            // 상단 탭 배경컬러
-};
-
 export const MODES: Record<ModeId, ModeConfig> = {
-    // ───────────────── BRAND CORE ─────────────────
     brand: {
         id: "brand",
         tabLabel: "BRAND CORE",
@@ -39,25 +15,21 @@ export const MODES: Record<ModeId, ModeConfig> = {
         routeLabel: "Desert → Name & Storyframe",
         titleInTarget: "BRAND CORE",
 
-        // ★ 브랜드 메인 그린: #4C9990 계열로 통일
-        coreColor: "rgba(76,153,144,0.9)",
-        // 네온 림
+        // 네온 코어 (민트)
+        coreColor: "rgba(22,140,126,0.9)",
+
+        // 상태 · 라벨 계열 (민트 라이트)
         dotClass: "bg-[#7FEAD4]",
         routeTextClass: "text-[#7FEAD4]",
         buttonBorderClass: "border-[#7FEAD4]",
         buttonTextClass: "text-[#7FEAD4]",
         chipBorderClass: "border-[#7FEAD4]",
-        chipShadowClass: "shadow-[0_0_26px_rgba(127,234,212,0.7)]",       // 중앙 네온
-        dotClass: "bg-[#4C9990]",                   // 작은 상태 점
-        routeTextClass: "text-[#4C9990]",           // ROUTE 상태 텍스트
-        buttonBorderClass: "border-[#4C9990]",      // 버튼 테두리
-        buttonTextClass: "text-[#CFF6EC]",          // 버튼 텍스트(살짝 밝은 민트)
-        chipBorderClass: "border-[#4C9990]/90",     // 상단 칩 테두리
-        chipShadowClass: "shadow-[0_0_26px_rgba(76,153,144,0.7)]", // 칩 글로우
-        tabBg: "#4C9990",                           // 탭 배경
+        chipShadowClass: "shadow-[0_0_26px_rgba(127,234,212,0.7)]",
+
+        // 탭 배경 (패널 카드와 맞춘 깊은 민트)
+        tabBg: "#4C9990",
     },
 
-    // ───────────────── WEB EXPERIENCE ─────────────────
     web: {
         id: "web",
         tabLabel: "WEB EXPERIENCE",
@@ -72,18 +44,18 @@ export const MODES: Record<ModeId, ModeConfig> = {
         routeLabel: "Desert → Web Experience",
         titleInTarget: "WEB EXPERIENCE",
 
-        // 그린보다 살짝 딥한 블루 (#3B82C2 라인으로 톤다운)
-        coreColor: "rgba(59,130,194,0.9)",
-        dotClass: "bg-[#3B82C2]",
-        routeTextClass: "text-[#3B82C2]",
-        buttonBorderClass: "border-[#3B82C2]",
-        buttonTextClass: "text-[#C7E3FF]",
-        chipBorderClass: "border-[#3B82C2]/90",
-        chipShadowClass: "shadow-[0_0_26px_rgba(59,130,194,0.7)]",
-        tabBg: "#3B82C2",
+        coreColor: "rgba(56,189,248,0.85)",
+
+        dotClass: "bg-[#4BA3E8]",
+        routeTextClass: "text-[#4BA3E8]",
+        buttonBorderClass: "border-[#4BA3E8]",
+        buttonTextClass: "text-[#CFE9FF]",
+        chipBorderClass: "border-[#4BA3E8]",
+        chipShadowClass: "shadow-[0_0_26px_rgba(75,163,232,0.7)]",
+
+        tabBg: "#255B8F", // 살짝 톤다운된 블루
     },
 
-    // ───────────────── VISUAL SYSTEMS ─────────────────
     visual: {
         id: "visual",
         tabLabel: "VISUAL SYSTEMS",
@@ -98,14 +70,16 @@ export const MODES: Record<ModeId, ModeConfig> = {
         routeLabel: "Desert → Visual Systems",
         titleInTarget: "VISUAL SYSTEMS",
 
-        // 그린·블루보다 한 톤 아래로 눌린 골드 (#D0B15A)
-        coreColor: "rgba(208,177,90,0.9)",
-        dotClass: "bg-[#D0B15A]",
-        routeTextClass: "text-[#D0B15A]",
-        buttonBorderClass: "border-[#D0B15A]",
-        buttonTextClass: "text-[#F8EAC1]",
-        chipBorderClass: "border-[#D0B15A]/90",
-        chipShadowClass: "shadow-[0_0_26px_rgba(208,177,90,0.7)]",
-        tabBg: "#D0B15A",
+        coreColor: "rgba(252,211,77,0.8)",
+
+        dotClass: "bg-[#E6C25A]",
+        routeTextClass: "text-[#E6C25A]",
+        buttonBorderClass: "border-[#E6C25A]",
+        buttonTextClass: "text-[#FFEEC0]",
+        chipBorderClass: "border-[#E6C25A]",
+        chipShadowClass: "shadow-[0_0_26px_rgba(230,194,90,0.7)]",
+
+        tabBg: "#8C6A24", // 톤다운 골드
     },
 };
+

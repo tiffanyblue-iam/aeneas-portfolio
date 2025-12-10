@@ -4,7 +4,7 @@
 import Image from "next/image";
 import { useState, useEffect, type ReactNode } from "react";
 import VisualPanelTabs from "./VisualPanelTabs";
-import { ModeId } from "./modes";
+import { MODES, type ModeId } from "./modes";
 import { motion, AnimatePresence } from "framer-motion";
 
 

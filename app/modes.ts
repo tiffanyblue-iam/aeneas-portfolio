@@ -1,5 +1,30 @@
 // app/modes.ts
 
+// 1) 타입 먼저 정의 + export
+export type ModeId = "brand" | "web" | "visual";
+
+type ModeConfig = {
+    id: ModeId;
+    tabLabel: string;
+    chipLabel: string;
+    sectionLabel: string;
+    heading: string;
+    body: string;
+    focus: string;
+    statusLabel: string;
+    routeLabel: string;
+    titleInTarget: string;
+    coreColor: string;
+    dotClass: string;
+    routeTextClass: string;
+    buttonBorderClass: string;
+    buttonTextClass: string;
+    chipBorderClass: string;
+    chipShadowClass: string;
+    tabBg: string;
+};
+
+// 2) MODES 객체
 export const MODES: Record<ModeId, ModeConfig> = {
     brand: {
         id: "brand",
@@ -14,22 +39,15 @@ export const MODES: Record<ModeId, ModeConfig> = {
         statusLabel: "ACTIVE",
         routeLabel: "Desert → Name & Storyframe",
         titleInTarget: "BRAND CORE",
-
-        // 네온 코어 (민트)
         coreColor: "rgba(22,140,126,0.9)",
-
-        // 상태 · 라벨 계열 (민트 라이트)
         dotClass: "bg-[#7FEAD4]",
         routeTextClass: "text-[#7FEAD4]",
         buttonBorderClass: "border-[#7FEAD4]",
-        buttonTextClass: "text-[#7FEAD4]",
+        buttonTextClass: "text-[#1CFF6E]",
         chipBorderClass: "border-[#7FEAD4]",
         chipShadowClass: "shadow-[0_0_26px_rgba(127,234,212,0.7)]",
-
-        // 탭 배경 (패널 카드와 맞춘 깊은 민트)
         tabBg: "#4C9990",
     },
-
     web: {
         id: "web",
         tabLabel: "WEB EXPERIENCE",
@@ -43,19 +61,15 @@ export const MODES: Record<ModeId, ModeConfig> = {
         statusLabel: "READY",
         routeLabel: "Desert → Web Experience",
         titleInTarget: "WEB EXPERIENCE",
-
-        coreColor: "rgba(56,189,248,0.85)",
-
-        dotClass: "bg-[#4BA3E8]",
-        routeTextClass: "text-[#4BA3E8]",
-        buttonBorderClass: "border-[#4BA3E8]",
-        buttonTextClass: "text-[#CFE9FF]",
-        chipBorderClass: "border-[#4BA3E8]",
-        chipShadowClass: "shadow-[0_0_26px_rgba(75,163,232,0.7)]",
-
-        tabBg: "#255B8F", // 살짝 톤다운된 블루
+        coreColor: "rgba(56,189,248,0.6)",
+        dotClass: "bg-sky-400",
+        routeTextClass: "text-sky-300",
+        buttonBorderClass: "border-sky-400",
+        buttonTextClass: "text-sky-200",
+        chipBorderClass: "border-sky-400/80",
+        chipShadowClass: "shadow-[0_0_26px_rgba(56,189,248,0.7)]",
+        tabBg: "#3B82C2",
     },
-
     visual: {
         id: "visual",
         tabLabel: "VISUAL SYSTEMS",
@@ -69,17 +83,13 @@ export const MODES: Record<ModeId, ModeConfig> = {
         statusLabel: "QUEUED",
         routeLabel: "Desert → Visual Systems",
         titleInTarget: "VISUAL SYSTEMS",
-
-        coreColor: "rgba(252,211,77,0.8)",
-
-        dotClass: "bg-[#E6C25A]",
-        routeTextClass: "text-[#E6C25A]",
-        buttonBorderClass: "border-[#E6C25A]",
-        buttonTextClass: "text-[#FFEEC0]",
-        chipBorderClass: "border-[#E6C25A]",
-        chipShadowClass: "shadow-[0_0_26px_rgba(230,194,90,0.7)]",
-
-        tabBg: "#8C6A24", // 톤다운 골드
+        coreColor: "rgba(252,211,77,0.7)",
+        dotClass: "bg-amber-300",
+        routeTextClass: "text-amber-200",
+        buttonBorderClass: "border-amber-300",
+        buttonTextClass: "text-amber-100",
+        chipBorderClass: "border-amber-300/80",
+        chipShadowClass: "shadow-[0_0_26px_rgba(252,211,77,0.7)]",
+        tabBg: "#D0B15A",
     },
 };
-

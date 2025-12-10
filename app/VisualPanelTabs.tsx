@@ -1,7 +1,8 @@
 // app/VisualPanelTabs.tsx
 "use client";
 
-import { MODES, ModeId } from "./modes";
+import { MODES, type ModeId } from "./modes";
+
 
 type VisualPanelTabsProps = {
     activeMode: ModeId;

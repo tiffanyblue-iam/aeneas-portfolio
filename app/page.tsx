@@ -8,6 +8,22 @@ import { ModeId } from "./modes";
 import { motion, AnimatePresence } from "framer-motion";
 
 
+// 공통 기계식 프레임 토큰
+
+const MACHINE_FRAME_STYLE: React.CSSProperties = {
+  backgroundColor: "#171717",
+  border: "1px solid #757575",
+  boxShadow:
+    "inset 1px 1px 2px rgba(255,255,255,0.25), 0 0 0 1px rgba(255,255,255,0.3)",
+};
+
+const MACHINE_INNER_STYLE: React.CSSProperties = {
+  backgroundColor: "#171717",
+  boxShadow:
+    "-4px -4px 12px rgba(255,255,255,0.1), 0 0 0 0.5px rgba(0,0,0,0.1)",
+};
+
+
 const ZIGZAG_HIGHLIGHT_KEYS = [
   "톤과 구조 모두 타깃과 어긋나 있었습니다.",
   "시장 조사부터 촬영 시스템·상세 구조까지 처음부터 판을 만들어야 하는 상황이었습니다.",
@@ -527,6 +543,7 @@ function TileBoard({
  *  Home
  *  ──────────────────────────────── */
 export default function Home() {
+
   const [activeMode, setActiveMode] = useState<ModeId>("brand");
   const [activeProject, setActiveProject] = useState<ProjectId | null>(null);
 
@@ -701,8 +718,26 @@ export default function Home() {
 
           {/* CONSTELLATION MAP */}
           <section className="mt-10">
-            <div className="relative rounded-[5px] border-[2.5px] border-black/90 bg-gradient-to-b from-black/8 via-black/40 to-black/90 p-[1.5px] shadow-[0_26px_60px_rgba(0,0,0,0.9)]">
-              <div className="rounded-[4px] bg-gradient-to-b from-zinc-950/5 via-zinc-950/40 to-black/90 border border-zinc-200/24 shadow-[inset_0_1px_0_rgba(255,255,255,0.10),inset_0_-10px_30px_rgba(0,0,0,0.85)] backdrop-blur-md px-8 py-8 md:px-10 md:py-10">
+            {/* 바깥 프레임 – 패널과 동일 톤 */}
+            <div
+              className="relative rounded-[16px] overflow-hidden"
+              style={{
+                backgroundColor: "rgba(0,0,0,0.07)", // 블랙 7% 투명
+                border: "1px solid #757575",
+                boxShadow:
+                  "inset 1px 1px 2px rgba(255,255,255,0.25), 0 0 0 1px rgba(255,255,255,0.3)",
+              }}
+            >
+              {/* 안쪽 살짝 들어간 프레임 */}
+              <div
+                className="m-4 rounded-[14px] px-8 py-8 md:px-10 md:py-10"
+                style={{
+                  backgroundColor: "rgba(0,0,0,0.07)", // 블랙 7% 투명
+                  boxShadow:
+                    "-4px -4px 12px rgba(255,255,255,0.1), 0 0 0 0.5px rgba(0,0,0,0.1)",
+                }}
+              >
+                {/* 헤더 */}
                 <div className="flex items-center justify-between mb-6 md:mb-8">
                   <div className="space-y-1">
                     <p className={`${TYPE.sectionKicker} text-zinc-400`}>
@@ -717,46 +752,94 @@ export default function Home() {
                   </span>
                 </div>
 
+                {/* 라인 + 점 */}
                 <div className="mt-6">
                   <div className="relative h-14 px-[6%]">
                     <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-zinc-200/55 to-transparent shadow-[0_0_18px_rgba(255,255,255,0.26)]" />
                     <div className="relative z-10 flex h-full items-center justify-between">
-                      {/* dots */}
+                      {/* BRAND CORE */}
                       <div className="flex items-center justify-center">
                         <div className="relative h-4 w-4">
-                          <div className="absolute inset-[-4px] rounded-full bg-emerald-400/22 blur-[8px]" />
-                          <div className="absolute inset-0 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.9)]" />
+                          {/* 네온 그린 글로우 */}
+                          <div
+                            className="absolute inset-[-4px] rounded-full blur-[8px]"
+                            style={{ backgroundColor: "rgba(127,234,212,0.35)" }} // #7FEAD4, 살짝 투명
+                          />
+                          <div
+                            className="absolute inset-0 rounded-full"
+                            style={{
+                              backgroundColor: "#7FEAD4",
+                              boxShadow: "0 0 16px rgba(127,234,212,0.9)",
+                            }}
+                          />
                           <div className="absolute inset-[-6px] rounded-full border border-zinc-100/90" />
                         </div>
                       </div>
+
+
+                      {/* WEB EXPERIENCE – 블루 톤 다운 */}
                       <div className="flex items-center justify-center">
                         <div className="relative h-4 w-4">
-                          <div className="absolute inset-[-4px] rounded-full bg-sky-400/22 blur-[8px]" />
-                          <div className="absolute inset-0 rounded-full bg-sky-400 shadow-[0_0_16px_rgba(56,189,248,0.9)]" />
-                          <div className="absolute inset-[-6px] rounded-full border border-zinc-100/90" />
+                          <div
+                            className="absolute inset-[-4px] rounded-full blur-[8px]"
+                            style={{ backgroundColor: "rgba(126,200,255,0.32)" }}
+                          />
+                          <div
+                            className="absolute inset-0 rounded-full"
+                            style={{
+                              backgroundColor: "#7EC8FF",
+                              boxShadow: "0 0 16px rgba(126,200,255,0.9)",
+                            }}
+                          />
+                          <div
+                            className="absolute inset-[-6px] rounded-full border"
+                            style={{ borderColor: "rgba(224,244,255,0.95)" }}
+                          />
                         </div>
                       </div>
+
+                      {/* VISUAL SYSTEMS – 옐로우 톤 다운 */}
                       <div className="flex items-center justify-center">
                         <div className="relative h-4 w-4">
-                          <div className="absolute inset-[-4px] rounded-full bg-amber-300/26 blur-[8px]" />
-                          <div className="absolute inset-0 rounded-full bg-amber-300 shadow-[0_0_16px_rgba(252,211,77,0.9)]" />
-                          <div className="absolute inset-[-6px] rounded-full border border-zinc-100/90" />
+                          <div
+                            className="absolute inset-[-4px] rounded-full blur-[8px]"
+                            style={{ backgroundColor: "rgba(249,224,138,0.32)" }}
+                          />
+                          <div
+                            className="absolute inset-0 rounded-full"
+                            style={{
+                              backgroundColor: "#F9E08A",
+                              boxShadow: "0 0 16px rgba(249,224,138,0.9)",
+                            }}
+                          />
+                          <div
+                            className="absolute inset-[-6px] rounded-full border"
+                            style={{ borderColor: "rgba(255,245,204,0.95)" }}
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
 
+                  {/* 모드 카드 3개 – 라운드 16px + 통일된 쉘 */}
                   <div className="mt-4 grid grid-cols-3 gap-6">
-                    {/* 세 모드 버튼 – 기존 코드 그대로 */}
-                    {/* ... (생략: 질문에 있던 코드 그대로 유지) ... */}
                     {/* BRAND CORE */}
                     <button
                       type="button"
                       onClick={() => setActiveMode("brand")}
-                      className={`text-left rounded-[6px] px-5 py-4 border-[1px] transition-all ${activeMode === "brand"
-                        ? "border-emerald-400/85 bg-emerald-500/6 shadow-[0_0_32px_rgba(16,185,129,0.55)]"
-                        : "border-zinc-700 bg-black/65 hover:border-emerald-400/70 hover:bg-emerald-500/5"
-                        }`}
+                      className="text-left rounded-[16px] px-5 py-4 border transition-all"
+                      style={
+                        activeMode === "brand"
+                          ? {
+                            backgroundColor: "rgba(0,0,0,0.3)",
+                            borderColor: "#7FEAD4",
+                            boxShadow: "0 0 26px rgba(127,234,212,0.6)",
+                          }
+                          : {
+                            backgroundColor: "rgba(0,0,0,0.6)",
+                            borderColor: "#3F3F46",
+                          }
+                      }
                     >
                       <p
                         className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
@@ -775,10 +858,19 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => setActiveMode("web")}
-                      className={`text-left rounded-[6px] px-5 py-4 border-[1px] transition-all ${activeMode === "web"
-                        ? "border-sky-400/80 bg-sky-500/6 shadow-[0_0_32px_rgba(56,189,248,0.55)]"
-                        : "border-zinc-700 bg-black/65 hover:border-sky-400/70 hover:bg-sky-500/5"
-                        }`}
+                      className="text-left rounded-[16px] px-5 py-4 border transition-all"
+                      style={
+                        activeMode === "web"
+                          ? {
+                            backgroundColor: "rgba(0,0,0,0.3)",
+                            borderColor: "#7EC8FF",
+                            boxShadow: "0 0 26px rgba(126,200,255,0.6)",
+                          }
+                          : {
+                            backgroundColor: "rgba(0,0,0,0.6)",
+                            borderColor: "#3F3F46",
+                          }
+                      }
                     >
                       <p
                         className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
@@ -797,10 +889,19 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => setActiveMode("visual")}
-                      className={`text-left rounded-[6px] px-5 py-4 border-[1px] transition-all ${activeMode === "visual"
-                        ? "border-amber-300/85 bg-amber-400/7 shadow-[0_0_32px_rgba(252,211,77,0.55)]"
-                        : "border-zinc-700 bg-black/65 hover:border-amber-300/70 hover:bg-amber-400/5"
-                        }`}
+                      className="text-left rounded-[16px] px-5 py-4 border transition-all"
+                      style={
+                        activeMode === "visual"
+                          ? {
+                            backgroundColor: "rgba(0,0,0,0.3)",
+                            borderColor: "#F9E08A",
+                            boxShadow: "0 0 26px rgba(249,224,138,0.6)",
+                          }
+                          : {
+                            backgroundColor: "rgba(0,0,0,0.6)",
+                            borderColor: "#3F3F46",
+                          }
+                      }
                     >
                       <p
                         className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
@@ -811,8 +912,7 @@ export default function Home() {
                         Decks &amp; Visual Systems
                       </h2>
                       <p className={`${TYPE.panelBody} text-zinc-400`}>
-                        슬라이드·피드·카드까지 반복해서 쓰는 시각 언어를
-                        설계합니다.
+                        슬라이드·피드·카드까지 반복해서 쓰는 시각 언어를 설계합니다.
                       </p>
                     </button>
                   </div>
@@ -820,6 +920,9 @@ export default function Home() {
               </div>
             </div>
           </section>
+
+
+
 
           {/* VISUAL PANEL */}
           <section className="mt-16">

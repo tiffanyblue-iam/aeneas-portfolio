@@ -5,6 +5,31 @@
   --foreground: #171717;
 }
 
+html,
+body {
+  height: 100%;
+}
+
+/* 세로 스크롤바를 항상 보여서 레이아웃이 안 흔들리게 */
+body {
+  overflow-y: scroll;
+}
+
+
+
+@font-face {
+  font-family: "SubwayTickerGrid";
+  src: url("/fonts/SubwayTickerGrid.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-ticker {
+  font-family: "SubwayTickerGrid", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -29,11 +54,19 @@ body {
 .aeneas-bg {
   position: relative;
   overflow: hidden;
-  /* 블랙 → 아주 살짝 그레이 → 다시 블랙 */
-  background:
-    radial-gradient(circle at 70% -10%, #065f46 0, rgba(6, 95, 70, 0.12) 30%, transparent 55%),
-    linear-gradient(to bottom, #02040a 0%, #050711 40%, #020308 100%);
   color: #f9fafb;
+
+  /* 네온 민트(#168C7E / #7FEAD4) 기준으로 다시 세팅 */
+  background:
+    /* 왼쪽 위 – 메인 네온 코어 */
+    radial-gradient(circle at 40% -15%, rgba(22, 140, 126, 0.45) 0%, transparent 55%),
+    /* 오른쪽 위 – 살짝 퍼지는 보조 민트 */
+    radial-gradient(circle at 80% -20%, rgba(127, 234, 212, 0.25) 0%, transparent 65%),
+    /* 아래쪽은 딥 블랙 하늘 */
+    linear-gradient(to bottom, #020617 0%, #030711 45%, #000000 100%);
+
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 

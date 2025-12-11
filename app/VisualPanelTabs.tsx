@@ -60,10 +60,18 @@ export default function VisualPanelTabs({
                     <div className="relative border-b border-zinc-800 px-6 pt-4 pb-3">
                         <div className="flex items-center justify-between gap-4">
                             <div className="inline-flex items-center gap-2">
-                                <span className="h-7 w-7 rounded-full border border-slate-400 flex items-center justify-center text-[11px] tracking-[0.18em]">
+                                <span className="h-7 w-7 rounded-full border border-slate-400 flex items-center justify-center text-[12px] tracking-[0.18em]">
                                     N
                                 </span>
-                                <span className="uppercase tracking-[0.22em] text-[11px] md:text-xs text-zinc-400">
+                                <span className="font-[SubwayTickerGrid] uppercase tracking-[0.22em] text-[12px] md:text-xs text-zinc-400"
+                                    style={{
+                                        fontFamily:
+                                            '"Subway Ticker Grid", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                                        fontSize: "clamp(12px, 2vw, 16px)",
+                                        lineHeight: 1.1,
+                                        color: "#B0B0B0",
+                                    }}>
+
                                     CONSTELLATION PANEL
                                 </span>
                             </div>
@@ -286,7 +294,7 @@ export default function VisualPanelTabs({
                     </div>
 
                     {/* ─── 하단 MODE / ROUTE / 버튼 (1:1:1 + 하단 정렬) ───── */}
-                    <div className="border-t border-zinc-800 px-6 py-5 flex flex-col md:flex-row md:items-end md:gap-4">
+                    <div className="mb-6 border-t border-zinc-800 px-6 py-5 flex flex-col md:flex-row md:items-end md:gap-4">
 
                         {/* MODE */}
                         <div className="flex-1 md:basis-1/3 flex flex-col gap-1.5">

@@ -44,26 +44,44 @@ body {
   }
 }
 
+@keyframes aeneas-press {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.95;
+  }
+
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+
+.press-float {
+  animation: pressFloat 1.6s ease-in-out infinite;
+}
+
+
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* AENEAS Studio – desert night sky + Green Place core */
+/* AENEAS Studio – desert night sky (기본 우주 배경) */
 .aeneas-bg {
   position: relative;
   overflow: hidden;
   color: #f9fafb;
 
-  /* 네온 민트(#168C7E / #7FEAD4) 기준으로 다시 세팅 */
-  background:
-    /* 왼쪽 위 – 메인 네온 코어 */
-    radial-gradient(circle at 40% -15%, rgba(22, 140, 126, 0.45) 0%, transparent 55%),
-    /* 오른쪽 위 – 살짝 퍼지는 보조 민트 */
-    radial-gradient(circle at 80% -20%, rgba(127, 234, 212, 0.25) 0%, transparent 65%),
-    /* 아래쪽은 딥 블랙 하늘 */
-    linear-gradient(to bottom, #020617 0%, #030711 45%, #000000 100%);
+  /* 👇 그린 없이 딥블랙 그라데이션만 */
+  background: linear-gradient(to bottom,
+      #020617 0%,
+      #030711 45%,
+      #000000 100%);
 
   background-repeat: no-repeat;
   background-attachment: fixed;

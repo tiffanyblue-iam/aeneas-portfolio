@@ -6,6 +6,7 @@ import { useState, useEffect, type ReactNode } from "react";
 import VisualPanelTabs from "./VisualPanelTabs";
 import { MODES, type ModeId } from "./modes";
 import { motion, AnimatePresence } from "framer-motion";
+import { div } from "framer-motion/client";
 
 
 // 공통 기계식 프레임 토큰
@@ -546,7 +547,7 @@ function TileBoard({
  *  ──────────────────────────────── */
 export default function Home() {
   // ── 기계 전원 상태 ─────────────────
-  const [powerOn, setPowerOn] = useState(true);
+  const [powerOn, setPowerOn] = useState(false);
 
   // ── 모드 / 프로젝트 상태 ─────────────
   const [activeMode, setActiveMode] = useState<ModeId>("brand");
@@ -665,1005 +666,1090 @@ export default function Home() {
 
 
   return (
+    // 0. 기본 우주 배경 (항상 어두운 하늘)
     <div className="aeneas-bg min-h-screen text-zinc-50">
-      <main className="w-full px-6 md:px-12 py-16 md:py-24 space-y-24 md:space-y-28">
-        {/* 1) HERO + CONSTELLATION + PANEL */}
-        <div className="w-full max-w-5xl mx-auto space-y-20 md:space-y-24">
+      {/* 1. 페이지 전체를 감싸는 레이아웃 래퍼 */}
+      <div className="relative min-h-screen overflow-hidden">
+        {/* 1-1. 그린 오로라 – powerOn 일 때만 켜짐 */}
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 transition-opacity duration-700"
+          style={{
+            opacity: powerOn ? 1 : 0, // OFF일 땐 완전 꺼짐
+            background: [
+              // 네온 민트 – 조금 더 강하게 & 한 번 더 추가
+              "radial-gradient(circle at 40% -15%, rgba(22,140,126,0.65) 0%, transparent 55%)",
+              "radial-gradient(circle at 80% -20%, rgba(127,234,212,0.45) 0%, transparent 65%)",
+              "radial-gradient(circle at 50% 110%, rgba(16,185,129,0.55) 0%, transparent 60%)",
+            ].join(", "),
+            mixBlendMode: "screen",
+            filter: "blur(12px)", // 조금 더 퍼뜨리기
+          }}
+        />
+        {/* 2. 실제 컨텐츠 */}
+        <main className="w-full px-6 md:px-12 py-16 md:py-24 space-y-24 md:space-y-28">
+          {/* 1) HERO + CONSTELLATION + PANEL */}
+          <div className="w-full max-w-5xl mx-auto space-y-20 md:space-y-24">
 
-          {/* HERO */}
-          <header className="space-y-8">
-            <div className="flex items-end gap-4">
-              <Image
-                src="/aeneas-logo-white.png"
-                alt="AENEAS Studio logo"
-                width={220}
-                height={80}
-                priority
-                className="drop-shadow-[0_0_32px_rgba(0,0,0,0.9)]"
-              />
-              <span className="mb-1 text-[11px] font-medium tracking-[0.28em] text-zinc-500 uppercase">
-                Studio
-              </span>
-            </div>
+            {/* HERO */}
+            <header className="space-y-8">
+              <div className="flex items-end gap-4">
+                <Image
+                  src="/aeneas-logo-white.png"
+                  alt="AENEAS Studio logo"
+                  width={220}
+                  height={80}
+                  priority
+                  className="drop-shadow-[0_0_32px_rgba(0,0,0,0.9)]"
+                />
+                <span className="mb-1 text-[11px] font-medium tracking-[0.28em] text-zinc-500 uppercase">
+                  Studio
+                </span>
+              </div>
 
-            <h1 className="max-w-5xl text-4xl md:text-6xl font-semibold leading-tight tracking-tight">
-              Brands that walk through the desert into their next green place.
-            </h1>
-
-            <p className={`max-w-4xl text-zinc-300 ${TYPE.heroBody}`}>
-              AENEAS Studio는{" "}
-              <span className="text-zinc-50">명확한 이야기, 선명한 UX,</span>{" "}
-              그리고{" "}
-              <span className="text-zinc-50">현실적인 런칭 플랜</span>이 필요한
-              브랜드를 위한 작은 스튜디오. <br />첫 번째 데크부터 라이브
-              사이트까지, 사막을 건너 다음 그린 플레이스에 도착할 때까지 함께
-              걷습니다.
-            </p>
-
-            <div className="flex flex-wrap gap-3 text-zinc-200">
-              <span
-                className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
-              >
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                Brand &amp; Web Direction
-              </span>
-              <span
-                className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
-              >
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                UX Writing &amp; Deck Systems
-              </span>
-              <span
-                className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
-              >
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                Framer / Webflow / Next.js
-              </span>
-            </div>
-          </header>
-
-          {/* DEVICE SHELL : CONSTELLATION + VISUAL PANEL */}
-          <section className="mt-12">
-            {/* 바깥 래퍼 – 버튼 기준 좌표, overflow 없음 */}
-            <div className="relative max-w-5xl mx-auto">
-              {/* POWER BUTTON (우측 상단, 프레임 밖으로 살짝 튀어나오게) */}
-              <button
-                type="button"
-                aria-pressed={powerOn}
-                onClick={() => setPowerOn((prev) => !prev)}
-                className="group absolute -top-10 right-10 h-[81px] w-[81px] rounded-full flex items-center justify-center"
-                style={{
-                  backgroundColor: "#0b0b0b",
-                  boxShadow:
-                    "0 10px 22px rgba(0,0,0,0.9), inset 0 1px 2px rgba(255,255,255,0.15)",
-                }}
-              >
+              <h1 className="max-w-5xl text-4xl md:text-6xl font-semibold leading-tight tracking-tight">
+                <span>Brands that walk through the desert</span>
+                <br className="hidden md:block" />
                 <span
-                  className="flex h-[72px] w-[72px] items-center justify-center rounded-full"
+                  className="inline-block mt-2"
                   style={{
-                    background:
-                      "radial-gradient(circle at 30% 20%, #3a3a3a 0, #161616 55%, #050505 100%)",
-                    border: "4px solid #171717",
-                    boxShadow:
-                      "inset 1px 1px 2px rgba(255,255,255,0.4), 0 0 0 2px rgba(255,255,255,0.1)",
+                    color: powerOn ? "#bbf7d0" : "#e5e7eb", // ON일 때만 연두빛
+                    textShadow: powerOn
+                      ? "0 0 24px rgba(74,222,128,1), 0 0 80px rgba(22,163,74,0.9)"
+                      : "0 0 6px rgba(15,23,42,0.9)",       // OFF일 땐 거의 안 보이는 그림자
+                    transform: powerOn ? "translateY(0)" : "translateY(3px)",
+                    transition:
+                      "color 500ms ease, text-shadow 700ms ease, transform 500ms ease",
                   }}
                 >
-                  {/* 파워 아이콘 */}
-                  <span className="relative inline-block h-8 w-8">
-                    {/* 동그란 링 */}
-                    <span
-                      className="block h-full w-full rounded-full border-[4px]"
-                      style={{
-                        borderColor: powerOn ? "#E5F9F0" : "#555555",
-                        boxShadow: powerOn
-                          ? "0 0 10px rgba(150,255,210,0.85)"
-                          : "none",
-                      }}
-                    />
-                    {/* 위쪽 막대 */}
-                    <span
-                      className="absolute left-1/2 -translate-x-1/2 -top-[5px] h-4 w-[4px] rounded-full"
-                      style={{
-                        backgroundColor: powerOn ? "#E5F9F0" : "#555555",
-                        boxShadow: powerOn
-                          ? "0 0 8px rgba(150,255,210,0.85)"
-                          : "none",
-                      }}
-                    />
-                  </span>
+                  into their next green place.
                 </span>
-              </button>
+              </h1>
 
-              {/* 실제 기계 프레임 – overflow-hidden 유지 */}
-              <div
-                className="rounded-[28px] overflow-hidden border"
-                style={{
-                  background: powerOn
-                    ? "radial-gradient(circle at top, rgba(90,232,190,0.16) 0, transparent 55%), radial-gradient(circle at bottom, rgba(0,0,0,0.9) 0, #020308 60%)"
-                    : "radial-gradient(circle at top, rgba(40,60,55,0.1) 0, transparent 55%), radial-gradient(circle at bottom, #000000 0, #020308 70%)",
-                  borderColor: "#171717",
-                  boxShadow:
-                    // 바깥 드랍 + 윗면 하이라이트 + 아랫면 그늘 = 입체감
-                    "0 32px 80px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -18px 40px rgba(0,0,0,0.9)",
-                }}
-              >
+              <p className={`max-w-4xl text-zinc-300 ${TYPE.heroBody}`}>
+                AENEAS Studio는{" "}
+                <span className="text-zinc-50">명확한 이야기, 선명한 UX,</span>{" "}
+                그리고{" "}
+                <span className="text-zinc-50">현실적인 런칭 플랜</span>이 필요한
+                브랜드를 위한 작은 스튜디오. <br />첫 번째 데크부터 라이브
+                사이트까지, 사막을 건너 다음 그린 플레이스에 도착할 때까지 함께
+                걷습니다.
+              </p>
 
-                {/* 상단 : CONSTELLATION MAP 영역 */}
-                <div className="px-6 py-6 md:px-10 md:pt-8 md:pb-6">
-                  {/* CONSTELLATION MAP */}
-                  <section className="mt-10">
-                    {/* 바깥 프레임 – 패널과 동일 톤 */}
-                    <div
-                      className="relative rounded-[16px] overflow-hidden"
+              <div className="flex flex-wrap gap-3 text-zinc-200">
+                <span
+                  className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                  Brand &amp; Web Direction
+                </span>
+                <span
+                  className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                  UX Writing &amp; Deck Systems
+                </span>
+                <span
+                  className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                  Framer / Webflow / Next.js
+                </span>
+              </div>
+            </header>
+
+            {/* 2) DEVICE SHELL : CONSTELLATION + VISUAL PANEL */}
+            <section className="mt-12">
+              {/* ▶ 패널 기준으로 절대좌표 잡는 래퍼 */}
+              <div className="relative max-w-5xl mx-auto">
+
+                {/* ── POWER BUTTON (위치 고정) ───────────────── */}
+                <button
+                  type="button"
+                  aria-pressed={powerOn}
+                  onClick={() => setPowerOn(prev => !prev)}
+                  className="group absolute flex items-center justify-center rounded-full"
+                  style={{
+                    // 예전처럼 패널 모서리에 딱 붙게
+                    right: 32,          // 패널 오른쪽에서 살짝 안쪽
+                    top: -40,           // 패널 위로 살짝 튀어나오게
+                    width: 81,
+                    height: 81,
+                    backgroundColor: "#0b0b0b",
+                    boxShadow:
+                      "0 10px 22px rgba(0,0,0,0.9), inset 0 1px 2px rgba(255,255,255,0.15)",
+                  }}
+                >
+                  <span
+                    className="flex items-center justify-center rounded-full"
+                    style={{
+                      width: 72,
+                      height: 72,
+                      background:
+                        "radial-gradient(circle at 30% 20%, #3a3a3a 0, #161616 55%, #050505 100%)",
+                      border: "4px solid #171717",
+                      boxShadow:
+                        "inset 1px 1px 2px rgba(255,255,255,0.4), 0 0 0 2px rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    {/* 파워 아이콘 */}
+                    <span className="relative inline-block h-8 w-8">
+                      {/* 동그란 링 */}
+                      <span
+                        className="block h-full w-full rounded-full border-[4px]"
+                        style={{
+                          borderColor: powerOn ? "#E5F9F0" : "#555555",
+                          boxShadow: powerOn
+                            ? "0 0 10px rgba(150,255,210,0.85)"
+                            : "none",
+                        }}
+                      />
+                      {/* 위쪽 막대 */}
+                      <span
+                        className="absolute left-1/2 -translate-x-1/2 -top-[5px] h-4 w-[4px] rounded-full"
+                        style={{
+                          backgroundColor: powerOn ? "#E5F9F0" : "#555555",
+                          boxShadow: powerOn
+                            ? "0 0 8px rgba(150,255,210,0.85)"
+                            : "none",
+                        }}
+                      />
+                    </span>
+                  </span>
+                </button>
+
+                {/* ── PRESS 캡슐 (전원 바로 위, 항상 둥둥 / OFF 에만 표시) ───────── */}
+                {!powerOn && (
+                  <motion.div
+                    initial={{ opacity: 1, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.9,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut",
+                    }}
+                    className="pointer-events-none absolute flex items-center justify-center rounded-full px-5 py-1.5"
+                    style={{
+                      right: 26,         // 버튼과 같은 x축 정렬
+                      top: -80,          // 버튼 위로 띄우기
+                      background:
+                        "radial-gradient(circle at 50% 50%, rgba(15,23,42,0.9) 0, rgba(15,23,42,0.7) 60%, transparent 100%)",
+                      boxShadow:
+                        "0 0 22px rgba(56,189,248,0.75), 0 0 0 1px rgba(15,23,42,0.9)",
+                    }}
+                  >
+                    <span className="text-[11px] font-semibold tracking-[0.32em] text-cyan-100 uppercase">
+                      PRESS
+                    </span>
+                    {/* 아래로 향하는 작은 삼각형 */}
+                    <span
+                      className="absolute left-1/2 translate-x-[-50%]"
                       style={{
-                        backgroundColor: "rgba(0,0,0,0.05)", // 블랙 5% 투명
-                        border: "1px solid #757575",
-                        boxShadow:
-                          "inset 1px 1px 2px rgba(255,255,255,0.25), 0 0 0 1px rgba(255,255,255,0.3)",
+                        bottom: -8,
+                        width: 0,
+                        height: 0,
+                        borderLeft: "6px solid transparent",
+                        borderRight: "6px solid transparent",
+                        borderTop: "8px solid #f97373", // 살짝 네온 레드
+                        filter: "drop-shadow(0 0 6px rgba(248,113,113,0.9))",
                       }}
-                    >
-                      {/* 안쪽 살짝 들어간 프레임 */}
+                    />
+                  </motion.div>
+                )}
+
+                {/* ── 실제 기계 프레임 ───────────────────────── */}
+                <div
+                  className="rounded-[28px] overflow-hidden border"
+                  style={{
+                    background: powerOn
+                      ? "radial-gradient(circle at top, rgba(90,232,190,0.16) 0, transparent 55%), radial-gradient(circle at bottom, rgba(0,0,0,0.9) 0, #020308 60%)"
+                      : "radial-gradient(circle at top, rgba(20,40,35,0.16) 0, transparent 55%), radial-gradient(circle at bottom, #000000 0, #020308 80%)",
+                    borderColor: "#171717",
+                    boxShadow: [
+                      "0 32px 80px rgba(0,0,0,0.95)",
+                      "inset 0 1px 0 rgba(255,255,255,0.08)",
+                      "inset 0 -18px 40px rgba(0,0,0,0.9)",
+                      "inset 1px 1px 2px rgba(255,255,255,0.25)",
+                    ].join(", "),
+                  }}
+                >
+                  {/* 상단 : CONSTELLATION MAP 영역 */}
+                  <div className="px-6 py-6 md:px-10 md:pt-8 md:pb-6">
+                    {/* CONSTELLATION MAP */}
+                    <section className="mt-10">
+                      {/* 바깥 프레임 – 패널과 동일 톤 */}
                       <div
-                        className="m-4 rounded-[14px] px-8 py-8 md:px-10 md:py-10"
+                        className="relative rounded-[16px] overflow-hidden"
                         style={{
                           backgroundColor: "rgba(0,0,0,0.05)", // 블랙 5% 투명
+                          border: "1px solid #757575",
                           boxShadow:
-                            "-4px -4px 12px rgba(255,255,255,0.1), 0 0 0 0.5px rgba(0,0,0,0.1)",
+                            "inset 1px 1px 2px rgba(255,255,255,0.25), 0 0 0 1px rgba(255,255,255,0.3)",
                         }}
                       >
-                        {/* 헤더 */}
-                        <div className="flex items-center justify-between mb-6 md:mb-8">
-                          <div className="space-y-1">
-                            <p className={`${TYPE.sectionKicker} tracking-[0.28em] text-zinc-300`} style={{
-                              fontFamily:
-                                '"Subway Ticker Grid", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-                              fontSize: "clamp(12px, 2vw, 16px)",
-                              lineHeight: 1.1,
-                              color: "#B0B0B0",
-                            }}>
-                              AENEAS CONSTELLATION
-                            </p>
-                            <p className={`${TYPE.sectionBody} text-zinc-500`}>
-                              사막에서 그린 플레이스로 향하는 세 가지 별자리 모드입니다.
-                            </p>
+                        {/* 안쪽 살짝 들어간 프레임 */}
+                        <div
+                          className="m-4 rounded-[14px] px-8 py-8 md:px-10 md:py-10"
+                          style={{
+                            backgroundColor: "rgba(0,0,0,0.05)", // 블랙 5% 투명
+                            boxShadow:
+                              "-4px -4px 12px rgba(255,255,255,0.1), 0 0 0 0.5px rgba(0,0,0,0.1)",
+                          }}
+                        >
+                          {/* 헤더 */}
+                          <div className="flex items-center justify-between mb-6 md:mb-8">
+                            <div className="space-y-1">
+                              <p className={`${TYPE.sectionKicker} tracking-[0.28em] text-zinc-300`} style={{
+                                fontFamily:
+                                  '"Subway Ticker Grid", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                                fontSize: "clamp(12px, 2vw, 16px)",
+                                lineHeight: 1.1,
+                                color: "#B0B0B0",
+                              }}>
+                                AENEAS CONSTELLATION
+                              </p>
+                              <p className={`${TYPE.sectionBody} text-zinc-500`}>
+                                사막에서 그린 플레이스로 향하는 세 가지 별자리 모드입니다.
+                              </p>
+                            </div>
+                            <span className="rounded-full border border-zinc-200/35 px-3 py-1 text-[11px] tracking-[0.18em] text-zinc-200">
+                              MODES · 03
+                            </span>
                           </div>
-                          <span className="rounded-full border border-zinc-200/35 px-3 py-1 text-[11px] tracking-[0.18em] text-zinc-200">
-                            MODES · 03
-                          </span>
-                        </div>
 
-                        {/* 라인 + 점 */}
-                        <div className="mt-6">
-                          <div className="relative h-14 px-[6%]">
-                            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-zinc-200/55 to-transparent shadow-[0_0_18px_rgba(255,255,255,0.26)]" />
-                            <div className="relative z-10 flex h-full items-center justify-between">
-                              {/* BRAND CORE */}
-                              <div className="flex items-center justify-center">
-                                <div className="relative h-4 w-4">
-                                  {/* 네온 그린 글로우 */}
-                                  <div
-                                    className="absolute inset-[-4px] rounded-full blur-[8px]"
-                                    style={{ backgroundColor: "rgba(127,234,212,0.35)" }} // #7FEAD4
-                                  />
-                                  <div
-                                    className="absolute inset-0 rounded-full"
-                                    style={{
-                                      backgroundColor: "#7FEAD4",
-                                      boxShadow: "0 0 16px rgba(127,234,212,0.9)",
-                                    }}
-                                  />
-                                  <div className="absolute inset-[-6px] rounded-full border border-zinc-100/90" />
+                          {/* 라인 + 점 */}
+                          <div className="mt-6">
+                            <div className="relative h-14 px-[6%]">
+                              <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-zinc-200/55 to-transparent shadow-[0_0_18px_rgba(255,255,255,0.26)]" />
+                              <div className="relative z-10 flex h-full items-center justify-between">
+                                {/* BRAND CORE */}
+                                <div className="flex items-center justify-center">
+                                  <div className="relative h-4 w-4">
+                                    {/* 네온 그린 글로우 */}
+                                    <div
+                                      className="absolute inset-[-4px] rounded-full blur-[8px]"
+                                      style={{ backgroundColor: "rgba(127,234,212,0.35)" }} // #7FEAD4
+                                    />
+                                    <div
+                                      className="absolute inset-0 rounded-full"
+                                      style={{
+                                        backgroundColor: "#7FEAD4",
+                                        boxShadow: "0 0 16px rgba(127,234,212,0.9)",
+                                      }}
+                                    />
+                                    <div className="absolute inset-[-6px] rounded-full border border-zinc-100/90" />
+                                  </div>
                                 </div>
-                              </div>
 
-                              {/* WEB EXPERIENCE – 블루 톤 다운 */}
-                              <div className="flex items-center justify-center">
-                                <div className="relative h-4 w-4">
-                                  <div
-                                    className="absolute inset-[-4px] rounded-full blur-[8px]"
-                                    style={{ backgroundColor: "rgba(126,200,255,0.32)" }}
-                                  />
-                                  <div
-                                    className="absolute inset-0 rounded-full"
-                                    style={{
-                                      backgroundColor: "#7EC8FF",
-                                      boxShadow: "0 0 16px rgba(126,200,255,0.9)",
-                                    }}
-                                  />
-                                  <div
-                                    className="absolute inset-[-6px] rounded-full border"
-                                    style={{ borderColor: "rgba(224,244,255,0.95)" }}
-                                  />
+                                {/* WEB EXPERIENCE – 블루 톤 다운 */}
+                                <div className="flex items-center justify-center">
+                                  <div className="relative h-4 w-4">
+                                    <div
+                                      className="absolute inset-[-4px] rounded-full blur-[8px]"
+                                      style={{ backgroundColor: "rgba(126,200,255,0.32)" }}
+                                    />
+                                    <div
+                                      className="absolute inset-0 rounded-full"
+                                      style={{
+                                        backgroundColor: "#7EC8FF",
+                                        boxShadow: "0 0 16px rgba(126,200,255,0.9)",
+                                      }}
+                                    />
+                                    <div
+                                      className="absolute inset-[-6px] rounded-full border"
+                                      style={{ borderColor: "rgba(224,244,255,0.95)" }}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
 
-                              {/* VISUAL SYSTEMS – 옐로우 톤 다운 */}
-                              <div className="flex items-center justify-center">
-                                <div className="relative h-4 w-4">
-                                  <div
-                                    className="absolute inset-[-4px] rounded-full blur-[8px]"
-                                    style={{ backgroundColor: "rgba(249,224,138,0.32)" }}
-                                  />
-                                  <div
-                                    className="absolute inset-0 rounded-full"
-                                    style={{
-                                      backgroundColor: "#F9E08A",
-                                      boxShadow: "0 0 16px rgba(249,224,138,0.9)",
-                                    }}
-                                  />
-                                  <div
-                                    className="absolute inset-[-6px] rounded-full border"
-                                    style={{ borderColor: "rgba(255,245,204,0.95)" }}
-                                  />
+                                {/* VISUAL SYSTEMS – 옐로우 톤 다운 */}
+                                <div className="flex items-center justify-center">
+                                  <div className="relative h-4 w-4">
+                                    <div
+                                      className="absolute inset-[-4px] rounded-full blur-[8px]"
+                                      style={{ backgroundColor: "rgba(249,224,138,0.32)" }}
+                                    />
+                                    <div
+                                      className="absolute inset-0 rounded-full"
+                                      style={{
+                                        backgroundColor: "#F9E08A",
+                                        boxShadow: "0 0 16px rgba(249,224,138,0.9)",
+                                      }}
+                                    />
+                                    <div
+                                      className="absolute inset-[-6px] rounded-full border"
+                                      style={{ borderColor: "rgba(255,245,204,0.95)" }}
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
 
-                          {/* 모드 카드 3개 – 라운드 16px + 통일된 쉘 */}
-                          <div className="mt-4 grid grid-cols-3 gap-6">
-                            {/* BRAND CORE */}
-                            <button
-                              type="button"
-                              onClick={() => setActiveMode("brand")}
-                              className="text-left rounded-[16px] px-5 py-4 border transition-all"
-                              style={
-                                activeMode === "brand"
-                                  ? {
-                                    backgroundColor: "#171717", // 선택 시 완전 블랙
-                                    borderColor: "#7FEAD4",
-                                    boxShadow: "0 0 26px rgba(127,234,212,0.6)",
-                                  }
-                                  : {
-                                    backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
-                                    borderColor: "#3F3F46",
-                                  }
-                              }
-                            >
-                              <p
-                                className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
+                            {/* 모드 카드 3개 – 라운드 16px + 통일된 쉘 */}
+                            <div className="mt-4 grid grid-cols-3 gap-6">
+                              {/* BRAND CORE */}
+                              <button
+                                type="button"
+                                onClick={() => setActiveMode("brand")}
+                                className="text-left rounded-[16px] px-5 py-4 border transition-all"
+                                style={
+                                  activeMode === "brand"
+                                    ? {
+                                      backgroundColor: "#171717", // 선택 시 완전 블랙
+                                      borderColor: "#7FEAD4",
+                                      boxShadow: "0 0 26px rgba(127,234,212,0.6)",
+                                    }
+                                    : {
+                                      backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
+                                      borderColor: "#3F3F46",
+                                    }
+                                }
                               >
-                                01 · BRAND CORE
-                              </p>
-                              <h2 className="text-sm md:text-[15px] font-semibold mb-1">
-                                Naming &amp; Storyframe
-                              </h2>
-                              <p className={`${TYPE.panelBody} text-zinc-400`}>
-                                브랜드의 첫 문장과 구조를 잡는 모드입니다.
-                              </p>
-                            </button>
+                                <p
+                                  className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
+                                >
+                                  01 · BRAND CORE
+                                </p>
+                                <h2 className="text-sm md:text-[15px] font-semibold mb-1">
+                                  Naming &amp; Storyframe
+                                </h2>
+                                <p className={`${TYPE.panelBody} text-zinc-400`}>
+                                  브랜드의 첫 문장과 구조를 잡는 모드입니다.
+                                </p>
+                              </button>
 
-                            {/* WEB EXPERIENCE */}
-                            <button
-                              type="button"
-                              onClick={() => setActiveMode("web")}
-                              className="text-left rounded-[16px] px-5 py-4 border transition-all"
-                              style={
-                                activeMode === "web"
-                                  ? {
-                                    backgroundColor: "#171717", // 선택 시 완전 블랙
-                                    borderColor: "#7EC8FF",
-                                    boxShadow: "0 0 26px rgba(126,200,255,0.6)",
-                                  }
-                                  : {
-                                    backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
-                                    borderColor: "#3F3F46",
-                                  }
-                              }
-                            >
-                              <p
-                                className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
+                              {/* WEB EXPERIENCE */}
+                              <button
+                                type="button"
+                                onClick={() => setActiveMode("web")}
+                                className="text-left rounded-[16px] px-5 py-4 border transition-all"
+                                style={
+                                  activeMode === "web"
+                                    ? {
+                                      backgroundColor: "#171717", // 선택 시 완전 블랙
+                                      borderColor: "#7EC8FF",
+                                      boxShadow: "0 0 26px rgba(126,200,255,0.6)",
+                                    }
+                                    : {
+                                      backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
+                                      borderColor: "#3F3F46",
+                                    }
+                                }
                               >
-                                02 · WEB EXPERIENCE
-                              </p>
-                              <h2 className="text-sm md:text-[15px] font-semibold mb-1">
-                                Site &amp; Funnel Design
-                              </h2>
-                              <p className={`${TYPE.panelBody} text-zinc-400`}>
-                                Figma에서 설계한 여정을 라이브 사이트까지 이어붙입니다.
-                              </p>
-                            </button>
+                                <p
+                                  className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
+                                >
+                                  02 · WEB EXPERIENCE
+                                </p>
+                                <h2 className="text-sm md:text-[15px] font-semibold mb-1">
+                                  Site &amp; Funnel Design
+                                </h2>
+                                <p className={`${TYPE.panelBody} text-zinc-400`}>
+                                  Figma에서 설계한 여정을 라이브 사이트까지 이어붙입니다.
+                                </p>
+                              </button>
 
-                            {/* VISUAL SYSTEMS */}
-                            <button
-                              type="button"
-                              onClick={() => setActiveMode("visual")}
-                              className="text-left rounded-[16px] px-5 py-4 border transition-all"
-                              style={
-                                activeMode === "visual"
-                                  ? {
-                                    backgroundColor: "#171717", // 선택 시 완전 블랙
-                                    borderColor: "#F9E08A",
-                                    boxShadow: "0 0 26px rgba(249,224,138,0.6)",
-                                  }
-                                  : {
-                                    backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
-                                    borderColor: "#3F3F46",
-                                  }
-                              }
-                            >
-                              <p
-                                className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
+                              {/* VISUAL SYSTEMS */}
+                              <button
+                                type="button"
+                                onClick={() => setActiveMode("visual")}
+                                className="text-left rounded-[16px] px-5 py-4 border transition-all"
+                                style={
+                                  activeMode === "visual"
+                                    ? {
+                                      backgroundColor: "#171717", // 선택 시 완전 블랙
+                                      borderColor: "#F9E08A",
+                                      boxShadow: "0 0 26px rgba(249,224,138,0.6)",
+                                    }
+                                    : {
+                                      backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
+                                      borderColor: "#3F3F46",
+                                    }
+                                }
                               >
-                                03 · VISUAL SYSTEMS
-                              </p>
-                              <h2 className="text-sm md:text-[15px] font-semibold mb-1">
-                                Decks &amp; Visual Systems
-                              </h2>
-                              <p className={`${TYPE.panelBody} text-zinc-400`}>
-                                슬라이드·피드·카드까지 반복해서 쓰는 시각 언어를 설계합니다.
-                              </p>
-                            </button>
+                                <p
+                                  className={`${TYPE.panelLabel} font-medium text-zinc-400 mb-1`}
+                                >
+                                  03 · VISUAL SYSTEMS
+                                </p>
+                                <h2 className="text-sm md:text-[15px] font-semibold mb-1">
+                                  Decks &amp; Visual Systems
+                                </h2>
+                                <p className={`${TYPE.panelBody} text-zinc-400`}>
+                                  슬라이드·피드·카드까지 반복해서 쓰는 시각 언어를 설계합니다.
+                                </p>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </section>
-                </div>
+                    </section>
+                  </div>
 
-                {/* ── MACHINE STRIP ───────────────── */}
-                <div className="px-6 md:px-10 my-10">
-                  <div
-                    className="relative flex items-center justify-between h-14 rounded-[16px] px-8"
-                    style={{
-                      // Figma 그라데이션
-                      background:
-                        "linear-gradient(90deg, #191919 0%, #272727 16%, #313131ff 32%, #0B0B0B 92%)",
-                      border: "5px solid #171717",
-                      boxShadow: [
-                        "inset -1px -1px 4px rgba(0,0,0,0.25)",       // inner shadow 1
-                        "inset 0 1px 4px -1px rgba(255,255,255,0.25)", // inner shadow 2
-                        "0 0 0 1.5px rgba(255,255,255,0.1)",            // outer outline
-                      ].join(", "),
-                    }}
-                  >
-                    {/* 왼쪽: 세로 슬롯들 (더 많이, 더 촘촘하게) */}
-                    <div className="flex-1 flex gap-[6px]">
-                      {Array.from({ length: 30 }).map((_, i) => (
+                  {/* ── MACHINE STRIP ───────────────── */}
+                  <div className="px-6 md:px-10 my-10">
+                    <div
+                      className="relative flex items-center justify-between h-14 rounded-[16px] px-8"
+                      style={{
+                        // Figma 그라데이션
+                        background:
+                          "linear-gradient(90deg, #191919 0%, #272727 16%, #313131ff 32%, #0B0B0B 92%)",
+                        border: "5px solid #171717",
+                        boxShadow: [
+                          "inset -1px -1px 4px rgba(0,0,0,0.25)",       // inner shadow 1
+                          "inset 0 1px 4px -1px rgba(255,255,255,0.25)", // inner shadow 2
+                          "0 0 0 1.5px rgba(255,255,255,0.1)",            // outer outline
+                        ].join(", "),
+                      }}
+                    >
+                      {/* 왼쪽: 세로 슬롯들 (더 많이, 더 촘촘하게) */}
+                      <div className="flex-1 flex gap-[6px]">
+                        {Array.from({ length: 30 }).map((_, i) => (
+                          <span
+                            key={i}
+                            className="block rounded-full"
+                            style={{
+                              width: 6,
+                              height: 26,
+                              backgroundColor: "#272727",
+                              boxShadow:
+                                "inset 0 1px 4px rgba(0,0,0,0.3), 0 1px 4px rgba(255,255,255,0.1)",
+                            }}
+                          />
+                        ))}
+                      </div>
+
+                      {/* 오른쪽: 고정 사이즈 텍스트 캡슐 */}
+                      <div
+                        className="ml-6 flex items-center justify-center rounded-[10px] w-[144px] h-7"
+                        style={{
+                          background:
+                            "linear-gradient(100deg, #2A2A2A 0%, #121212 60%, #050505 100%)",
+                          boxShadow:
+                            "inset 0 1px 3px rgba(255,255,255,0.22), 0 0 0 1px rgba(255,255,255,0.4)",
+                        }}
+                      >
+                        {/* 밝은 바 */}
                         <span
-                          key={i}
-                          className="block rounded-full"
+                          className="mr-3 block rounded-full"
                           style={{
                             width: 6,
                             height: 26,
-                            backgroundColor: "#272727",
-                            boxShadow:
-                              "inset 0 1px 4px rgba(0,0,0,0.3), 0 1px 4px rgba(255,255,255,0.1)",
+                            backgroundColor: powerOn ? "#E9F3FF" : "#9FA3B2",
+                            boxShadow: powerOn
+                              ? "0 0 14px rgba(190,220,255,1)"
+                              : "0 0 6px rgba(120,130,160,0.6)",
                           }}
                         />
-                      ))}
-                    </div>
-
-                    {/* 오른쪽: 고정 사이즈 텍스트 캡슐 */}
-                    <div
-                      className="ml-6 flex items-center justify-center rounded-[10px] w-[144px] h-7"
-                      style={{
-                        background:
-                          "linear-gradient(100deg, #2A2A2A 0%, #121212 60%, #050505 100%)",
-                        boxShadow:
-                          "inset 0 1px 3px rgba(255,255,255,0.22), 0 0 0 1px rgba(255,255,255,0.4)",
-                      }}
-                    >
-                      {/* 밝은 바 */}
-                      <span
-                        className="mr-3 block rounded-full"
-                        style={{
-                          width: 6,
-                          height: 26,
-                          backgroundColor: powerOn ? "#E9F3FF" : "#9FA3B2",
-                          boxShadow: powerOn
-                            ? "0 0 14px rgba(190,220,255,1)"
-                            : "0 0 6px rgba(120,130,160,0.6)",
-                        }}
-                      />
-                      {/* 상태 텍스트 (폭 고정, 가운데 정렬) */}
-                      <span className="w-[90px] text-center text-[11px] uppercase tracking-[0.3em] text-zinc-300 font-[SubwayTickerGrid]">
-                        {powerOn ? "ONLINE" : "STANDBY"}
-                      </span>
+                        {/* 상태 텍스트 (폭 고정, 가운데 정렬) */}
+                        <span className="w-[90px] text-center text-[11px] uppercase tracking-[0.3em] text-zinc-300 font-[SubwayTickerGrid]">
+                          {powerOn ? "ONLINE" : "STANDBY"}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
 
-                {/* VISUAL PANEL */}
-                <div className="mt-16">
-                  <VisualPanelTabs
-                    activeMode={activeMode}
-                    onChangeMode={setActiveMode}
-                  />
-                </div>
-
-              </div>
-            </div>
-          </section >
-
-          {/* 2) SELECTED WORK – 바둑판 3분할 풀폭 + 디테일 패널 */}
-          < section className="mt-20 border-t border-white/7 pt-10" >
-            {/* 위쪽 타이틀 영역 */}
-            < header className="mb-10 text-center space-y-3 max-w-5xl mx-auto" >
-              <p className={`${TYPE.sectionKicker} text-zinc-500`}>Selected Work</p>
-              <h2 className="text-2xl md:text-[28px] tracking-tight">
-                디자인이 아니라,{" "}
-                <span className="text-5xl italic font-semibold">(결과로 설명하는)</span>{" "}
-                프로젝트들
-              </h2>
-              <p
-                className={`mx-auto max-w-3xl text-zinc-400 ${TYPE.sectionBody}`}
-              >
-                각 보드는 한 프로젝트를 위한 작은 시스템 맵입니다.
-                <br />
-                포인트 흑돌에는 프로젝트명을, 카드에는 타이틀만 남겼습니다.
-              </p>
-            </header >
-
-            {/* ▼▼▼ 바둑판 영역 – 가로 풀폭 */}
-            < div className="mt-8 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
-              <div className="w-screen px-6 md:px-12 lg:px-20">
-                {/* 바둑판 전체를 감싸는 패널 – 화이트 10% 배경 */}
-                <div className="rounded-[8px] border border-white/7 bg-white/5 px-6 py-8 shadow-[0_26px_70px_rgba(0,0,0,0.85)]">
-                  <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3 lg:gap-7">
-                    {/* ZIGZAG */}
-                    <TileBoard
-                      letters={
-                        [
-                          { row: 1, col: 2, char: "Z" },
-                          { row: 1, col: 3, char: "I" },
-                          { row: 1, col: 4, char: "G" },
-                          { row: 1, col: 5, char: "Z" },
-                          { row: 1, col: 6, char: "A" },
-                          { row: 1, col: 7, char: "G" },
-                        ] as LetterStone[]
-                      }
-                      variant="wide"
-                      accent="emerald"
-                      active={activeProject === "zigzag"}
-                      onClick={() => setActiveProject("zigzag")}
-                      card={
-                        <>
-                          <span className={`${TYPE.projectKicker} text-emerald-500`}>
-                            FASHION COMMERCE
-                          </span>
-                          <span className={`${TYPE.projectKicker} text-emerald-500`}>
-                            UX / BRANDING
-                          </span>
-                        </>
-                      }
-                    />
-
-                    {/* GMARKET / RAKUTEN */}
-                    <TileBoard
-                      letters={
-                        [
-                          // GMARKET
-                          { row: 1, col: 1, char: "G" },
-                          { row: 1, col: 2, char: "M" },
-                          { row: 1, col: 3, char: "A" },
-                          { row: 1, col: 4, char: "R" },
-                          { row: 1, col: 5, char: "K" },
-                          { row: 1, col: 6, char: "E" },
-                          { row: 1, col: 7, char: "T" },
-                          // RAKUTEN
-                          { row: 2, col: 2, char: "R" },
-                          { row: 2, col: 3, char: "A" },
-                          { row: 2, col: 4, char: "K" },
-                          { row: 2, col: 5, char: "U" },
-                          { row: 2, col: 6, char: "T" },
-                          { row: 2, col: 7, char: "E" },
-                          { row: 2, col: 8, char: "N" },
-                        ] as LetterStone[]
-                      }
-                      variant="narrow"
-                      accent="sky"
-                      active={activeProject === "gmarket"}
-                      onClick={() => setActiveProject("gmarket")}
-                      card={
-                        <>
-                          <span className={`${TYPE.projectKicker} text-sky-400`}>
-                            GLOBAL MARKETPLACE
-                          </span>
-                          <span className={`${TYPE.projectKicker} text-sky-400`}>
-                            UX / SEO
-                          </span>
-                        </>
-                      }
-                    />
-
-                    {/* TRAVEL */}
-                    <TileBoard
-                      letters={
-                        [
-                          { row: 1, col: 2, char: "T" },
-                          { row: 1, col: 3, char: "R" },
-                          { row: 1, col: 4, char: "A" },
-                          { row: 1, col: 5, char: "V" },
-                          { row: 1, col: 6, char: "E" },
-                          { row: 1, col: 7, char: "L" },
-                        ] as LetterStone[]
-                      }
-                      variant="wide"
-                      accent="amber"
-                      active={activeProject === "travel"}
-                      onClick={() => setActiveProject("travel")}
-                      card={
-                        <>
-                          <span className={`${TYPE.projectKicker} text-amber-400`}>
-                            TRAVEL / LIFESTYLE
-                          </span>
-                          <span className={`${TYPE.projectKicker} text-amber-400`}>
-                            BRAND &amp; WEB
-                          </span>
-                        </>
-                      }
+                  {/* VISUAL PANEL */}
+                  <div className="mt-16">
+                    <VisualPanelTabs
+                      activeMode={activeMode}
+                      onChangeMode={setActiveMode}
                     />
                   </div>
                 </div>
               </div>
-            </div >
-            {/* ▲▲▲ 바둑판 영역 끝 */}
+            </section >
 
-
-            {/* ▼▼▼ 하단 디테일 – 종이 펼쳐짐 + 비주얼 토글 */}
-            <div
-              className={`mt-14 max-w-5xl mx-auto overflow-hidden transform-gpu transition-all duration-500 ease-out origin-top
-      ${activeProjectDetail
-                  ? "max-h-[1800px] opacity-100 scale-y-100"
-                  : "max-h-0 opacity-0 scale-y-95"
-                }`}
-            >
-              {activeProjectDetail && (
-                <div
-                  className={`relative rounded-[26px] bg-gradient-to-b ${detailAccentClass} to-black/96 p-[1.5px]`}
+            {/* 2) SELECTED WORK – 바둑판 3분할 풀폭 + 디테일 패널 */}
+            < section className="mt-20 border-t border-white/7 pt-10" >
+              {/* 위쪽 타이틀 영역 */}
+              < header className="mb-10 text-center space-y-3 max-w-5xl mx-auto" >
+                <p className={`${TYPE.sectionKicker} text-zinc-500`}>Selected Work</p>
+                <h2 className="text-2xl md:text-[28px] tracking-tight">
+                  디자인이 아니라,{" "}
+                  <span className="text-5xl italic font-semibold">(결과로 설명하는)</span>{" "}
+                  프로젝트들
+                </h2>
+                <p
+                  className={`mx-auto max-w-3xl text-zinc-400 ${TYPE.sectionBody}`}
                 >
-                  {/* 우측 상단 X 버튼 */}
-                  <button
-                    type="button"
-                    onClick={() => setActiveProject(null)}
-                    className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-full border border-white/25 bg-black/70 text-[13px] text-zinc-200/80 hover:bg-black/95 hover:text-zinc-50"
-                    aria-label="닫기"
-                  >
-                    ×
-                  </button>
+                  각 보드는 한 프로젝트를 위한 작은 시스템 맵입니다.
+                  <br />
+                  포인트 흑돌에는 프로젝트명을, 카드에는 타이틀만 남겼습니다.
+                </p>
+              </header >
 
-                  <div
-                    className={`rounded-[24px] border border-white/16 bg-gradient-to-b ${activeProjectDetail.id === "zigzag"
-                      ? "from-emerald-500/12 via-[#050609]/96 to-black/98"
-                      : activeProjectDetail.id === "gmarket"
-                        ? "from-sky-500/12 via-[#050609]/96 to-black/98"
-                        : "from-amber-300/14 via-[#050609]/96 to-black/98"
-                      } px-8 py-7 shadow-[0_30px_80px_rgba(0,0,0,0.9)]`}
-                  >
-                    {/* 상단 헤더 + 토글 버튼 */}
-                    <div className="mb-6 flex items-center justify-between gap-4">
-                      <div className="space-y-1">
-                        <p
-                          className={`${TYPE.projectKicker} text-xs text-zinc-300 mb-1`}
-                        >
-                          {activeProjectDetail.kicker}
-                        </p>
-                        <h3
-                          className={`text-[22px] md:text-[24px] font-semibold ${activeProjectDetail.id === "zigzag"
-                            ? "text-emerald-100"
-                            : activeProjectDetail.id === "gmarket"
-                              ? "text-sky-100"
-                              : "text-amber-100"
-                            }`}
-                        >
-                          {activeProjectDetail.title}
-                        </h3>
-
-                        <div className="flex flex-wrap gap-3 text-zinc-400 text-[13px] md:text-[14px]">
-                          {activeProjectDetail.period && (
-                            <span>Period · {activeProjectDetail.period}</span>
-                          )}
-                          {activeProjectDetail.clientType && (
-                            <span>Client · {activeProjectDetail.clientType}</span>
-                          )}
-                        </div>
-
-                        {/* Tools – 아이콘 배지로 표현 */}
-                        {activeProjectDetail.tools && (
-                          <div className="mt-2 flex flex-wrap items-center gap-2">
-                            {parseTools(activeProjectDetail.tools).map((tool) => (
-                              <span
-                                key={tool.name}
-                                className="inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-zinc-50"
-                              >
-                                <span>{tool.icon}</span>
-                                <span>{tool.name}</span>
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                        <p className={`${TYPE.projectMeta} text-zinc-400 mt-1`}>
-                          Role · {activeProjectDetail.role}
-                        </p>
-                      </div>
-
-                      {/* 프로젝트 보기 / 설명 보기 토글 – 강조된 pill 버튼 */}
-                      <div className="flex flex-col items-end gap-2">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setDetailView(detailView === "case" ? "visual" : "case")
-                          }
-                          className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.22em] transition-all ${activeProjectDetail.id === "zigzag"
-                            ? "border-emerald-400/80 text-emerald-100 hover:bg-emerald-500/10"
-                            : activeProjectDetail.id === "gmarket"
-                              ? "border-sky-400/80 text-sky-100 hover:bg-sky-500/10"
-                              : "border-amber-300/80 text-amber-100 hover:bg-amber-400/10"
-                            }`}
-                        >
-                          <span>
-                            {detailView === "case" ? "프로젝트 보기" : "설명 보기"}
-                          </span>
-                          <span className="translate-y-[1px]">
-                            {detailView === "case" ? "→" : "←"}
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* 내용 영역 */}
-                    <div className="space-y-7 md:space-y-8">
-                      {/* CASE VIEW – 기존 텍스트 설명 */}
-                      {detailView === "case" && (
-                        <>
-                          {/* Context */}
-                          <div className="space-y-3 md:space-y-4">
-                            <h4 className="text-sm font-semibold text-zinc-200">
-                              Context &amp; Problem
-                            </h4>
-                            <p className={`${TYPE.projectBody} text-zinc-300`}>
-                              {activeProjectDetail.id === "zigzag"
-                                ? highlightZigzagContext(activeProjectDetail.context as string)
-                                : activeProjectDetail.context}
-                            </p>
-                          </div>
-
-                          {/* Goals */}
-                          <div className="space-y-3 md:space-y-4">
-                            <h4 className="text-sm font-semibold text-zinc-200">
-                              Goals
-                            </h4>
-                            <ul className="grid gap-3 md:grid-cols-2 text-[14px] md:text-[15px]">
-                              {activeProjectDetail.goal.map((g) => (
-                                <li
-                                  key={g}
-                                  className="rounded-2xl border border-white/10 bg-zinc-900/60 px-4 py-3 text-zinc-200 leading-relaxed"
-                                >
-                                  • {g}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {/* Process */}
-                          <div className="space-y-4 md:space-y-5">
-                            <h4 className="text-sm font-semibold text-zinc-200">
-                              Process
-                            </h4>
-                            <div className="grid gap-4 md:grid-cols-3">
-                              {activeProjectDetail.process.map((step) => (
-                                <div
-                                  key={step.label}
-                                  className="rounded-2xl border border-white/12 bg-zinc-900/70 px-4 py-4 space-y-3"
-                                >
-                                  <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-zinc-400">
-                                    {step.label}
-                                  </p>
-                                  <p className="text-[13px] md:text-[14px] text-zinc-300 leading-relaxed">
-                                    {step.body}
-                                  </p>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Outcome */}
-                          <div className="space-y-3 md:space-y-4">
-                            <h4 className="text-sm font-semibold text-zinc-200">
-                              Outcome
-                            </h4>
-                            <p className={`${TYPE.projectBody} whitespace-pre-line text-zinc-300`}>
-                              {activeProjectDetail.outcome}
-                            </p>
-                          </div>
-                        </>
-                      )}
-
-                      {/* VISUAL VIEW – 산출물 갤러리 */}
-                      {detailView === "visual" && (
-                        <div className="mt-2 grid gap-5 md:grid-cols-3">
-                          {currentVisuals.map((visual) => (
-                            <figure key={visual.title} className="space-y-3">
-                              <button
-                                type="button"
-                                onClick={() => setActiveVisual(visual)}
-                                className="group relative block w-full aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-black/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 focus:ring-offset-2 focus:ring-offset-black"
-                              >
-                                <Image
-                                  src={visual.src}
-                                  alt={visual.title}
-                                  fill
-                                  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                                />
-                                {/* 오버레이 힌트 */}
-                                <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/35 group-hover:opacity-100">
-                                  <span className="rounded-full border border-white/40 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-zinc-100">
-                                    Click to Zoom
-                                  </span>
-                                </div>
-                              </button>
-
-                              <figcaption className="space-y-1">
-                                <p className="text-[13px] font-semibold text-zinc-100">
-                                  {visual.title}
-                                </p>
-                                <p className="text-[12px] leading-relaxed text-zinc-400">
-                                  {visual.caption}
-                                </p>
-                              </figcaption>
-                            </figure>
-                          ))}
-                        </div>
-                      )}
-
-
-
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* 확대 모달 – 모든 프로젝트 공통 */}
-            <AnimatePresence>
-              {activeVisual && (
-                <>
-                  {/* 어두운 배경 */}
-                  <motion.div
-                    key="overlay"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35 }}
-                    className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm"
-                    onClick={() => setActiveVisual(null)}
-                  />
-
-                  {/* 메인 패널 */}
-                  <motion.div
-                    key="panel"
-                    initial={{ opacity: 0, scale: 0.6, y: 40 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    transition={{
-                      delay: 0.5,              // 0.5초 뒤에 시작
-                      duration: 0.5,           // 펼쳐지는 시간
-                      ease: [0.16, 1, 0.3, 1], // 점점 빨라지는 느낌
-                    }}
-                    className="fixed inset-0 z-[90] flex items-center justify-center p-4 md:p-8"
-                    onClick={() => setActiveVisual(null)}
-                  >
-                    <div
-                      className="relative w-full max-w-6xl h-[88vh] rounded-3xl border border-white/16 bg-gradient-to-b from-zinc-900/95 to-black shadow-[0_40px_120px_rgba(0,0,0,0.9)] overflow-hidden"
-                      onClick={(e) => e.stopPropagation()} // 안쪽 클릭 시 닫히지 않게
-                    >
-                      {/* 닫기 버튼 */}
-                      <button
-                        type="button"
-                        onClick={() => setActiveVisual(null)}
-                        className="absolute right-4 top-4 z-[95] rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-zinc-100 shadow-lg hover:bg-black/90 md:right-6 md:top-5"
-                      >
-                        닫기 ✕
-                      </button>
-
-                      {/* 이미지 + 설명 */}
-                      <div className="relative h-full w-full">
-                        <Image
-                          src={activeVisual.src}
-                          alt={activeVisual.title}
-                          fill
-                          className="object-contain"
-                          sizes="(min-width: 1024px) 80vw, 100vw"
-                        />
-
-                        {/* 하단 텍스트 그라데이션 */}
-                        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-4 md:p-6">
-                          <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-400">
-                            Detail View
-                          </p>
-                          <p className="text-sm md:text-base font-semibold text-zinc-50">
-                            {activeVisual.title}
-                          </p>
-                          <p className="mt-1 text-xs md:text-sm text-zinc-200">
-                            {activeVisual.caption}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-
-            {/* ▲▲▲ 디테일 영역 끝 */}
-          </section >
-
-          {/* 3) STUDIO LAB + STUDIO STATUS 그룹  */}
-          < div className="space-y-0" >
-            {/* STUDIO LAB */}
-            < section className="mt-24" >
-              {/* 뷰포트 풀폭 래핑 */}
-              < div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
-                <div className="relative w-screen min-h-screen overflow-hidden bg-black">
-                  {/* 상단~하단 그라데이션 */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black" />
-
-                  {/* 하단 레이어 이미지 */}
-                  <div
-                    className="pointer-events-none absolute inset-x-0 bottom-0 h-[420px] opacity-80"
-                    style={{
-                      backgroundImage: "url('/lab/layer-grid.jpg')",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "bottom center",
-                      backgroundSize: "contain",
-                    }}
-                  />
-
-                  {/* 컨텐츠 래퍼 */}
-                  <div className="relative z-10 mx-auto max-w-7xl px-8 md:px-16 pt-14 pb-4 space-y-10">
-                    {/* 상단 타이틀 */}
-                    <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                      {/* 왼쪽: 라벨 + 큰 타이틀 */}
-                      <div className="max-w-xl space-y-4">
-                        <p className={`${TYPE.sectionKicker} text-zinc-500`}>
-                          STUDIO LAB
-                        </p>
-                        <h2 className="text-[40px] md:text-[56px] font-semibold leading-tight tracking-tight text-zinc-50">
-                          WE LAYER
-                          <br />
-                          EXPERIENCE LAB
-                        </h2>
-                      </div>
-
-                      {/* 오른쪽: 설명 + 키워드 */}
-                      <div className="max-w-md space-y-3 md:text-right">
-                        <p className={`${TYPE.sectionBody} text-zinc-300`}>
-                          프리랜서 웹·브랜딩 작업과 제안서를 모아, <br />
-                          AENEAS가 문제를 정의하고 경험을 설계하는 방식을 실험하는 구역입니다.
-                        </p>
-                        <p className="text-[12px] tracking-[0.18em] uppercase text-zinc-500">
-                          FREELANCE · PROPOSAL · SYSTEM THINKING
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* 카드 그리드 – 프리랜서 2 + 제안서 1 */}
-                    <div className="grid gap-7 md:grid-cols-3 max-w-6xl">
-                      {LAB_ITEMS.map((item) => (
-                        <article
-                          key={item.id}
-                          className="flex h-full flex-col rounded-2xl border border-white/12
-                  bg-zinc-950/85 px-6 py-6
-                  shadow-[0_18px_50px_rgba(0,0,0,0.9)]
-                  backdrop-blur-sm"
-                        >
-                          {/* 상단 배지 + 종류 포인트 컬러 */}
-                          <div className="mb-4 flex items-center justify-between gap-2">
-                            <span className="inline-flex items-center rounded-full border border-zinc-700/80 bg-black/70 px-3 py-1 text-[11px] font-medium tracking-[0.18em] uppercase text-zinc-300">
-                              {item.badge}
+              {/* ▼▼▼ 바둑판 영역 – 가로 풀폭 */}
+              < div className="mt-8 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
+                <div className="w-screen px-6 md:px-12 lg:px-20">
+                  {/* 바둑판 전체를 감싸는 패널 – 화이트 10% 배경 */}
+                  <div className="rounded-[8px] border border-white/7 bg-white/5 px-6 py-8 shadow-[0_26px_70px_rgba(0,0,0,0.85)]">
+                    <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3 lg:gap-7">
+                      {/* ZIGZAG */}
+                      <TileBoard
+                        letters={
+                          [
+                            { row: 1, col: 2, char: "Z" },
+                            { row: 1, col: 3, char: "I" },
+                            { row: 1, col: 4, char: "G" },
+                            { row: 1, col: 5, char: "Z" },
+                            { row: 1, col: 6, char: "A" },
+                            { row: 1, col: 7, char: "G" },
+                          ] as LetterStone[]
+                        }
+                        variant="wide"
+                        accent="emerald"
+                        active={activeProject === "zigzag"}
+                        onClick={() => setActiveProject("zigzag")}
+                        card={
+                          <>
+                            <span className={`${TYPE.projectKicker} text-emerald-500`}>
+                              FASHION COMMERCE
                             </span>
-                            <span
-                              className={
-                                item.kind === "freelance"
-                                  ? "h-1.5 w-1.5 rounded-full bg-emerald-400"
-                                  : item.kind === "proposal"
-                                    ? "h-1.5 w-1.5 rounded-full bg-sky-400"
-                                    : "h-1.5 w-1.5 rounded-full bg-amber-300"
-                              }
-                            />
-                          </div>
-
-                          {/* 타이틀/메타 */}
-                          <div className="mb-3 space-y-1">
-                            <h3 className="text-[17px] md:text-[19px] font-semibold text-zinc-50 leading-snug">
-                              {item.title}
-                            </h3>
-                            {item.period && (
-                              <p className="text-[12px] text-zinc-500">
-                                Period · {item.period}
-                              </p>
-                            )}
-                            <p className="text-[12px] text-zinc-400">
-                              Role · {item.role}
-                            </p>
-                          </div>
-
-                          {/* 요약 */}
-                          <p className="mb-4 text-[13px] leading-relaxed text-zinc-300">
-                            {item.summary}
-                          </p>
-
-                          {/* 푸터 */}
-                          <div className="mt-auto pt-3 border-t border-white/25 flex items-center justify-between text-[12px] text-zinc-400">
-                            <span>
-                              {item.kind === "freelance"
-                                ? "Client work"
-                                : item.kind === "proposal"
-                                  ? "Deck / Proposal"
-                                  : "Report"}
+                            <span className={`${TYPE.projectKicker} text-emerald-500`}>
+                              UX / BRANDING
                             </span>
+                          </>
+                        }
+                      />
 
-                            {item.href ? (
-                              <a
-                                href={item.href}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="inline-flex items-center gap-1 text-[12px] font-medium text-zinc-200 hover:text-emerald-300"
-                              >
-                                {item.cta ?? "열어보기"}
-                                <span className="translate-y-[1px]">↗</span>
-                              </a>
-                            ) : (
-                              <span className="inline-flex items-center gap-1 text-[12px] text-zinc-500">
-                                케이스 스터디 준비중
-                              </span>
-                            )}
-                          </div>
+                      {/* GMARKET / RAKUTEN */}
+                      <TileBoard
+                        letters={
+                          [
+                            // GMARKET
+                            { row: 1, col: 1, char: "G" },
+                            { row: 1, col: 2, char: "M" },
+                            { row: 1, col: 3, char: "A" },
+                            { row: 1, col: 4, char: "R" },
+                            { row: 1, col: 5, char: "K" },
+                            { row: 1, col: 6, char: "E" },
+                            { row: 1, col: 7, char: "T" },
+                            // RAKUTEN
+                            { row: 2, col: 2, char: "R" },
+                            { row: 2, col: 3, char: "A" },
+                            { row: 2, col: 4, char: "K" },
+                            { row: 2, col: 5, char: "U" },
+                            { row: 2, col: 6, char: "T" },
+                            { row: 2, col: 7, char: "E" },
+                            { row: 2, col: 8, char: "N" },
+                          ] as LetterStone[]
+                        }
+                        variant="narrow"
+                        accent="sky"
+                        active={activeProject === "gmarket"}
+                        onClick={() => setActiveProject("gmarket")}
+                        card={
+                          <>
+                            <span className={`${TYPE.projectKicker} text-sky-400`}>
+                              GLOBAL MARKETPLACE
+                            </span>
+                            <span className={`${TYPE.projectKicker} text-sky-400`}>
+                              UX / SEO
+                            </span>
+                          </>
+                        }
+                      />
 
-                        </article>
-                      ))}
+                      {/* TRAVEL */}
+                      <TileBoard
+                        letters={
+                          [
+                            { row: 1, col: 2, char: "T" },
+                            { row: 1, col: 3, char: "R" },
+                            { row: 1, col: 4, char: "A" },
+                            { row: 1, col: 5, char: "V" },
+                            { row: 1, col: 6, char: "E" },
+                            { row: 1, col: 7, char: "L" },
+                          ] as LetterStone[]
+                        }
+                        variant="wide"
+                        accent="amber"
+                        active={activeProject === "travel"}
+                        onClick={() => setActiveProject("travel")}
+                        card={
+                          <>
+                            <span className={`${TYPE.projectKicker} text-amber-400`}>
+                              TRAVEL / LIFESTYLE
+                            </span>
+                            <span className={`${TYPE.projectKicker} text-amber-400`}>
+                              BRAND &amp; WEB
+                            </span>
+                          </>
+                        }
+                      />
                     </div>
                   </div>
                 </div>
               </div >
-            </section >
+              {/* ▲▲▲ 바둑판 영역 끝 */}
 
-            {/* STUDIO STATUS */}
-            < section className="mt-0 border-t border-white/7 pt-8 md:pt-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between w-full max-w-5xl mx-auto" >
-              <div className="space-y-2">
-                <p className="text-xs font-medium text-emerald-400 tracking-[0.25em] uppercase">
-                  Studio Status
-                </p>
-                <p className={`${TYPE.statusBody} text-zinc-300`}>
-                  1:1 파트너십 위주의 소규모 스튜디오입니다. 2025 상반기에는{" "}
-                  <span className="text-zinc-50">
-                    브랜드·웹 리빌딩 / 포트폴리오 정비
-                  </span>
-                  에 집중합니다.
-                </p>
+
+              {/* ▼▼▼ 하단 디테일 – 종이 펼쳐짐 + 비주얼 토글 */}
+              <div
+                className={`mt-14 max-w-5xl mx-auto overflow-hidden transform-gpu transition-all duration-500 ease-out origin-top
+      ${activeProjectDetail
+                    ? "max-h-[1800px] opacity-100 scale-y-100"
+                    : "max-h-0 opacity-0 scale-y-95"
+                  }`}
+              >
+                {activeProjectDetail && (
+                  <div
+                    className={`relative rounded-[26px] bg-gradient-to-b ${detailAccentClass} to-black/96 p-[1.5px]`}
+                  >
+                    {/* 우측 상단 X 버튼 */}
+                    <button
+                      type="button"
+                      onClick={() => setActiveProject(null)}
+                      className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-full border border-white/25 bg-black/70 text-[13px] text-zinc-200/80 hover:bg-black/95 hover:text-zinc-50"
+                      aria-label="닫기"
+                    >
+                      ×
+                    </button>
+
+                    <div
+                      className={`rounded-[24px] border border-white/16 bg-gradient-to-b ${activeProjectDetail.id === "zigzag"
+                        ? "from-emerald-500/12 via-[#050609]/96 to-black/98"
+                        : activeProjectDetail.id === "gmarket"
+                          ? "from-sky-500/12 via-[#050609]/96 to-black/98"
+                          : "from-amber-300/14 via-[#050609]/96 to-black/98"
+                        } px-8 py-7 shadow-[0_30px_80px_rgba(0,0,0,0.9)]`}
+                    >
+                      {/* 상단 헤더 + 토글 버튼 */}
+                      <div className="mb-6 flex items-center justify-between gap-4">
+                        <div className="space-y-1">
+                          <p
+                            className={`${TYPE.projectKicker} text-xs text-zinc-300 mb-1`}
+                          >
+                            {activeProjectDetail.kicker}
+                          </p>
+                          <h3
+                            className={`text-[22px] md:text-[24px] font-semibold ${activeProjectDetail.id === "zigzag"
+                              ? "text-emerald-100"
+                              : activeProjectDetail.id === "gmarket"
+                                ? "text-sky-100"
+                                : "text-amber-100"
+                              }`}
+                          >
+                            {activeProjectDetail.title}
+                          </h3>
+
+                          <div className="flex flex-wrap gap-3 text-zinc-400 text-[13px] md:text-[14px]">
+                            {activeProjectDetail.period && (
+                              <span>Period · {activeProjectDetail.period}</span>
+                            )}
+                            {activeProjectDetail.clientType && (
+                              <span>Client · {activeProjectDetail.clientType}</span>
+                            )}
+                          </div>
+
+                          {/* Tools – 아이콘 배지로 표현 */}
+                          {activeProjectDetail.tools && (
+                            <div className="mt-2 flex flex-wrap items-center gap-2">
+                              {parseTools(activeProjectDetail.tools).map((tool) => (
+                                <span
+                                  key={tool.name}
+                                  className="inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-zinc-50"
+                                >
+                                  <span>{tool.icon}</span>
+                                  <span>{tool.name}</span>
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          <p className={`${TYPE.projectMeta} text-zinc-400 mt-1`}>
+                            Role · {activeProjectDetail.role}
+                          </p>
+                        </div>
+
+                        {/* 프로젝트 보기 / 설명 보기 토글 – 강조된 pill 버튼 */}
+                        <div className="flex flex-col items-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setDetailView(detailView === "case" ? "visual" : "case")
+                            }
+                            className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.22em] transition-all ${activeProjectDetail.id === "zigzag"
+                              ? "border-emerald-400/80 text-emerald-100 hover:bg-emerald-500/10"
+                              : activeProjectDetail.id === "gmarket"
+                                ? "border-sky-400/80 text-sky-100 hover:bg-sky-500/10"
+                                : "border-amber-300/80 text-amber-100 hover:bg-amber-400/10"
+                              }`}
+                          >
+                            <span>
+                              {detailView === "case" ? "프로젝트 보기" : "설명 보기"}
+                            </span>
+                            <span className="translate-y-[1px]">
+                              {detailView === "case" ? "→" : "←"}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 내용 영역 */}
+                      <div className="space-y-7 md:space-y-8">
+                        {/* CASE VIEW – 기존 텍스트 설명 */}
+                        {detailView === "case" && (
+                          <>
+                            {/* Context */}
+                            <div className="space-y-3 md:space-y-4">
+                              <h4 className="text-sm font-semibold text-zinc-200">
+                                Context &amp; Problem
+                              </h4>
+                              <p className={`${TYPE.projectBody} text-zinc-300`}>
+                                {activeProjectDetail.id === "zigzag"
+                                  ? highlightZigzagContext(activeProjectDetail.context as string)
+                                  : activeProjectDetail.context}
+                              </p>
+                            </div>
+
+                            {/* Goals */}
+                            <div className="space-y-3 md:space-y-4">
+                              <h4 className="text-sm font-semibold text-zinc-200">
+                                Goals
+                              </h4>
+                              <ul className="grid gap-3 md:grid-cols-2 text-[14px] md:text-[15px]">
+                                {activeProjectDetail.goal.map((g) => (
+                                  <li
+                                    key={g}
+                                    className="rounded-2xl border border-white/10 bg-zinc-900/60 px-4 py-3 text-zinc-200 leading-relaxed"
+                                  >
+                                    • {g}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {/* Process */}
+                            <div className="space-y-4 md:space-y-5">
+                              <h4 className="text-sm font-semibold text-zinc-200">
+                                Process
+                              </h4>
+                              <div className="grid gap-4 md:grid-cols-3">
+                                {activeProjectDetail.process.map((step) => (
+                                  <div
+                                    key={step.label}
+                                    className="rounded-2xl border border-white/12 bg-zinc-900/70 px-4 py-4 space-y-3"
+                                  >
+                                    <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-zinc-400">
+                                      {step.label}
+                                    </p>
+                                    <p className="text-[13px] md:text-[14px] text-zinc-300 leading-relaxed">
+                                      {step.body}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Outcome */}
+                            <div className="space-y-3 md:space-y-4">
+                              <h4 className="text-sm font-semibold text-zinc-200">
+                                Outcome
+                              </h4>
+                              <p className={`${TYPE.projectBody} whitespace-pre-line text-zinc-300`}>
+                                {activeProjectDetail.outcome}
+                              </p>
+                            </div>
+                          </>
+                        )}
+
+                        {/* VISUAL VIEW – 산출물 갤러리 */}
+                        {detailView === "visual" && (
+                          <div className="mt-2 grid gap-5 md:grid-cols-3">
+                            {currentVisuals.map((visual) => (
+                              <figure key={visual.title} className="space-y-3">
+                                <button
+                                  type="button"
+                                  onClick={() => setActiveVisual(visual)}
+                                  className="group relative block w-full aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-black/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 focus:ring-offset-2 focus:ring-offset-black"
+                                >
+                                  <Image
+                                    src={visual.src}
+                                    alt={visual.title}
+                                    fill
+                                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                                  />
+                                  {/* 오버레이 힌트 */}
+                                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/35 group-hover:opacity-100">
+                                    <span className="rounded-full border border-white/40 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-zinc-100">
+                                      Click to Zoom
+                                    </span>
+                                  </div>
+                                </button>
+
+                                <figcaption className="space-y-1">
+                                  <p className="text-[13px] font-semibold text-zinc-100">
+                                    {visual.title}
+                                  </p>
+                                  <p className="text-[12px] leading-relaxed text-zinc-400">
+                                    {visual.caption}
+                                  </p>
+                                </figcaption>
+                              </figure>
+                            ))}
+                          </div>
+                        )}
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="flex gap-3">
-                <a
-                  href="mailto:aeneas.studio@example.com"
-                  className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-2 text-sm font-medium text-zinc-900 hover:bg-emerald-300 transition-colors"
-                >
-                  프로젝트 상의하기
-                </a>
-                <a
-                  href="#"
-                  className="inline-flex items-center justify-center rounded-full border border-zinc-700 px-6 py-2 text-sm font-medium text-zinc-200 hover:border-zinc-500 hover:bg-zinc-900 transition-colors"
-                >
-                  작업 노트 보기
-                </a>
-              </div>
+              {/* 확대 모달 – 모든 프로젝트 공통 */}
+              <AnimatePresence>
+                {activeVisual && (
+                  <>
+                    {/* 어두운 배경 */}
+                    <motion.div
+                      key="overlay"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.35 }}
+                      className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm"
+                      onClick={() => setActiveVisual(null)}
+                    />
+
+                    {/* 메인 패널 */}
+                    <motion.div
+                      key="panel"
+                      initial={{ opacity: 0, scale: 0.6, y: 40 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                      transition={{
+                        delay: 0.5,              // 0.5초 뒤에 시작
+                        duration: 0.5,           // 펼쳐지는 시간
+                        ease: [0.16, 1, 0.3, 1], // 점점 빨라지는 느낌
+                      }}
+                      className="fixed inset-0 z-[90] flex items-center justify-center p-4 md:p-8"
+                      onClick={() => setActiveVisual(null)}
+                    >
+                      <div
+                        className="relative w-full max-w-6xl h-[88vh] rounded-3xl border border-white/16 bg-gradient-to-b from-zinc-900/95 to-black shadow-[0_40px_120px_rgba(0,0,0,0.9)] overflow-hidden"
+                        onClick={(e) => e.stopPropagation()} // 안쪽 클릭 시 닫히지 않게
+                      >
+                        {/* 닫기 버튼 */}
+                        <button
+                          type="button"
+                          onClick={() => setActiveVisual(null)}
+                          className="absolute right-4 top-4 z-[95] rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-zinc-100 shadow-lg hover:bg-black/90 md:right-6 md:top-5"
+                        >
+                          닫기 ✕
+                        </button>
+
+                        {/* 이미지 + 설명 */}
+                        <div className="relative h-full w-full">
+                          <Image
+                            src={activeVisual.src}
+                            alt={activeVisual.title}
+                            fill
+                            className="object-contain"
+                            sizes="(min-width: 1024px) 80vw, 100vw"
+                          />
+
+                          {/* 하단 텍스트 그라데이션 */}
+                          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-4 md:p-6">
+                            <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-400">
+                              Detail View
+                            </p>
+                            <p className="text-sm md:text-base font-semibold text-zinc-50">
+                              {activeVisual.title}
+                            </p>
+                            <p className="mt-1 text-xs md:text-sm text-zinc-200">
+                              {activeVisual.caption}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+
+              {/* ▲▲▲ 디테일 영역 끝 */}
             </section >
+
+            {/* 3) STUDIO LAB + STUDIO STATUS 그룹  */}
+            < div className="space-y-0" >
+              {/* STUDIO LAB */}
+              < section className="mt-24" >
+                {/* 뷰포트 풀폭 래핑 */}
+                < div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
+                  <div className="relative w-screen min-h-screen overflow-hidden bg-black">
+                    {/* 상단~하단 그라데이션 */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black" />
+
+                    {/* 하단 레이어 이미지 */}
+                    <div
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-[420px] opacity-80"
+                      style={{
+                        backgroundImage: "url('/lab/layer-grid.jpg')",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "bottom center",
+                        backgroundSize: "contain",
+                      }}
+                    />
+
+                    {/* 컨텐츠 래퍼 */}
+                    <div className="relative z-10 mx-auto max-w-7xl px-8 md:px-16 pt-14 pb-4 space-y-10">
+                      {/* 상단 타이틀 */}
+                      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                        {/* 왼쪽: 라벨 + 큰 타이틀 */}
+                        <div className="max-w-xl space-y-4">
+                          <p className={`${TYPE.sectionKicker} text-zinc-500`}>
+                            STUDIO LAB
+                          </p>
+                          <h2 className="text-[40px] md:text-[56px] font-semibold leading-tight tracking-tight text-zinc-50">
+                            WE LAYER
+                            <br />
+                            EXPERIENCE LAB
+                          </h2>
+                        </div>
+
+                        {/* 오른쪽: 설명 + 키워드 */}
+                        <div className="max-w-md space-y-3 md:text-right">
+                          <p className={`${TYPE.sectionBody} text-zinc-300`}>
+                            프리랜서 웹·브랜딩 작업과 제안서를 모아, <br />
+                            AENEAS가 문제를 정의하고 경험을 설계하는 방식을 실험하는 구역입니다.
+                          </p>
+                          <p className="text-[12px] tracking-[0.18em] uppercase text-zinc-500">
+                            FREELANCE · PROPOSAL · SYSTEM THINKING
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* 카드 그리드 – 프리랜서 2 + 제안서 1 */}
+                      <div className="grid gap-7 md:grid-cols-3 max-w-6xl">
+                        {LAB_ITEMS.map((item) => (
+                          <article
+                            key={item.id}
+                            className="flex h-full flex-col rounded-2xl border border-white/12
+                  bg-zinc-950/85 px-6 py-6
+                  shadow-[0_18px_50px_rgba(0,0,0,0.9)]
+                  backdrop-blur-sm"
+                          >
+                            {/* 상단 배지 + 종류 포인트 컬러 */}
+                            <div className="mb-4 flex items-center justify-between gap-2">
+                              <span className="inline-flex items-center rounded-full border border-zinc-700/80 bg-black/70 px-3 py-1 text-[11px] font-medium tracking-[0.18em] uppercase text-zinc-300">
+                                {item.badge}
+                              </span>
+                              <span
+                                className={
+                                  item.kind === "freelance"
+                                    ? "h-1.5 w-1.5 rounded-full bg-emerald-400"
+                                    : item.kind === "proposal"
+                                      ? "h-1.5 w-1.5 rounded-full bg-sky-400"
+                                      : "h-1.5 w-1.5 rounded-full bg-amber-300"
+                                }
+                              />
+                            </div>
+
+                            {/* 타이틀/메타 */}
+                            <div className="mb-3 space-y-1">
+                              <h3 className="text-[17px] md:text-[19px] font-semibold text-zinc-50 leading-snug">
+                                {item.title}
+                              </h3>
+                              {item.period && (
+                                <p className="text-[12px] text-zinc-500">
+                                  Period · {item.period}
+                                </p>
+                              )}
+                              <p className="text-[12px] text-zinc-400">
+                                Role · {item.role}
+                              </p>
+                            </div>
+
+                            {/* 요약 */}
+                            <p className="mb-4 text-[13px] leading-relaxed text-zinc-300">
+                              {item.summary}
+                            </p>
+
+                            {/* 푸터 */}
+                            <div className="mt-auto pt-3 border-t border-white/25 flex items-center justify-between text-[12px] text-zinc-400">
+                              <span>
+                                {item.kind === "freelance"
+                                  ? "Client work"
+                                  : item.kind === "proposal"
+                                    ? "Deck / Proposal"
+                                    : "Report"}
+                              </span>
+
+                              {item.href ? (
+                                <a
+                                  href={item.href}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="inline-flex items-center gap-1 text-[12px] font-medium text-zinc-200 hover:text-emerald-300"
+                                >
+                                  {item.cta ?? "열어보기"}
+                                  <span className="translate-y-[1px]">↗</span>
+                                </a>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 text-[12px] text-zinc-500">
+                                  케이스 스터디 준비중
+                                </span>
+                              )}
+                            </div>
+
+                          </article>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div >
+              </section >
+
+              {/* STUDIO STATUS */}
+              < section className="mt-0 border-t border-white/7 pt-8 md:pt-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between w-full max-w-5xl mx-auto" >
+                <div className="space-y-2">
+                  <p className="text-xs font-medium text-emerald-400 tracking-[0.25em] uppercase">
+                    Studio Status
+                  </p>
+                  <p className={`${TYPE.statusBody} text-zinc-300`}>
+                    1:1 파트너십 위주의 소규모 스튜디오입니다. 2025 상반기에는{" "}
+                    <span className="text-zinc-50">
+                      브랜드·웹 리빌딩 / 포트폴리오 정비
+                    </span>
+                    에 집중합니다.
+                  </p>
+                </div>
+
+                <div className="flex gap-3">
+                  <a
+                    href="mailto:aeneas.studio@example.com"
+                    className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-2 text-sm font-medium text-zinc-900 hover:bg-emerald-300 transition-colors"
+                  >
+                    프로젝트 상의하기
+                  </a>
+                  <a
+                    href="#"
+                    className="inline-flex items-center justify-center rounded-full border border-zinc-700 px-6 py-2 text-sm font-medium text-zinc-200 hover:border-zinc-500 hover:bg-zinc-900 transition-colors"
+                  >
+                    작업 노트 보기
+                  </a>
+                </div>
+              </section >
+            </div >
+
+
+            <footer className="mt-6 border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-2 w-full max-w-5xl mx-auto">
+              <span className={`${TYPE.footer} text-zinc-500`}>
+                © {new Date().getFullYear()} AENEAS Studio. All rights reserved.
+              </span>
+              <span className={`${TYPE.footer} text-zinc-500`}>
+                Based in Seoul · Working remotely.
+              </span>
+            </footer>
           </div >
-
-
-          <footer className="mt-6 border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-2 w-full max-w-5xl mx-auto">
-            <span className={`${TYPE.footer} text-zinc-500`}>
-              © {new Date().getFullYear()} AENEAS Studio. All rights reserved.
-            </span>
-            <span className={`${TYPE.footer} text-zinc-500`}>
-              Based in Seoul · Working remotely.
-            </span>
-          </footer>
-        </div >
-      </main >
-    </div >
+        </main >
+      </div >
+    </div>
   );
+
 }

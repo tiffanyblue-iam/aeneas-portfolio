@@ -663,6 +663,16 @@ export default function Home() {
     },
   ];
 
+  // ★ 패널 공통 배경 (전원 ON/OFF 공통으로 쓰는 다크 그레이)
+  const SHELL_BASE_BG =
+    "radial-gradient(circle at 50% 120%, #020617 0%, #020617 40%, #000000 100%)";
+
+  // ★ 전원 ON일 때만 위에 얹을 오로라 레이어
+  const SHELL_AURORA_ON = [
+    "radial-gradient(circle at 15% -20%, rgba(16,185,129,0.46), transparent 55%)",
+    "radial-gradient(circle at 85% -10%, rgba(52,211,153,0.28), transparent 60%)",
+  ].join(", ");
+
 
 
   return (
@@ -860,13 +870,10 @@ export default function Home() {
                 <div
                   className="rounded-[28px] overflow-hidden border"
                   style={{
-                    background: powerOn
-                      ? [
-                        "radial-gradient(circle at 10% -20%, rgba(16,185,129,0.35), transparent 40%)",
-                        "radial-gradient(circle at 90% -10%, rgba(56,189,248,0.25), transparent 25%)",
-                        "radial-gradient(circle at 50% 90%, rgba(6,78,59,0.9), #020617 80%)",
-                      ].join(", ")
-                      : "radial-gradient(circle at top, #020617 0%, #020617 40%, #000000 100%)",
+                    // ✅ 기본은 SHELL_BASE_BG, 전원 ON일 때만 그 위에 오로라 레이어를 얹는다
+                    backgroundImage: powerOn
+                      ? [SHELL_AURORA_ON, SHELL_BASE_BG].join(", ")
+                      : SHELL_BASE_BG,
                     borderColor: "#171717",
                     boxShadow: [
                       "0 32px 80px rgba(0,0,0,0.95)",
@@ -878,45 +885,48 @@ export default function Home() {
                 >
 
                   {/* 상단 : CONSTELLATION MAP 영역 */}
-                  <div className="px-6 py-6 md:px-10 md:pt-8 md:pb-6">
-                    {/* CONSTELLATION MAP */}
-                    <section className="mt-10">
-                      {/* 바깥 프레임 – 패널과 동일 톤 */}
+                  <div className="px-4 py-6 md:px-10 md:pt-8 md:pb-6">
+                    <section className="mt-4 md:mt-10">
+                      {/* 바깥 프레임 */}
                       <div
-                        className="relative rounded-[16px] overflow-hidden"
+                        className="relative rounded-[20px] overflow-hidden"
                         style={{
-                          backgroundColor: "rgba(0,0,0,0.05)", // 블랙 5% 투명
-                          border: "1px solid #757575",
+                          // 살짝 투명한 다크 그레이
+                          backgroundColor: "rgba(0,0,0,0.32)",
+                          border: "1px solid rgba(120,120,120,0.6)",
                           boxShadow:
-                            "inset 1px 1px 2px rgba(255,255,255,0.25), 0 0 0 1px rgba(255,255,255,0.3)",
+                            "inset 1px 1px 2px rgba(255,255,255,0.25), 0 0 0 1px rgba(0,0,0,0.9)", // ← 남색 대신 순수 블랙
                         }}
                       >
                         {/* 안쪽 살짝 들어간 프레임 */}
                         <div
-                          className="m-4 rounded-[14px] px-8 py-8 md:px-10 md:py-10"
+                          className="m-3 md:m-4 rounded-[16px] px-4 py-6 md:px-8 md:py-8"
                           style={{
-                            backgroundColor: "rgba(0,0,0,0.05)", // 블랙 5% 투명
+                            backgroundColor: "rgba(0,0,0,0.55)",
                             boxShadow:
-                              "-4px -4px 12px rgba(255,255,255,0.1), 0 0 0 0.5px rgba(0,0,0,0.1)",
+                              "-4px -4px 12px rgba(255,255,255,0.05), 0 0 0 0.5px rgba(0,0,0,0.85)",
                           }}
                         >
                           {/* 헤더 */}
-                          <div className="flex items-center justify-between mb-6 md:mb-8">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-6 mb-5 md:mb-7">
                             <div className="space-y-1">
-                              <p className={`${TYPE.sectionKicker} tracking-[0.28em] text-zinc-300`} style={{
-                                fontFamily:
-                                  '"Subway Ticker Grid", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-                                fontSize: "clamp(12px, 2vw, 16px)",
-                                lineHeight: 1.1,
-                                color: "#B0B0B0",
-                              }}>
+                              <p
+                                className={`${TYPE.sectionKicker} tracking-[0.28em] text-zinc-300`}
+                                style={{
+                                  fontFamily:
+                                    '"Subway Ticker Grid", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                                  fontSize: "clamp(11px, 2.1vw, 15px)",
+                                  lineHeight: 1.1,
+                                  color: "#B0B0B0",
+                                }}
+                              >
                                 AENEAS CONSTELLATION
                               </p>
                               <p className={`${TYPE.sectionBody} text-zinc-500`}>
                                 사막에서 그린 플레이스로 향하는 세 가지 별자리 모드입니다.
                               </p>
                             </div>
-                            <span className="rounded-full border border-zinc-200/35 px-3 py-1 text-[11px] tracking-[0.18em] text-zinc-200">
+                            <span className="self-start md:self-auto rounded-full border border-zinc-200/35 px-3 py-1 text-[11px] tracking-[0.18em] text-zinc-200">
                               MODES · 03
                             </span>
                           </div>
@@ -924,50 +934,75 @@ export default function Home() {
                           {/* 라인 + 점 */}
                           <div className="mt-6">
                             <div className="relative h-14 px-[6%]">
-                              <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-zinc-200/55 to-transparent shadow-[0_0_18px_rgba(255,255,255,0.26)]" />
+                              {/* ─ 라인 ─ */}
+                              <div
+                                className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] transition-all duration-700"
+                                style={{
+                                  background: powerOn
+                                    ? "linear-gradient(90deg, rgba(56,189,248,0) 0%, rgba(148,163,184,0.4) 15%, rgba(148,163,184,0.9) 50%, rgba(148,163,184,0.4) 85%, rgba(56,189,248,0) 100%)"
+                                    : "linear-gradient(90deg, transparent, rgba(101, 104, 110, 0.9), transparent)",
+                                  boxShadow: powerOn
+                                    ? "0 0 20px rgba(52,211,153,0.55)"
+                                    : "0 0 0 rgba(0,0,0,0)",
+                                }}
+                              />
+
+                              {/* ─ 노드들 ─ */}
                               <div className="relative z-10 flex h-full items-center justify-between">
 
                                 {/* 01 BRAND CORE 노드 */}
                                 <div
-                                  className="h-5 w-5 rounded-full border-[3px] transition-all duration-700"
+                                  className="relative h-5 w-5 rounded-full border-[3px] transition-all duration-700"
                                   style={{
-                                    background: powerOn ? "radial-gradient(circle, #6ee7b7 0%, #22c55e 55%, #022c22 100%)" : "#020617",
-                                    borderColor: powerOn ? "rgba(74,222,128,0.95)" : "rgba(148,163,184,0.4)",
+                                    background: powerOn
+                                      ? "radial-gradient(circle, #6ee7b7 0%, #22c55e 55%, #022c22 100%)"
+                                      : "#020617",
+                                    borderColor: powerOn
+                                      ? "rgba(74,222,128,1)"            // ON일 때 밝은 네온 보더
+                                      : "rgba(45, 54, 75, 0.9)",           // OFF일 때 거의 라인색과 비슷한 어두운 보더
                                     boxShadow: powerOn
-                                      ? "0 0 18px rgba(52,211,153,1), 0 0 36px rgba(52,211,153,0.9)"
-                                      : "0 0 0 rgba(0,0,0,0)",
+                                      ? "0 0 0 1px rgba(15,23,42,1), 0 0 18px rgba(52,211,153,1)"
+                                      : "0 0 0 1px rgba(15,23,42,0.9)", // OFF일 땐 살짝만 림
                                   }}
                                 />
 
-
                                 {/* 02 WEB EXPERIENCE 노드 */}
                                 <div
-                                  className="h-5 w-5 rounded-full border-[3px] transition-all duration-700"
+                                  className="relative h-5 w-5 rounded-full border-[3px] transition-all duration-700"
                                   style={{
-                                    background: powerOn ? "radial-gradient(circle, #bfdbfe 0%, #3b82f6 55%, #0b1120 100%)" : "#020617",
-                                    borderColor: powerOn ? "rgba(59,130,246,0.95)" : "rgba(148,163,184,0.4)",
+                                    background: powerOn
+                                      ? "radial-gradient(circle, #bfdbfe 0%, #3b82f6 55%, #0b1120 100%)"
+                                      : "#020617",
+                                    borderColor: powerOn
+                                      ? "rgba(59,130,246,1)"
+                                      : "rgba(45, 54, 75, 0.9)",
                                     boxShadow: powerOn
-                                      ? "0 0 18px rgba(59,130,246,1), 0 0 36px rgba(59,130,246,0.9)"
-                                      : "0 0 0 rgba(0,0,0,0)",
+                                      ? "0 0 0 1px rgba(15,23,42,1), 0 0 18px rgba(59,130,246,1)"
+                                      : "0 0 0 1px rgba(15,23,42,0.9)",
                                   }}
                                 />
 
                                 {/* 03 VISUAL SYSTEMS 노드 */}
                                 <div
-                                  className="h-5 w-5 rounded-full border-[3px] transition-all duration-700"
+                                  className="relative h-5 w-5 rounded-full border-[3px] transition-all duration-700"
                                   style={{
-                                    background: powerOn ? "radial-gradient(circle, #facc15 0%, #eab308 55%, #422006 100%)" : "#020617",
-                                    borderColor: powerOn ? "rgba(250,204,21,0.95)" : "rgba(148,163,184,0.4)",
+                                    background: powerOn
+                                      ? "radial-gradient(circle, #facc15 0%, #eab308 55%, #422006 100%)"
+                                      : "#020617",
+                                    borderColor: powerOn
+                                      ? "rgba(250,204,21,1)"
+                                      : "rgba(45, 54, 75, 0.9)",
                                     boxShadow: powerOn
-                                      ? "0 0 18px rgba(250,204,21,1), 0 0 36px rgba(250,204,21,0.9)"
-                                      : "0 0 0 rgba(0,0,0,0)",
+                                      ? "0 0 0 1px rgba(15,23,42,1), 0 0 18px rgba(250,204,21,1)"
+                                      : "0 0 0 1px rgba(15,23,42,0.9)",
                                   }}
                                 />
                               </div>
                             </div>
 
-                            {/* 모드 카드 3개 – 라운드 16px + 통일된 쉘 */}
-                            <div className="mt-4 grid grid-cols-3 gap-6">
+
+                            {/* 모드 카드 3개 – 모바일: 1열, 데스크톱: 3열 */}
+                            <div className="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                               {/* BRAND CORE */}
                               <button
                                 type="button"
@@ -975,13 +1010,22 @@ export default function Home() {
                                 className="text-left rounded-[16px] px-5 py-4 border transition-all"
                                 style={
                                   activeMode === "brand"
-                                    ? {
-                                      backgroundColor: "#171717", // 선택 시 완전 블랙
-                                      borderColor: "#7FEAD4",
-                                      boxShadow: "0 0 26px rgba(127,234,212,0.6)",
-                                    }
+                                    ? powerOn
+                                      ? {
+                                        // ON + 선택됨
+                                        backgroundColor: "#171717",
+                                        borderColor: "#7FEAD4",
+                                        boxShadow: "0 0 26px rgba(127,234,212,0.6)",
+                                      }
+                                      : {
+                                        // OFF + 선택됨 (색은 죽이되 살짝만 강조)
+                                        backgroundColor: "#171717",
+                                        borderColor: "#3F3F46",
+                                        boxShadow: "0 0 12px rgba(15,23,42,0.9)",
+                                      }
                                     : {
-                                      backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
+                                      // 미선택 공통
+                                      backgroundColor: "rgba(0,0,0,0.35)",
                                       borderColor: "#3F3F46",
                                     }
                                 }
@@ -1006,13 +1050,19 @@ export default function Home() {
                                 className="text-left rounded-[16px] px-5 py-4 border transition-all"
                                 style={
                                   activeMode === "web"
-                                    ? {
-                                      backgroundColor: "#171717", // 선택 시 완전 블랙
-                                      borderColor: "#7EC8FF",
-                                      boxShadow: "0 0 26px rgba(126,200,255,0.6)",
-                                    }
+                                    ? powerOn
+                                      ? {
+                                        backgroundColor: "#171717",
+                                        borderColor: "#7EC8FF",
+                                        boxShadow: "0 0 26px rgba(126,200,255,0.6)",
+                                      }
+                                      : {
+                                        backgroundColor: "#171717",
+                                        borderColor: "#3F3F46",
+                                        boxShadow: "0 0 12px rgba(15,23,42,0.9)",
+                                      }
                                     : {
-                                      backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
+                                      backgroundColor: "rgba(0,0,0,0.35)",
                                       borderColor: "#3F3F46",
                                     }
                                 }
@@ -1037,13 +1087,19 @@ export default function Home() {
                                 className="text-left rounded-[16px] px-5 py-4 border transition-all"
                                 style={
                                   activeMode === "visual"
-                                    ? {
-                                      backgroundColor: "#171717", // 선택 시 완전 블랙
-                                      borderColor: "#F9E08A",
-                                      boxShadow: "0 0 26px rgba(249,224,138,0.6)",
-                                    }
+                                    ? powerOn
+                                      ? {
+                                        backgroundColor: "#171717",
+                                        borderColor: "#F9E08A",
+                                        boxShadow: "0 0 26px rgba(249,224,138,0.6)",
+                                      }
+                                      : {
+                                        backgroundColor: "#171717",
+                                        borderColor: "#3F3F46",
+                                        boxShadow: "0 0 12px rgba(15,23,42,0.9)",
+                                      }
                                     : {
-                                      backgroundColor: "rgba(0,0,0,0.05)", // 미선택 시 블랙 5%
+                                      backgroundColor: "rgba(0,0,0,0.35)",
                                       borderColor: "#3F3F46",
                                     }
                                 }
@@ -1066,6 +1122,7 @@ export default function Home() {
                       </div>
                     </section>
                   </div>
+
 
                   {/* ── MACHINE STRIP ───────────────── */}
                   <div className="px-6 md:px-10 my-10">
@@ -1136,6 +1193,7 @@ export default function Home() {
                     <VisualPanelTabs
                       activeMode={activeMode}
                       onChangeMode={setActiveMode}
+                      powerOn={powerOn}
                     />
                   </div>
                 </div>
@@ -1703,7 +1761,7 @@ export default function Home() {
 
                 <div className="flex gap-3">
                   <a
-                    href="mailto:aeneas_studio@naver.com"
+                    href="mailto:lightblue1369@gmail.com"
                     className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-2 text-sm font-medium text-zinc-900 hover:bg-emerald-300 transition-colors"
                   >
                     프로젝트 상의하기
@@ -1730,7 +1788,7 @@ export default function Home() {
           </div >
         </main >
       </div >
-    </div>
+    </div >
   );
 
 }

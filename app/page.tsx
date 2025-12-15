@@ -726,11 +726,10 @@ export default function Home() {
               </h1>
 
               <p className={`max-w-4xl text-zinc-300 ${TYPE.heroBody}`}>
-                AENEAS Studio는{" "}
                 <span className="text-zinc-50">명확한 이야기, 선명한 UX,</span>{" "}
                 그리고{" "}
-                <span className="text-zinc-50">현실적인 런칭 플랜</span>이 필요한
-                브랜드를 위한 작은 스튜디오. <br />첫 번째 데크부터 라이브
+                <span className="text-zinc-50">런칭 플랜</span>이 필요한
+                브랜드를 위한 Aeneas Studio.<br />첫 번째 데크부터 라이브
                 사이트까지, 사막을 건너 다음 그린 플레이스에 도착할 때까지 함께
                 걷습니다.
               </p>
@@ -857,13 +856,17 @@ export default function Home() {
                   </motion.div>
                 )}
 
-                {/* ── 실제 기계 프레임 ───────────────────────── */}
+                {/* 2. 실제 기계 프레임 – overflow-hidden 유지 */}
                 <div
                   className="rounded-[28px] overflow-hidden border"
                   style={{
                     background: powerOn
-                      ? "radial-gradient(circle at top, rgba(90,232,190,0.16) 0, transparent 55%), radial-gradient(circle at bottom, rgba(0,0,0,0.9) 0, #020308 60%)"
-                      : "radial-gradient(circle at top, rgba(20,40,35,0.16) 0, transparent 55%), radial-gradient(circle at bottom, #000000 0, #020308 80%)",
+                      ? [
+                        "radial-gradient(circle at 10% -20%, rgba(16,185,129,0.35), transparent 40%)",
+                        "radial-gradient(circle at 90% -10%, rgba(56,189,248,0.25), transparent 25%)",
+                        "radial-gradient(circle at 50% 90%, rgba(6,78,59,0.9), #020617 80%)",
+                      ].join(", ")
+                      : "radial-gradient(circle at top, #020617 0%, #020617 40%, #000000 100%)",
                     borderColor: "#171717",
                     boxShadow: [
                       "0 32px 80px rgba(0,0,0,0.95)",
@@ -873,6 +876,7 @@ export default function Home() {
                     ].join(", "),
                   }}
                 >
+
                   {/* 상단 : CONSTELLATION MAP 영역 */}
                   <div className="px-6 py-6 md:px-10 md:pt-8 md:pb-6">
                     {/* CONSTELLATION MAP */}
@@ -922,66 +926,43 @@ export default function Home() {
                             <div className="relative h-14 px-[6%]">
                               <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-zinc-200/55 to-transparent shadow-[0_0_18px_rgba(255,255,255,0.26)]" />
                               <div className="relative z-10 flex h-full items-center justify-between">
-                                {/* BRAND CORE */}
-                                <div className="flex items-center justify-center">
-                                  <div className="relative h-4 w-4">
-                                    {/* 네온 그린 글로우 */}
-                                    <div
-                                      className="absolute inset-[-4px] rounded-full blur-[8px]"
-                                      style={{ backgroundColor: "rgba(127,234,212,0.35)" }} // #7FEAD4
-                                    />
-                                    <div
-                                      className="absolute inset-0 rounded-full"
-                                      style={{
-                                        backgroundColor: "#7FEAD4",
-                                        boxShadow: "0 0 16px rgba(127,234,212,0.9)",
-                                      }}
-                                    />
-                                    <div className="absolute inset-[-6px] rounded-full border border-zinc-100/90" />
-                                  </div>
-                                </div>
 
-                                {/* WEB EXPERIENCE – 블루 톤 다운 */}
-                                <div className="flex items-center justify-center">
-                                  <div className="relative h-4 w-4">
-                                    <div
-                                      className="absolute inset-[-4px] rounded-full blur-[8px]"
-                                      style={{ backgroundColor: "rgba(126,200,255,0.32)" }}
-                                    />
-                                    <div
-                                      className="absolute inset-0 rounded-full"
-                                      style={{
-                                        backgroundColor: "#7EC8FF",
-                                        boxShadow: "0 0 16px rgba(126,200,255,0.9)",
-                                      }}
-                                    />
-                                    <div
-                                      className="absolute inset-[-6px] rounded-full border"
-                                      style={{ borderColor: "rgba(224,244,255,0.95)" }}
-                                    />
-                                  </div>
-                                </div>
+                                {/* 01 BRAND CORE 노드 */}
+                                <div
+                                  className="h-5 w-5 rounded-full border-[3px] transition-all duration-700"
+                                  style={{
+                                    background: powerOn ? "radial-gradient(circle, #6ee7b7 0%, #22c55e 55%, #022c22 100%)" : "#020617",
+                                    borderColor: powerOn ? "rgba(74,222,128,0.95)" : "rgba(148,163,184,0.4)",
+                                    boxShadow: powerOn
+                                      ? "0 0 18px rgba(52,211,153,1), 0 0 36px rgba(52,211,153,0.9)"
+                                      : "0 0 0 rgba(0,0,0,0)",
+                                  }}
+                                />
 
-                                {/* VISUAL SYSTEMS – 옐로우 톤 다운 */}
-                                <div className="flex items-center justify-center">
-                                  <div className="relative h-4 w-4">
-                                    <div
-                                      className="absolute inset-[-4px] rounded-full blur-[8px]"
-                                      style={{ backgroundColor: "rgba(249,224,138,0.32)" }}
-                                    />
-                                    <div
-                                      className="absolute inset-0 rounded-full"
-                                      style={{
-                                        backgroundColor: "#F9E08A",
-                                        boxShadow: "0 0 16px rgba(249,224,138,0.9)",
-                                      }}
-                                    />
-                                    <div
-                                      className="absolute inset-[-6px] rounded-full border"
-                                      style={{ borderColor: "rgba(255,245,204,0.95)" }}
-                                    />
-                                  </div>
-                                </div>
+
+                                {/* 02 WEB EXPERIENCE 노드 */}
+                                <div
+                                  className="h-5 w-5 rounded-full border-[3px] transition-all duration-700"
+                                  style={{
+                                    background: powerOn ? "radial-gradient(circle, #bfdbfe 0%, #3b82f6 55%, #0b1120 100%)" : "#020617",
+                                    borderColor: powerOn ? "rgba(59,130,246,0.95)" : "rgba(148,163,184,0.4)",
+                                    boxShadow: powerOn
+                                      ? "0 0 18px rgba(59,130,246,1), 0 0 36px rgba(59,130,246,0.9)"
+                                      : "0 0 0 rgba(0,0,0,0)",
+                                  }}
+                                />
+
+                                {/* 03 VISUAL SYSTEMS 노드 */}
+                                <div
+                                  className="h-5 w-5 rounded-full border-[3px] transition-all duration-700"
+                                  style={{
+                                    background: powerOn ? "radial-gradient(circle, #facc15 0%, #eab308 55%, #422006 100%)" : "#020617",
+                                    borderColor: powerOn ? "rgba(250,204,21,0.95)" : "rgba(148,163,184,0.4)",
+                                    boxShadow: powerOn
+                                      ? "0 0 18px rgba(250,204,21,1), 0 0 36px rgba(250,204,21,0.9)"
+                                      : "0 0 0 rgba(0,0,0,0)",
+                                  }}
+                                />
                               </div>
                             </div>
 
@@ -1712,9 +1693,9 @@ export default function Home() {
                     Studio Status
                   </p>
                   <p className={`${TYPE.statusBody} text-zinc-300`}>
-                    1:1 파트너십 위주의 소규모 스튜디오입니다. 2025 상반기에는{" "}
+
                     <span className="text-zinc-50">
-                      브랜드·웹 리빌딩 / 포트폴리오 정비
+                      브랜드·웹 리빌딩
                     </span>
                     에 집중합니다.
                   </p>
@@ -1722,7 +1703,7 @@ export default function Home() {
 
                 <div className="flex gap-3">
                   <a
-                    href="mailto:aeneas.studio@example.com"
+                    href="mailto:aeneas_studio@naver.com"
                     className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-2 text-sm font-medium text-zinc-900 hover:bg-emerald-300 transition-colors"
                   >
                     프로젝트 상의하기

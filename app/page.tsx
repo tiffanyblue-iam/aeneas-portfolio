@@ -673,11 +673,49 @@ export default function Home() {
     "radial-gradient(circle at 85% -10%, rgba(52,211,153,0.28), transparent 60%)",
   ].join(", ");
 
+  // ───────────────── CONSTELLATION AURORA BG ─────────────────
+  const CONSTELLATION_AURORA_ON = [
+    // 상단 좌측 – 부드러운 민트
+    "radial-gradient(circle at 8% -18%, rgba(110, 231, 183, 0.45), transparent 55%)",
+
+    // 상단 중앙 – 은은한 시안/블루
+    "radial-gradient(circle at 50% -22%, rgba(56, 189, 248, 0.32), transparent 60%)",
+
+    // 상단 우측 – 살짝 퍼플
+    "radial-gradient(circle at 92% -10%, rgba(167, 139, 250, 0.26), transparent 60%)",
+
+    // 하단 좌측 – 따뜻한 에메랄드 꼬리
+    "radial-gradient(circle at 15% 115%, rgba(34, 197, 94, 0.22), transparent 60%)",
+
+    // 하단 중앙 – 핑크빛 오로라
+    "radial-gradient(circle at 50% 120%, rgba(244, 114, 182, 0.20), transparent 60%)",
+
+    // 하단 우측 – 딥 퍼플/블루로 마무리
+    "radial-gradient(circle at 85% 118%, rgba(30, 64, 175, 0.35), transparent 65%)",
+  ].join(", ");
+
+  const CONSTELLATION_AURORA_OFF =
+    "linear-gradient(180deg, #020617 0%, #020617 40%, #000000 100%)";
+
 
 
   return (
     // 0. 기본 우주 배경 (항상 어두운 하늘)
     <div className="aeneas-bg min-h-screen text-zinc-50">
+      {/* 북극성 & 북두칠성 – 장식 레이어 */}
+      <div className="north-star" aria-hidden="true" />
+
+      {/* 여기에 big-dipper 추가 */}
+      <div className="big-dipper" aria-hidden="true">
+        <span className="big-dipper-star s1" />
+        <span className="big-dipper-star s2" />
+        <span className="big-dipper-star s3" />
+        <span className="big-dipper-star s4" />
+        <span className="big-dipper-star s5" />
+        <span className="big-dipper-star s6" />
+        <span className="big-dipper-star s7" />
+      </div>
+
       {/* 1. 페이지 전체를 감싸는 레이아웃 래퍼 */}
       <div className="relative min-h-screen overflow-hidden">
         {/* 1-1. 그린 오로라 – powerOn 일 때만 켜짐 */}
@@ -870,10 +908,7 @@ export default function Home() {
                 <div
                   className="rounded-[28px] overflow-hidden border"
                   style={{
-                    // ✅ 기본은 SHELL_BASE_BG, 전원 ON일 때만 그 위에 오로라 레이어를 얹는다
-                    backgroundImage: powerOn
-                      ? [SHELL_AURORA_ON, SHELL_BASE_BG].join(", ")
-                      : SHELL_BASE_BG,
+                    background: powerOn ? CONSTELLATION_AURORA_ON : CONSTELLATION_AURORA_OFF,
                     borderColor: "#171717",
                     boxShadow: [
                       "0 32px 80px rgba(0,0,0,0.95)",

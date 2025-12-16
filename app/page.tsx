@@ -665,7 +665,7 @@ export default function Home() {
 
   // ★ 패널 공통 배경 (전원 ON/OFF 공통으로 쓰는 다크 그레이)
   const SHELL_BASE_BG =
-    "radial-gradient(circle at 50% 120%, #020617 0%, #020617 40%, #000000 100%)";
+    "radial-gradient(circle at 50% 120%, #111111ff 0%, #111111ff 40%, #000000 100%)";
 
   // ★ 전원 ON일 때만 위에 얹을 오로라 레이어
   const SHELL_AURORA_ON = [
@@ -676,26 +676,26 @@ export default function Home() {
   // ───────────────── CONSTELLATION AURORA BG ─────────────────
   const CONSTELLATION_AURORA_ON = [
     // 상단 좌측 – 부드러운 민트
-    "radial-gradient(circle at 8% -18%, rgba(110, 231, 183, 0.45), transparent 55%)",
+    "radial-gradient(circle at 8% -18%, rgba(110, 231, 183, 0.25), transparent 35%)",
 
     // 상단 중앙 – 은은한 시안/블루
-    "radial-gradient(circle at 50% -22%, rgba(56, 189, 248, 0.32), transparent 60%)",
+    "radial-gradient(circle at 50% -22%, rgba(56, 189, 248, 0.25), transparent 45%)",
 
     // 상단 우측 – 살짝 퍼플
-    "radial-gradient(circle at 92% -10%, rgba(167, 139, 250, 0.26), transparent 60%)",
+    "radial-gradient(circle at 92% -10%, rgba(167, 139, 250, 0.26), transparent 45%)",
 
     // 하단 좌측 – 따뜻한 에메랄드 꼬리
-    "radial-gradient(circle at 15% 115%, rgba(34, 197, 94, 0.22), transparent 60%)",
+    "radial-gradient(circle at 15% 115%, rgba(34, 197, 94, 0.22), transparent 45%)",
 
     // 하단 중앙 – 핑크빛 오로라
-    "radial-gradient(circle at 50% 120%, rgba(244, 114, 182, 0.20), transparent 60%)",
+    "radial-gradient(circle at 50% 120%, rgba(244, 114, 182, 0.20), transparent 50%)",
 
     // 하단 우측 – 딥 퍼플/블루로 마무리
-    "radial-gradient(circle at 85% 118%, rgba(30, 64, 175, 0.35), transparent 65%)",
+    "radial-gradient(circle at 85% 118%, rgba(30, 64, 175, 0.35), transparent 45%)",
   ].join(", ");
 
   const CONSTELLATION_AURORA_OFF =
-    "linear-gradient(180deg, #020617 0%, #020617 40%, #000000 100%)";
+    "linear-gradient(180deg, #111111ff 0%, #0e0e0eff 40%, #000000 100%)";
 
 
 
@@ -1160,41 +1160,59 @@ export default function Home() {
 
 
                   {/* ── MACHINE STRIP ───────────────── */}
-                  <div className="px-6 md:px-10 my-10">
+                  <div className="px-4 md:px-10 my-6 md:my-10">
                     <div
-                      className="relative flex items-center justify-between h-14 rounded-[16px] px-8"
+                      className="
+                        relative flex flex-col sm:flex-row
+                        items-stretch sm:items-center
+                        justify-between
+                        rounded-[16px]
+                        px-4 sm:px-8
+                        py-3 sm:py-0
+                        min-w-0 overflow-hidden
+                        sm:h-14
+                      "
                       style={{
-                        // Figma 그라데이션
-                        background:
+                        background: [
                           "linear-gradient(90deg, #191919 0%, #272727 16%, #313131ff 32%, #0B0B0B 92%)",
+                          "radial-gradient(circle at 50% 120%, rgba(18,18,20,0.96) 0%, rgba(12,12,14,0.96) 55%, rgba(0,0,0,0.98) 100%)",
+                        ].join(", "),
                         border: "5px solid #171717",
                         boxShadow: [
-                          "inset -1px -1px 4px rgba(0,0,0,0.25)",       // inner shadow 1
-                          "inset 0 1px 4px -1px rgba(255,255,255,0.25)", // inner shadow 2
-                          "0 0 0 1.5px rgba(255,255,255,0.1)",            // outer outline
+                          "inset -1px -1px 4px rgba(0,0,0,0.25)",
+                          "inset 0 1px 4px -1px rgba(255,255,255,0.25)",
+                          "0 0 0 1.5px rgba(255,255,255,0.1)",
                         ].join(", "),
                       }}
                     >
-                      {/* 왼쪽: 세로 슬롯들 (더 많이, 더 촘촘하게) */}
-                      <div className="flex-1 flex gap-[6px]">
+                      {/* 왼쪽: 세로 슬롯들 */}
+                      <div className="flex-1 min-w-0 flex gap-[5px] overflow-hidden">
                         {Array.from({ length: 30 }).map((_, i) => (
                           <span
                             key={i}
-                            className="block rounded-full"
+                            className={`${i >= 18 ? "hidden sm:block" : "block"} rounded-full`}
                             style={{
                               width: 6,
                               height: 26,
-                              backgroundColor: "#272727",
+                              backgroundColor: "#1f1f22",
                               boxShadow:
-                                "inset 0 1px 4px rgba(0,0,0,0.3), 0 1px 4px rgba(255,255,255,0.1)",
+                                "inset 0 1px 4px rgba(0,0,0,0.35), 0 1px 4px rgba(255,255,255,0.08)",
                             }}
                           />
                         ))}
                       </div>
 
-                      {/* 오른쪽: 고정 사이즈 텍스트 캡슐 */}
+                      {/* 오른쪽: 상태 캡슐 */}
                       <div
-                        className="ml-6 flex items-center justify-center rounded-[10px] w-[144px] h-7"
+                        className="
+        mt-3 sm:mt-0 sm:ml-6
+        flex items-center justify-center
+        rounded-[10px]
+        w-full sm:w-[144px] max-w-[200px]
+        h-7
+        mx-auto sm:mx-0
+        shrink-0
+      "
                         style={{
                           background:
                             "linear-gradient(100deg, #2A2A2A 0%, #121212 60%, #050505 100%)",
@@ -1202,7 +1220,6 @@ export default function Home() {
                             "inset 0 1px 3px rgba(255,255,255,0.22), 0 0 0 1px rgba(255,255,255,0.4)",
                         }}
                       >
-                        {/* 밝은 바 */}
                         <span
                           className="mr-3 block rounded-full"
                           style={{
@@ -1214,7 +1231,6 @@ export default function Home() {
                               : "0 0 6px rgba(120,130,160,0.6)",
                           }}
                         />
-                        {/* 상태 텍스트 (폭 고정, 가운데 정렬) */}
                         <span className="w-[90px] text-center text-[11px] uppercase tracking-[0.3em] text-zinc-300 font-[SubwayTickerGrid]">
                           {powerOn ? "ONLINE" : "STANDBY"}
                         </span>
@@ -1236,7 +1252,7 @@ export default function Home() {
             </section >
 
             {/* 2) SELECTED WORK – 바둑판 3분할 풀폭 + 디테일 패널 */}
-            < section className="mt-20 border-t border-white/7 pt-10" >
+            < section className="full-bleed mt-20 border-t border-white/7 pt-10" >
               {/* 위쪽 타이틀 영역 */}
               < header className="mb-10 text-center space-y-3 max-w-5xl mx-auto" >
                 <p className={`${TYPE.sectionKicker} text-zinc-500`}>Selected Work</p>
@@ -1650,7 +1666,7 @@ export default function Home() {
             </section >
 
             {/* 3) STUDIO LAB + STUDIO STATUS 그룹  */}
-            < div className="space-y-0" >
+            < div className="full-bleed space-y-0" >
               {/* STUDIO LAB */}
               < section className="mt-24" >
                 {/* 뷰포트 풀폭 래핑 */}
@@ -1698,132 +1714,183 @@ export default function Home() {
                         </div>
                       </div>
 
-                      {/* 카드 그리드 – 프리랜서 2 + 제안서 1 */}
-                      <div className="grid gap-7 md:grid-cols-3 max-w-6xl">
-                        {LAB_ITEMS.map((item) => (
-                          <article
-                            key={item.id}
-                            className="flex h-full flex-col rounded-2xl border border-white/12
-                  bg-zinc-950/85 px-6 py-6
-                  shadow-[0_18px_50px_rgba(0,0,0,0.9)]
-                  backdrop-blur-sm"
+                      {/* 카드 데크(배경 플레이트) – 기계 패널 느낌 3겹 프레임 */}
+                      <div className="mx-auto max-w-6xl">
+                        {/* OUTER SHELL */}
+                        <div
+                          className="relative w-full rounded-[28px] overflow-hidden"
+                          style={{
+                            backgroundColor: "#171717",
+                            border: "1px solid rgba(117,117,117,0.85)",
+                            boxShadow: [
+                              "inset 1px 1px 2px rgba(255,255,255,0.22)", // 패널과 동일한 ‘안쪽 하이라이트’
+                              "0 0 0 1px rgba(255,255,255,0.18)",         // 얇은 외곽 라인
+                              "0 28px 90px rgba(0,0,0,0.88)",             // 바닥 낙하 그림자(깊이)
+                            ].join(", "),
+                          }}
+                        >
+                          {/* MID FRAME */}
+                          <div
+                            className="rounded-[24px] m-4"
+                            style={{
+                              background: [
+                                "radial-gradient(circle at 50% -10%, rgba(255,255,255,0.06), transparent 58%)",
+                                "radial-gradient(circle at 50% 120%, rgba(20,20,22,0.96) 0%, rgba(10,10,12,0.96) 60%, rgba(0,0,0,0.98) 100%)",
+                              ].join(", "),
+                              boxShadow: [
+                                "-4px -4px 12px rgba(255,255,255,0.06)",  // 위쪽 면이 살짝 뜨는 느낌
+                                "0 0 0 0.5px rgba(0,0,0,0.35)",            // 안쪽 어둠 라인
+                                "inset 0 0 0 1px rgba(255,255,255,0.05)",  // 프레임 얇은 하이라이트
+                              ].join(", "),
+                            }}
                           >
-                            {/* 상단 배지 + 종류 포인트 컬러 */}
-                            <div className="mb-4 flex items-center justify-between gap-2">
-                              <span className="inline-flex items-center rounded-full border border-zinc-700/80 bg-black/70 px-3 py-1 text-[11px] font-medium tracking-[0.18em] uppercase text-zinc-300">
-                                {item.badge}
-                              </span>
-                              <span
-                                className={
-                                  item.kind === "freelance"
-                                    ? "h-1.5 w-1.5 rounded-full bg-emerald-400"
-                                    : item.kind === "proposal"
-                                      ? "h-1.5 w-1.5 rounded-full bg-sky-400"
-                                      : "h-1.5 w-1.5 rounded-full bg-amber-300"
-                                }
-                              />
+                            {/* INNER BED */}
+                            <div
+                              className="rounded-[22px] p-4 sm:p-5 md:p-6"
+                              style={{
+                                background: [
+                                  "radial-gradient(circle at 50% -10%, rgba(255,255,255,0.05), transparent 60%)",
+                                  "linear-gradient(180deg, rgba(15,15,16,0.92) 0%, rgba(9,9,11,0.92) 70%, rgba(0,0,0,0.98) 100%)",
+                                ].join(", "),
+                                border: "0.5px solid rgba(255,255,255,0.12)",
+                                boxShadow: [
+                                  "-4px -4px 12px rgba(255,255,255,0.10)", // 내부도 살짝 면이 살아나게
+                                  "inset 0 1px 0 rgba(255,255,255,0.05)",  // 상단 인셋 하이라이트
+                                  "0 0 0 0.5px rgba(0,0,0,0.25)",          // 얇은 암부 라인
+                                ].join(", "),
+                              }}
+                            >
+
+                              {/* 카드 그리드 – 프리랜서 2 + 제안서 1 */}
+                              <div className="grid gap-7 md:grid-cols-3">
+                                {LAB_ITEMS.map((item) => (
+                                  <article
+                                    key={item.id}
+                                    className="flex h-full flex-col rounded-2xl border border-white/12
+                                bg-zinc-950/85 px-6 py-6
+                                shadow-[0_18px_50px_rgba(0,0,0,0.9)]
+                                backdrop-blur-sm"
+                                  >
+                                    {/* 상단 배지 + 종류 포인트 컬러 */}
+                                    <div className="mb-4 flex items-center justify-between gap-2">
+                                      <span className="inline-flex items-center rounded-full border border-zinc-700/80 bg-black/70 px-3 py-1 text-[11px] font-medium tracking-[0.18em] uppercase text-zinc-300">
+                                        {item.badge}
+                                      </span>
+                                      <span
+                                        className={
+                                          item.kind === "freelance"
+                                            ? "h-1.5 w-1.5 rounded-full bg-emerald-400"
+                                            : item.kind === "proposal"
+                                              ? "h-1.5 w-1.5 rounded-full bg-sky-400"
+                                              : "h-1.5 w-1.5 rounded-full bg-amber-300"
+                                        }
+                                      />
+                                    </div>
+
+                                    {/* 타이틀/메타 */}
+                                    <div className="mb-3 space-y-1">
+                                      <h3 className="text-[17px] md:text-[19px] font-semibold text-zinc-50 leading-snug">
+                                        {item.title}
+                                      </h3>
+                                      {item.period && (
+                                        <p className="text-[12px] text-zinc-500">
+                                          Period · {item.period}
+                                        </p>
+                                      )}
+                                      <p className="text-[12px] text-zinc-400">
+                                        Role · {item.role}
+                                      </p>
+                                    </div>
+
+                                    {/* 요약 */}
+                                    <p className="mb-4 text-[13px] leading-relaxed text-zinc-300">
+                                      {item.summary}
+                                    </p>
+
+                                    {/* 푸터 */}
+                                    <div className="mt-auto pt-3 border-t border-white/25 flex items-center justify-between text-[12px] text-zinc-400">
+                                      <span>
+                                        {item.kind === "freelance"
+                                          ? "Client work"
+                                          : item.kind === "proposal"
+                                            ? "Deck / Proposal"
+                                            : "Report"}
+                                      </span>
+
+                                      {item.href ? (
+                                        <a
+                                          href={item.href}
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          className="inline-flex items-center gap-1 text-[12px] font-medium text-zinc-200 hover:text-emerald-300"
+                                        >
+                                          {item.cta ?? "열어보기"}
+                                          <span className="translate-y-[1px]">↗</span>
+                                        </a>
+                                      ) : (
+                                        <span className="inline-flex items-center gap-1 text-[12px] text-zinc-500">
+                                          케이스 스터디 준비중
+                                        </span>
+                                      )}
+                                    </div>
+
+                                  </article>
+                                ))}
+                              </div>
                             </div>
-
-                            {/* 타이틀/메타 */}
-                            <div className="mb-3 space-y-1">
-                              <h3 className="text-[17px] md:text-[19px] font-semibold text-zinc-50 leading-snug">
-                                {item.title}
-                              </h3>
-                              {item.period && (
-                                <p className="text-[12px] text-zinc-500">
-                                  Period · {item.period}
-                                </p>
-                              )}
-                              <p className="text-[12px] text-zinc-400">
-                                Role · {item.role}
-                              </p>
-                            </div>
-
-                            {/* 요약 */}
-                            <p className="mb-4 text-[13px] leading-relaxed text-zinc-300">
-                              {item.summary}
-                            </p>
-
-                            {/* 푸터 */}
-                            <div className="mt-auto pt-3 border-t border-white/25 flex items-center justify-between text-[12px] text-zinc-400">
-                              <span>
-                                {item.kind === "freelance"
-                                  ? "Client work"
-                                  : item.kind === "proposal"
-                                    ? "Deck / Proposal"
-                                    : "Report"}
-                              </span>
-
-                              {item.href ? (
-                                <a
-                                  href={item.href}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="inline-flex items-center gap-1 text-[12px] font-medium text-zinc-200 hover:text-emerald-300"
-                                >
-                                  {item.cta ?? "열어보기"}
-                                  <span className="translate-y-[1px]">↗</span>
-                                </a>
-                              ) : (
-                                <span className="inline-flex items-center gap-1 text-[12px] text-zinc-500">
-                                  케이스 스터디 준비중
-                                </span>
-                              )}
-                            </div>
-
-                          </article>
-                        ))}
+                          </div>
+                        </div >
                       </div>
-                    </div>
-                  </div>
+
+                      {/* STUDIO STATUS */}
+                      < section className="mt-0 border-t border-white/7 pt-8 md:pt-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between w-full max-w-5xl mx-auto" >
+                        <div className="space-y-2">
+                          <p className="text-xs font-medium text-emerald-400 tracking-[0.25em] uppercase">
+                            Studio Status
+                          </p>
+                          <p className={`${TYPE.statusBody} text-zinc-300`}>
+
+                            <span className="text-zinc-50">
+                              브랜드·웹 리빌딩
+                            </span>
+                            에 집중합니다.
+                          </p>
+                        </div>
+
+                        <div className="flex gap-3">
+                          <a
+                            href="mailto:lightblue1369@gmail.com"
+                            className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-2 text-sm font-medium text-zinc-900 hover:bg-emerald-300 transition-colors"
+                          >
+                            프로젝트 상의하기
+                          </a>
+                          <a
+                            href="#"
+                            className="inline-flex items-center justify-center rounded-full border border-zinc-700 px-6 py-2 text-sm font-medium text-zinc-200 hover:border-zinc-500 hover:bg-zinc-900 transition-colors"
+                          >
+                            작업 노트 보기
+                          </a>
+                        </div>
+                      </section >
+                    </div >
+
+
+                    <footer className="mt-6 border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-2 w-full max-w-5xl mx-auto">
+                      <span className={`${TYPE.footer} text-zinc-500`}>
+                        © {new Date().getFullYear()} AENEAS Studio. All rights reserved.
+                      </span>
+                      <span className={`${TYPE.footer} text-zinc-500`}>
+                        Based in Seoul · Working remotely.
+                      </span>
+                    </footer>
+                  </div >
                 </div >
-              </section >
-
-              {/* STUDIO STATUS */}
-              < section className="mt-0 border-t border-white/7 pt-8 md:pt-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between w-full max-w-5xl mx-auto" >
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-emerald-400 tracking-[0.25em] uppercase">
-                    Studio Status
-                  </p>
-                  <p className={`${TYPE.statusBody} text-zinc-300`}>
-
-                    <span className="text-zinc-50">
-                      브랜드·웹 리빌딩
-                    </span>
-                    에 집중합니다.
-                  </p>
-                </div>
-
-                <div className="flex gap-3">
-                  <a
-                    href="mailto:lightblue1369@gmail.com"
-                    className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-2 text-sm font-medium text-zinc-900 hover:bg-emerald-300 transition-colors"
-                  >
-                    프로젝트 상의하기
-                  </a>
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center rounded-full border border-zinc-700 px-6 py-2 text-sm font-medium text-zinc-200 hover:border-zinc-500 hover:bg-zinc-900 transition-colors"
-                  >
-                    작업 노트 보기
-                  </a>
-                </div>
-              </section >
+              </section>
             </div >
-
-
-            <footer className="mt-6 border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-2 w-full max-w-5xl mx-auto">
-              <span className={`${TYPE.footer} text-zinc-500`}>
-                © {new Date().getFullYear()} AENEAS Studio. All rights reserved.
-              </span>
-              <span className={`${TYPE.footer} text-zinc-500`}>
-                Based in Seoul · Working remotely.
-              </span>
-            </footer>
-          </div >
+          </div>
         </main >
-      </div >
-    </div >
+      </div>
+    </div>
   );
 
 }

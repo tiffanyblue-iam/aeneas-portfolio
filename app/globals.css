@@ -15,6 +15,12 @@ body {
   overflow-y: scroll;
 }
 
+/* 섹션을 뷰포트 100%로 빼주는 유틸 */
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
 
 
 @font-face {
@@ -79,8 +85,8 @@ body {
 
   /* 👇 그린 없이 딥블랙 그라데이션만 */
   background: linear-gradient(to bottom,
-      #020617 0%,
-      #030711 45%,
+      #161616 0%,
+      #161616 45%,
       #000000 100%);
 
   background-repeat: no-repeat;
@@ -251,7 +257,10 @@ body {
       10px 100%,
       0 calc(100% - 10px),
       0 10px);
-  background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+  background: radial-gradient(circle at top,
+      rgba(18, 18, 20, 0.92) 0%,
+      rgba(12, 12, 14, 0.92) 55%,
+      rgba(0, 0, 0, 0.98) 100%);
   border: 1px solid rgba(148, 163, 184, 0.65);
   /* slate-400-ish */
   box-shadow:
@@ -505,4 +514,13 @@ body {
   --tint: 0.14;
   /* 보라빛 살짝 */
   --op: 0.8;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

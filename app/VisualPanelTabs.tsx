@@ -82,7 +82,12 @@ export default function VisualPanelTabs({
 
                     {/* 오른쪽: 탭 레일 */}
                     <div
-                        className="relative inline-flex w-full md:w-auto rounded-full p-1 border transition-all duration-500"
+                        className="
+  relative inline-flex w-full md:w-auto gap-2 rounded-full p-1 border transition-all duration-500
+  overflow-x-auto md:overflow-visible
+  whitespace-nowrap
+  no-scrollbar
+"
                         style={{
                             backgroundColor: isOn
                                 ? "rgba(9,9,11,0.92)"

@@ -571,34 +571,28 @@ export default function Home() {
     ? PROJECT_DETAILS[activeProject]
     : null;
 
-  // 디테일 카드 외곽/내부 그라데이션 + 타이틀/버튼 컬러
-  const detailAccentClass =
-    activeProjectDetail?.id === "zigzag"
-      ? "from-emerald-500/22 via-emerald-500/5"
-      : activeProjectDetail?.id === "gmarket"
-        ? "from-sky-500/24 via-sky-500/6"
-        : "from-amber-300/24 via-amber-300/6";
+  // ───────────────────────────────────────────────
+  // DETAIL CARD – main tone (#4C9990) unified
+  // ───────────────────────────────────────────────
 
-  const detailInnerBgClass =
-    activeProjectDetail?.id === "zigzag"
-      ? "from-emerald-500/12 via-[#050609]/96 to-black/98"
-      : activeProjectDetail?.id === "gmarket"
-        ? "from-sky-500/12 via-[#050609]/96 to-black/98"
-        : "from-amber-300/14 via-[#050609]/96 to-black/98";
+  const MAIN_ACCENT = "#4C9990";
+  const MAIN_RGB = "76,153,144";
 
-  const detailTitleColorClass =
-    activeProjectDetail?.id === "zigzag"
-      ? "text-emerald-100"
-      : activeProjectDetail?.id === "gmarket"
-        ? "text-sky-100"
-        : "text-amber-100";
+  // ✅ 페이퍼(패널) 베이스는 항상 동일한 다크 그레이
+  const DETAIL_BASE_BG = "from-[#171717] via-[#0B0B0B]/98 to-black";
 
-  const detailToggleAccentClass =
-    activeProjectDetail?.id === "zigzag"
-      ? "border-emerald-400/80 text-emerald-100 hover:bg-emerald-500/10"
-      : activeProjectDetail?.id === "gmarket"
-        ? "border-sky-400/80 text-sky-100 hover:bg-sky-500/10"
-        : "border-amber-300/80 text-amber-100 hover:bg-amber-400/10";
+  // ✅ 외곽/상단에만 얹는 하이라이트(톤다운 메인)
+  const detailAccentClass = `from-[${MAIN_ACCENT}]/18 via-[${MAIN_ACCENT}]/4`;
+
+  // ✅ 내부 페이퍼(실제 카드 바탕) – 중립 다크 고정 + 상단만 메인 기운
+  const detailInnerBgClass = `from-[${MAIN_ACCENT}]/10 ${DETAIL_BASE_BG}`;
+
+  // ✅ 타이틀 톤(메인 계열로만 살짝)
+  const detailTitleColorClass = "text-[#CDEBE7]";
+
+  // ✅ 토글/버튼 톤(메인 계열로만)
+  const detailToggleAccentClass = `border-[${MAIN_ACCENT}]/70 text-[#CDEBE7] hover:bg-[${MAIN_ACCENT}]/8`;
+
 
   // 비주얼 뷰용 산출물
   const currentVisuals = activeProject

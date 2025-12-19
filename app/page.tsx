@@ -382,7 +382,22 @@ const PROJECT_VISUALS: Record<ProjectId, ProjectVisual[]> = {
       caption: "여정 단계별로 나눈 IA와 와이어 시안.",
     },
     {
-      src: "/work/travel/03-feed-system.jpg",
+      src: "/work/travel/03-feed-concept.png",
+      title: "인스타 피드 기획 시리즈",
+      caption: "흥미로운 주제로 구성된 피드 기획 시리즈.",
+    },
+    {
+      src: "/work/travel/04-feed-system.jpg",
+      title: "브랜드 피드 스타일 정리",
+      caption: "피드·슬라이드·배너에 공통 적용한 타이포/레이아웃 규칙.",
+    },
+    {
+      src: "/work/travel/05-feed-system.jpg",
+      title: "체험 피드 스타일 정리",
+      caption: "체험 피드·슬라이드·배너에 공통 적용한 타이포/레이아웃 규칙.",
+    },
+    {
+      src: "/work/travel/06-feed-system.png",
       title: "인스타 피드 카드 시스템",
       caption: "피드·슬라이드·배너에 공통 적용한 타이포/레이아웃 규칙.",
     },
@@ -590,7 +605,7 @@ export default function Home() {
   // ✅ 타이틀 톤(메인 계열로만 살짝)
   const detailTitleColorClass = "text-[#CDEBE7]";
 
-  // ✅ 토글/버튼 톤(메인 계열로만)
+  // ✅ 토글/버튼 톤(메인 계열로만) 
   const detailToggleAccentClass = `border-[${MAIN_ACCENT}]/70 text-[#CDEBE7] hover:bg-[${MAIN_ACCENT}]/8`;
 
 

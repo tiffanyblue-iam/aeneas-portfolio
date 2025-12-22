@@ -796,21 +796,40 @@ export default function Home() {
                   className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
                 >
                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  Brand &amp; Web Direction
+                  Web Design
                 </span>
                 <span
                   className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
                 >
                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  UX Writing &amp; Deck Systems
+                  UX/UI
                 </span>
                 <span
                   className={`inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-2 ${TYPE.chip}`}
                 >
                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  Framer / Webflow / Next.js
+                  Brand Systems
                 </span>
               </div>
+
+
+              <p
+                className={`${TYPE.sectionKicker} tracking-[0.28em] text-zinc-300`}
+                style={{
+                  fontFamily:
+                    '"Subway Ticker Grid", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                  fontSize: "clamp(11px, 2.1vw, 12px)",
+                  lineHeight: 2.2,
+                  color: "#ff6060ff",
+                  textShadow: "0 0 14px rgba(222, 91, 74, 1)"
+                }}
+              >
+                Figma, Framer, Webflow <br />
+                UX/UI Design & Prototyping <br />
+                Brand Identity & Visual System <br />
+                HTML/CSS/JavaScript (Hands-on)
+              </p>
+
             </header>
 
             {/* 2) DEVICE SHELL : CONSTELLATION + VISUAL PANEL */}
@@ -887,14 +906,14 @@ export default function Home() {
                     className="pointer-events-none absolute flex items-center justify-center rounded-full px-5 py-1.5"
                     style={{
                       right: 26,         // 버튼과 같은 x축 정렬
-                      top: -80,          // 버튼 위로 띄우기
+                      top: -100,          // 버튼 위로 띄우기
                       background:
                         "radial-gradient(circle at 50% 50%, rgba(15,23,42,0.9) 0, rgba(15,23,42,0.7) 60%, transparent 100%)",
                       boxShadow:
-                        "0 0 22px rgba(56,189,248,0.75), 0 0 0 1px rgba(15,23,42,0.9)",
+                        "0 0 42px rgba(56,189,248,0.85), 0 0 0 3px rgba(15,23,42,0.7)",
                     }}
                   >
-                    <span className="text-[11px] font-semibold tracking-[0.32em] text-cyan-100 uppercase">
+                    <span className="text-[12px] font-semibold tracking-[0.32em] text-cyan-90 uppercase">
                       PRESS
                     </span>
                     {/* 아래로 향하는 작은 삼각형 */}
@@ -1214,14 +1233,14 @@ export default function Home() {
                       {/* 오른쪽: 상태 캡슐 */}
                       <div
                         className="
-        mt-3 sm:mt-0 sm:ml-6
-        flex items-center justify-center
-        rounded-[10px]
-        w-full sm:w-[144px] max-w-[200px]
-        h-7
-        mx-auto sm:mx-0
-        shrink-0
-      "
+                          mt-3 sm:mt-0 sm:ml-6
+                          flex items-center justify-center
+                          rounded-[10px]
+                          w-full sm:w-[144px] max-w-[200px]
+                          h-7
+                          mx-auto sm:mx-0
+                          shrink-0
+                        "
                         style={{
                           background:
                             "linear-gradient(100deg, #2A2A2A 0%, #121212 60%, #050505 100%)",
@@ -1264,16 +1283,14 @@ export default function Home() {
             < section className="full-bleed mt-20 border-t border-white/7 pt-10" >
               {/* 위쪽 타이틀 영역 */}
               < header className="mb-10 text-center space-y-3 max-w-5xl mx-auto" >
-                <p className={`${TYPE.sectionKicker} text-zinc-500`}>Selected Work</p>
+                <p className={`${TYPE.sectionKicker} text-zinc-500`}>Web Design Projects</p>
                 <h2 className="text-2xl md:text-[28px] tracking-tight">
-                  디자인이 아니라,{" "}
-                  <span className="text-5xl italic font-semibold">(결과로 설명하는)</span>{" "}
-                  프로젝트들
+                  Web Design Projects - Real Client Work & Results
                 </h2>
                 <p
                   className={`mx-auto max-w-3xl text-zinc-400 ${TYPE.sectionBody}`}
                 >
-                  각 보드는 한 프로젝트를 위한 작은 시스템 맵입니다.
+                  Each board is a small system map for a project.
                   <br />
                   포인트 흑돌에는 프로젝트명을, 카드에는 타이틀만 남겼습니다.
                 </p>
@@ -1862,7 +1879,10 @@ export default function Home() {
                             <span className="text-zinc-50">
                               브랜드·웹 리빌딩
                             </span>
-                            에 집중합니다.
+                            에 집중합니다. <br />
+                            <a href="https://github.com/tiffanyblue-iam/aeneas-portfolio" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-zinc-400 transition-colors text-[14px] underline">
+                              GitHub 레포지토리
+                            </a>
                           </p>
                         </div>
 
@@ -1874,7 +1894,7 @@ export default function Home() {
                             프로젝트 상의하기
                           </a>
                           <a
-                            href="#"
+                            href="https://github.com/tiffanyblue-iam/aeneas-portfolio" target="_blank" rel="noopener noreferrer"
                             className="inline-flex items-center justify-center rounded-full border border-zinc-700 px-6 py-2 text-sm font-medium text-zinc-200 hover:border-zinc-500 hover:bg-zinc-900 transition-colors"
                           >
                             작업 노트 보기
@@ -1898,8 +1918,8 @@ export default function Home() {
             </div >
           </div>
         </main >
-      </div>
-    </div>
+      </div >
+    </div >
   );
 
 }

@@ -7,6 +7,7 @@ import VisualPanelTabs from "./VisualPanelTabs";
 import { MODES, type ModeId } from "./modes";
 import { motion, AnimatePresence } from "framer-motion";
 import { div } from "framer-motion/client";
+import ExperienceLabSlider from "./components/ExperienceLabSlider";
 
 
 // 공통 기계식 프레임 토큰
@@ -622,15 +623,21 @@ export default function Home() {
 
   type LabItem = {
     id: string;
-    kind: LabItemKind;
+    kind: "freelance" | "proposal" | "report";
     badge: string;
     title: string;
     period?: string;
     role: string;
     summary: string;
-    href?: string;   // 🔹 클릭 시 이동할 링크
-    cta?: string;    // 🔹 버튼 문구
+    href?: string;
+    cta?: string;
+
+    // ✅ 추가
+    beforeImg?: string; // 예: "/lab/globalvcc_before.png"
+    afterImg?: string;  // 예: "/lab/globalvcc_after.png"
+    detail?: string[];  // 우측 상세 포인트
   };
+
 
   const LAB_ITEMS: LabItem[] = [
     {
@@ -639,38 +646,56 @@ export default function Home() {
       badge: "FREELANCE · WEB",
       title: "Global VCC · 화상 영어 플랫폼 리뉴얼",
       period: "2024 (약 3개월)",
-      role: "IA 설계 · UX/UI 디자인 · HTML/CSS 퍼블리싱",
+      role: "IA 설계 · UX/UI · 퍼블리싱",
       summary:
-        "복잡한 학원식 페이지를 ‘선별된 강사/커리큘럼/수강 신청 흐름’ 중심으로 재정리해, 과정·횟수·시간 선택과 견적 박스를 한 화면에서 이해할 수 있는 구조로 리빌딩했습니다.",
+        "탐색·비교·신청을 한 화면 흐름으로 묶어, 선택 피로와 이탈 지점을 줄였습니다.",
       href: "https://tiffanyblue-iam.github.io/Project-VCC-website/",
       cta: "사이트 보기",
+      beforeImg: "lab/globalvcc_before.png",
+      afterImg: "lab/globalvcc_after.png",
+      problem: ["선택 기준이 분산되어 탐색 피로", "신청 단계에서 이탈 발생"],
+      solution: ["3단 흐름으로 재구성(선택→비교→신청)", "옵션/견적을 신청 플로우에 결합"],
+      result: ["결정 속도 개선", "모바일 입력/검증 단계 정돈"],
+      detail: ["선택 항목 고정으로 판단 부담 감소", "견적/옵션을 ‘결정 지점’에 배치", "상태/피드백 UX를 단계화"],
     },
     {
       id: "lawdidim",
       kind: "freelance",
       badge: "FREELANCE · WEB",
-      title: "LawDidim · 회생·파산 법무사 랜딩",
+      title: "LawDidim · 회생·파산 랜딩",
       period: "2024 (약 2개월)",
-      role: "UX 구조 설계 · 웹디자인 · 카피라이팅",
+      role: "UX 구조 · 웹디자인 · 카피",
       summary:
-        "회생·파산을 고민할 정도로 여유가 없는 사용자의 심리를 전제로, 최소한의 정보와 명확한 안내에 집중한 랜딩 페이지 흐름을 설계했습니다. 성공사례·후기·FAQ를 한 흐름으로 배치해 안심·신뢰를 우선했습니다.",
+        "불안한 사용자가 ‘지금 해야 할 것’을 바로 이해하도록 정보량을 줄이고 신뢰 흐름을 정리했습니다.",
       href: "https://www.lawdidim.com/",
       cta: "사이트 보기",
+      beforeImg: "lab/lawdidim_before.png",
+      afterImg: "lab/lawdidim_after.png",
+      problem: ["정보가 길어 핵심 판단이 늦음", "신뢰 요소가 흩어져 있음"],
+      solution: ["첫 화면에서 해당 여부 판단", "후기/사례/FAQ를 한 흐름으로 연결"],
+      result: ["문의 결정 장벽 감소", "신뢰 메시지 전달력 강화"],
+      detail: ["핵심 질문 3개로 진입 단축", "신뢰 요소를 스크롤 흐름에 배치", "CTA를 결정 구간에 반복"],
     },
     {
       id: "josun-routeworld",
       kind: "proposal",
       badge: "PROPOSAL · DECK",
-      title: "Josun Palace × Routeworld · 인플루언서 공동구매 제안서",
+      title: "Josun Palace × Routeworld · 공동구매 제안서",
       period: "2023 (약 3주)",
-      role: "제안 구조 설계 · 슬라이드 디자인",
+      role: "제안 구조 · 슬라이드 디자인",
       summary:
-        "조선팰리스 비수기 객실을 메가급 인플루언서 공동구매로 판매하는 구조로, ADR 유지·폐쇄형 랜딩·혜택 중심 패키지 흐름으로 설계한 제안서입니다.",
-      // ⬇⬇ 여기 경로를 실제 파일 이름과 맞춰 주는 게 핵심
+        "비수기 재고를 ‘폐쇄형 랜딩 + 공동구매’로 전환해 ADR을 지키면서 전환을 설계했습니다.",
       href: "/lab/routeworld_josun-palace.pdf",
       cta: "PDF 제안서 열기",
+      afterImg: "lab/routeworld_after.png",
+      problem: ["비수기 재고 소진 압박", "할인 중심 판매 시 브랜드 훼손 리스크"],
+      solution: ["폐쇄형 랜딩으로 가격 노출 제어", "혜택 중심 패키지로 가치 유지"],
+      result: ["전환 흐름 단순화", "운영 리스크 고려한 실행안 제시"],
+      detail: ["유입→랜딩→패키지 선택 3스텝", "혜택을 ‘이유 있는 구성’으로 정리", "재고/ADR 관점 실행 플로우 포함"],
     },
   ];
+
+
 
   // ★ 패널 공통 배경 (전원 ON/OFF 공통으로 쓰는 다크 그레이)
   const SHELL_BASE_BG =
@@ -1742,130 +1767,9 @@ export default function Home() {
 
                       {/* 카드 데크(배경 플레이트) – 기계 패널 느낌 3겹 프레임 */}
                       <div className="mx-auto max-w-6xl">
-                        {/* OUTER SHELL */}
-                        <div
-                          className="relative w-full rounded-[28px] overflow-hidden"
-                          style={{
-                            backgroundColor: "#171717",
-                            border: "1px solid rgba(117,117,117,0.85)",
-                            boxShadow: [
-                              "inset 1px 1px 2px rgba(255,255,255,0.22)", // 패널과 동일한 ‘안쪽 하이라이트’
-                              "0 0 0 1px rgba(255,255,255,0.18)",         // 얇은 외곽 라인
-                              "0 28px 90px rgba(0,0,0,0.88)",             // 바닥 낙하 그림자(깊이)
-                            ].join(", "),
-                          }}
-                        >
-                          {/* MID FRAME */}
-                          <div
-                            className="rounded-[24px] m-4"
-                            style={{
-                              background: [
-                                "radial-gradient(circle at 50% -10%, rgba(255,255,255,0.06), transparent 58%)",
-                                "radial-gradient(circle at 50% 120%, rgba(20,20,22,0.96) 0%, rgba(10,10,12,0.96) 60%, rgba(0,0,0,0.98) 100%)",
-                              ].join(", "),
-                              boxShadow: [
-                                "-4px -4px 12px rgba(255,255,255,0.06)",  // 위쪽 면이 살짝 뜨는 느낌
-                                "0 0 0 0.5px rgba(0,0,0,0.35)",            // 안쪽 어둠 라인
-                                "inset 0 0 0 1px rgba(255,255,255,0.05)",  // 프레임 얇은 하이라이트
-                              ].join(", "),
-                            }}
-                          >
-                            {/* INNER BED */}
-                            <div
-                              className="rounded-[22px] p-4 sm:p-5 md:p-6"
-                              style={{
-                                background: [
-                                  "radial-gradient(circle at 50% -10%, rgba(255,255,255,0.05), transparent 60%)",
-                                  "linear-gradient(180deg, rgba(15,15,16,0.92) 0%, rgba(9,9,11,0.92) 70%, rgba(0,0,0,0.98) 100%)",
-                                ].join(", "),
-                                border: "0.5px solid rgba(255,255,255,0.12)",
-                                boxShadow: [
-                                  "-4px -4px 12px rgba(255,255,255,0.10)", // 내부도 살짝 면이 살아나게
-                                  "inset 0 1px 0 rgba(255,255,255,0.05)",  // 상단 인셋 하이라이트
-                                  "0 0 0 0.5px rgba(0,0,0,0.25)",          // 얇은 암부 라인
-                                ].join(", "),
-                              }}
-                            >
+                        {/* 카드 그리드 – 프리랜서 2 + 제안서 1 */}
+                        <ExperienceLabSlider items={LAB_ITEMS} mainColor="#4C9990" autoMs={6500} />
 
-                              {/* 카드 그리드 – 프리랜서 2 + 제안서 1 */}
-                              <div className="grid gap-7 md:grid-cols-3">
-                                {LAB_ITEMS.map((item) => (
-                                  <article
-                                    key={item.id}
-                                    className="flex h-full flex-col rounded-2xl border border-white/12
-                                bg-zinc-950/85 px-6 py-6
-                                shadow-[0_18px_50px_rgba(0,0,0,0.9)]
-                                backdrop-blur-sm"
-                                  >
-                                    {/* 상단 배지 + 종류 포인트 컬러 */}
-                                    <div className="mb-4 flex items-center justify-between gap-2">
-                                      <span className="inline-flex items-center rounded-full border border-zinc-700/80 bg-black/70 px-3 py-1 text-[11px] font-medium tracking-[0.18em] uppercase text-zinc-300">
-                                        {item.badge}
-                                      </span>
-                                      <span
-                                        className={
-                                          item.kind === "freelance"
-                                            ? "h-1.5 w-1.5 rounded-full bg-emerald-400"
-                                            : item.kind === "proposal"
-                                              ? "h-1.5 w-1.5 rounded-full bg-sky-400"
-                                              : "h-1.5 w-1.5 rounded-full bg-amber-300"
-                                        }
-                                      />
-                                    </div>
-
-                                    {/* 타이틀/메타 */}
-                                    <div className="mb-3 space-y-1">
-                                      <h3 className="text-[17px] md:text-[19px] font-semibold text-zinc-50 leading-snug">
-                                        {item.title}
-                                      </h3>
-                                      {item.period && (
-                                        <p className="text-[12px] text-zinc-500">
-                                          Period · {item.period}
-                                        </p>
-                                      )}
-                                      <p className="text-[12px] text-zinc-400">
-                                        Role · {item.role}
-                                      </p>
-                                    </div>
-
-                                    {/* 요약 */}
-                                    <p className="mb-4 text-[13px] leading-relaxed text-zinc-300">
-                                      {item.summary}
-                                    </p>
-
-                                    {/* 푸터 */}
-                                    <div className="mt-auto pt-3 border-t border-white/25 flex items-center justify-between text-[12px] text-zinc-400">
-                                      <span>
-                                        {item.kind === "freelance"
-                                          ? "Client work"
-                                          : item.kind === "proposal"
-                                            ? "Deck / Proposal"
-                                            : "Report"}
-                                      </span>
-
-                                      {item.href ? (
-                                        <a
-                                          href={item.href}
-                                          target="_blank"
-                                          rel="noreferrer"
-                                          className="inline-flex items-center gap-1 text-[12px] font-medium text-zinc-200 hover:text-emerald-300"
-                                        >
-                                          {item.cta ?? "열어보기"}
-                                          <span className="translate-y-[1px]">↗</span>
-                                        </a>
-                                      ) : (
-                                        <span className="inline-flex items-center gap-1 text-[12px] text-zinc-500">
-                                          케이스 스터디 준비중
-                                        </span>
-                                      )}
-                                    </div>
-
-                                  </article>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </div >
                       </div>
 
                       {/* STUDIO STATUS */}

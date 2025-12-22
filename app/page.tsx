@@ -687,7 +687,7 @@ export default function Home() {
         "비수기 재고를 ‘폐쇄형 랜딩 + 공동구매’로 전환해 ADR을 지키면서 전환을 설계했습니다.",
       href: "/lab/routeworld_josun-palace.pdf",
       cta: "PDF 제안서 열기",
-      afterImg: "lab/routeworld_after.png",
+      afterImg: "lab/routeworld_josun-palace.png",
       problem: ["비수기 재고 소진 압박", "할인 중심 판매 시 브랜드 훼손 리스크"],
       solution: ["폐쇄형 랜딩으로 가격 노출 제어", "혜택 중심 패키지로 가치 유지"],
       result: ["전환 흐름 단순화", "운영 리스크 고려한 실행안 제시"],

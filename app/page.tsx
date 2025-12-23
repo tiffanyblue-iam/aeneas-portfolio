@@ -6,8 +6,10 @@ import { useState, useEffect, type ReactNode } from "react";
 import VisualPanelTabs from "./VisualPanelTabs";
 import { MODES, type ModeId } from "./modes";
 import { motion, AnimatePresence } from "framer-motion";
-import { div } from "framer-motion/client";
-import ExperienceLabSlider from "./components/ExperienceLabSlider";
+import ExperienceLabSlider, { type LabItem } from "./components/ExperienceLabSlider";
+
+
+
 
 
 // 공통 기계식 프레임 토큰
@@ -632,25 +634,6 @@ export default function Home() {
    *  Studio Lab / Proposals Data
    *  ──────────────────────────────── */
 
-  type LabItemKind = "freelance" | "proposal" | "report";
-
-  type LabItem = {
-    id: string;
-    kind: "freelance" | "proposal" | "report";
-    badge: string;
-    title: string;
-    period?: string;
-    role: string;
-    summary: string;
-    href?: string;
-    cta?: string;
-
-    // ✅ 추가
-    beforeImg?: string; // 예: "/lab/globalvcc_before.png"
-    afterImg?: string;  // 예: "/lab/globalvcc_after.png"
-    detail?: string[];  // 우측 상세 포인트
-  };
-
 
   const LAB_ITEMS: LabItem[] = [
     {
@@ -658,16 +641,16 @@ export default function Home() {
       kind: "freelance",
       badge: "FREELANCE · WEB",
       title: "Global VCC · 화상 영어 플랫폼 리뉴얼",
-      lead: "비교 → 선택 → 신청을 한 화면에서 끝내는 3단 흐름으로 재정리.",
+      lead: "비교→선택→신청을 한 화면에서 끝내는 3단 흐름.",
       period: "2024 (약 3개월)",
       role: "IA · UX/UI · 퍼블리싱",
       beforeImg: "lab/globalvcc_before.png",
       afterImg: "lab/globalvcc_after.png",
-      problem: ["선택 기준이 흩어져 탐색 피로", "신청 단계에서 이탈 발생"],
-      solution: ["강사→커리큘럼→결제 3단 통합", "옵션/견적을 신청 플로우에 결합"],
-      impact: ["결정 속도 개선", "모바일 입력/검증 상태 정돈"],
-      keyNotes: ["선택항목 고정", "이탈 포인트 제거", "상태 피드백 정리"],
-      conclusion: ["‘복잡함’을 ‘선택 순서’로 바꿔 전환을 만든 리빌딩"],
+      problem: ["선택 기준 분산", "신청 단계 이탈"],
+      solution: ["3단 플로우 통합", "견적/옵션을 플로우에 결합"],
+      impact: ["결정 속도 개선", "모바일 상태 피드백 정돈"],
+      keyNotes: ["항목 고정", "이탈 포인트 제거", "상태 피드백 정리"],
+      conclusion: ["복잡함을 ‘선택 순서’로 바꿔 전환을 만든 리빌딩."],
       href: "https://tiffanyblue-iam.github.io/Project-VCC-website/",
       cta: "사이트 보기",
     },
@@ -676,16 +659,16 @@ export default function Home() {
       kind: "freelance",
       badge: "FREELANCE · WEB",
       title: "LawDidim · 회생·파산 랜딩",
-      lead: "불안한 사용자에게 ‘최소 정보 + 즉시 행동’ 구조로 설계.",
+      lead: "불안 사용자에게 ‘최소 정보 → 즉시 행동’ 구조.",
       period: "2024 (약 2개월)",
       role: "UX · 디자인 · 카피",
       beforeImg: "lab/lawdidim_before.png",
       afterImg: "lab/lawdidim_after.png",
-      problem: ["결정이 느린 고관여 주제", "신뢰 축적 구조가 약함"],
+      problem: ["정보 과다로 판단 지연", "신뢰 동선 약함"],
       solution: ["핵심 안내 우선 배치", "후기/FAQ를 한 흐름으로 연결"],
-      impact: ["문의 결심 허들 감소", "읽기 부담 축소"],
+      impact: ["문의 허들 감소", "읽기 부담 축소"],
       keyNotes: ["판단 문장", "신뢰 흐름", "CTA 반복"],
-      conclusion: ["‘안심’이 먼저 보이게 만든 상담 퍼널"],
+      conclusion: ["‘안심’이 먼저 보이게 만든 상담 퍼널."],
       href: "https://www.lawdidim.com/",
       cta: "사이트 보기",
     },
@@ -694,20 +677,20 @@ export default function Home() {
       kind: "proposal",
       badge: "PROPOSAL · DECK",
       title: "Josun Palace × Routeworld · 공동구매 제안서",
-      lead: "비수기 재고를 ‘폐쇄형 랜딩 + 공동구매’로 전환하는 제안.",
+      lead: "비수기 재고를 ‘폐쇄형 랜딩 + 공동구매’로 전환.",
       period: "2023 (약 3주)",
       role: "구조 설계 · 슬라이드",
-      beforeImg: "", // 있으면
-      afterImg: "lab/routeworld_josun-palace.png",  // 없으면 동일 처리
-      problem: ["비수기 재고/가격 압박", "프리미엄 톤 유지 필요"],
-      solution: ["폐쇄형 랜딩 + 단순 퍼널", "혜택을 ‘이유있는 할인’으로 설계"],
-      impact: ["ADR 방어 관점 제시", "실행 플로우 명확화"],
+      afterImg: "lab/routeworld_josun-palace.png",
+      problem: ["비수기 재고 압박", "프리미엄 톤 유지 필요"],
+      solution: ["폐쇄형 랜딩 + 단순 퍼널", "혜택을 ‘이유있는 할인’로 정리"],
+      impact: ["ADR 관점 방어", "실행 플로우 명확화"],
       keyNotes: ["유입→전환 단순화", "톤 유지", "운영 리스크 고려"],
-      conclusion: ["‘브랜드 유지’와 ‘판매 전환’을 동시에 잡는 구조"],
+      conclusion: ["‘브랜드 유지’와 ‘판매 전환’을 같이 잡는 구조."],
       href: "/lab/routeworld_josun-palace.pdf",
       cta: "PDF 제안서 열기",
     },
   ];
+
 
 
 

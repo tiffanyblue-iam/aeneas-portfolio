@@ -3,41 +3,36 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 
-type LabKind = "freelance" | "proposal" | "report";
+export type LabKind = "freelance" | "proposal" | "report";
 
 export type LabItem = {
     id: string;
     kind: LabKind;
 
-    // left top badge + title
     badge: string;
     title: string;
 
-    // right specs
-    period?: string;
-    role?: string;
-
-    // short lead sentence (좌측 상단 한 줄 소개)
+    /** B안 필드 (page.tsx에서 쓰는 것들) */
     lead?: string;
-
-    // left blocks
     problem?: string[];
     solution?: string[];
     impact?: string[];
-
-    // right blocks
     keyNotes?: string[];
-    conclusion?: string[]; // (= 결론/정리)
+    conclusion?: string[];
 
-    // assets
-    beforeImg?: string; // "lab/xxx.png" (public 기준)
-    afterImg?: string;
+    /** 기존 메타 */
+    period?: string;
+    role?: string;
 
-    // CTA
+    /** 링크 */
     href?: string;
     cta?: string;
 
-    // optional accent
+    /** 이미지: public 기준 "lab/xxx.png" 또는 "/lab/xxx.png" 둘 다 허용 */
+    beforeImg?: string;
+    afterImg?: string;
+
+    /** 강제 강조색 옵션 */
     accent?: string;
 };
 
@@ -45,6 +40,7 @@ type Props = {
     items: LabItem[];
     autoMs?: number;
     className?: string;
+    mainColor?: string;
 };
 
 function clampIdx(n: number, len: number) {
@@ -53,47 +49,108 @@ function clampIdx(n: number, len: number) {
 }
 
 function defaultAccent(kind: LabKind) {
-    // main toned-down: #4C9990
     if (kind === "freelance") return "#4C9990";
     if (kind === "proposal") return "#60A5FA";
     return "#FBBF24";
 }
 
-function toImageSrc(src?: string) {
+function normalizePublicSrc(src?: string) {
     if (!src) return "";
-    if (src.startsWith("http://") || src.startsWith("https://")) return src;
-    return src.startsWith("/") ? src : `/${src}`;
+    // "//lab/.." 방지 + "/lab/.." or "lab/.." 모두 OK
+    const s = src.replace(/^\/+/, "");
+    return `/${s}`;
 }
 
-/** BEFORE/AFTER 카드: hover 확대 + scanline, 클릭 시 줌(모달) */
+/** 이미지 확대 모달 */
+function ZoomModal({
+    open,
+    onClose,
+    src,
+    label,
+}: {
+    open: boolean;
+    onClose: () => void;
+    src: string;
+    label: string;
+}) {
+    useEffect(() => {
+        if (!open) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") onClose();
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [open, onClose]);
+
+    if (!open) return null;
+
+    return (
+        <div
+            className="fixed inset-0 z-[999] grid place-items-center bg-black/70 p-4"
+            onMouseDown={onClose}
+            role="dialog"
+            aria-modal="true"
+        >
+            <div
+                className="relative w-full max-w-5xl overflow-hidden rounded-2xl border border-white/12 bg-black/80"
+                onMouseDown={(e) => e.stopPropagation()}
+            >
+                <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+                    <div className="text-[12px] tracking-[0.18em] uppercase text-zinc-300">
+                        {label}
+                    </div>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="h-9 w-9 grid place-items-center rounded-full border border-white/12 text-zinc-200 hover:text-white"
+                        aria-label="Close"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                <div className="relative w-full aspect-[16/9] bg-black">
+                    <Image
+                        src={src}
+                        alt={`${label} zoom`}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 1024px"
+                        className="object-contain"
+                        priority={false}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+/** 작은 이미지 카드: hover 확대 + scanline + 클릭 확대 */
 function FigureCard({
     label,
-    src,
-    onZoom,
+    rawSrc,
+    onClick,
 }: {
-    label: "BEFORE" | "AFTER";
-    src?: string;
-    onZoom: (src: string, label: string) => void;
+    label: string;
+    rawSrc?: string;
+    onClick?: () => void;
 }) {
-    const s = toImageSrc(src);
-    const hasImage = Boolean(s);
+    const hasImage = Boolean(rawSrc);
+    const src = normalizePublicSrc(rawSrc);
 
     return (
         <button
             type="button"
-            onClick={() => hasImage && onZoom(s, label)}
-            className="group relative w-full flex-1 overflow-hidden rounded-2xl border border-white/10 bg-black/40 text-left"
-            style={{
-                boxShadow:
-                    "inset 1px 1px 2px rgba(255,255,255,0.10), inset -2px -2px 10px rgba(0,0,0,0.65), 0 14px 34px rgba(0,0,0,0.65)",
-            }}
+            className="group relative overflow-hidden rounded-2xl border border-white/12 bg-black/45 text-left"
+            onClick={hasImage ? onClick : undefined}
+            disabled={!hasImage}
+            aria-label={hasImage ? `Zoom ${label}` : `${label} no image`}
         >
-            {/* label */}
-            <div className="absolute left-3 top-3 z-10 inline-flex items-center rounded-full border border-white/12 bg-black/55 px-3 py-1 text-[11px] font-medium tracking-[0.18em] uppercase text-zinc-200">
+            {/* header label */}
+            <div className="absolute left-3 top-3 z-10 inline-flex items-center rounded-full border border-white/12 bg-black/60 px-3 py-1 text-[11px] font-medium tracking-[0.18em] uppercase text-zinc-200">
                 {label}
             </div>
 
-            {/* hover scanline */}
+            {/* scanlines overlay */}
             <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <div className="scanlines" />
                 <div className="scan-sweep" />
@@ -104,12 +161,11 @@ function FigureCard({
                 {hasImage ? (
                     <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.06]">
                         <Image
-                            src={s}
+                            src={src}
                             alt={`${label} preview`}
                             fill
                             sizes="(max-width: 768px) 100vw, 33vw"
                             className="object-cover"
-                            priority={false}
                         />
                     </div>
                 ) : (
@@ -117,56 +173,26 @@ function FigureCard({
                         No image
                     </div>
                 )}
-
-                {/* bottom fade */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/80 to-transparent" />
             </div>
 
-            {/* click hint */}
-            <div className="pointer-events-none absolute bottom-3 right-4 text-[11px] tracking-[0.18em] uppercase text-zinc-400/80">
-                Click to zoom
+            {/* CLICK 라벨 (더 진하게) */}
+            <div className="absolute right-3 bottom-3 z-10 inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/60 px-3 py-1">
+                <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-zinc-200 group-hover:text-white transition-colors">
+                    <span className="underline underline-offset-2">Click</span>
+                </span>
             </div>
 
-            {/* inset ring */}
+            {/* inset */}
             <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/5" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-white/10 to-transparent opacity-25" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/80 to-transparent" />
         </button>
-    );
-}
-
-function Block({
-    title,
-    items,
-}: {
-    title: string;
-    items?: string[];
-}) {
-    if (!items || items.length === 0) return null;
-
-    return (
-        <div className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3">
-            <div className="flex items-center justify-between">
-                <p className="text-[11px] tracking-[0.18em] uppercase text-zinc-400">
-                    {title}
-                </p>
-                <span className="h-1.5 w-1.5 rounded-full bg-white/18" />
-            </div>
-            <div className="mt-3 space-y-2">
-                {items.slice(0, 3).map((t, i) => (
-                    <div key={i} className="flex gap-3">
-                        <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/25" />
-                        <p className="text-[13px] leading-relaxed text-zinc-200/90">
-                            {t}
-                        </p>
-                    </div>
-                ))}
-            </div>
-        </div>
     );
 }
 
 export default function ExperienceLabSlider({
     items,
-    autoMs = 14000, // ✅ 더 느리게
+    autoMs = 12000,
     className = "",
 }: Props) {
     const safeItems = useMemo(() => (Array.isArray(items) ? items : []), [items]);
@@ -174,10 +200,14 @@ export default function ExperienceLabSlider({
 
     const [idx, setIdx] = useState(0);
     const [hovered, setHovered] = useState(false);
-    const [zoom, setZoom] = useState<{ src: string; label: string } | null>(null);
+
+    const [zoom, setZoom] = useState<{ open: boolean; src: string; label: string }>({
+        open: false,
+        src: "",
+        label: "",
+    });
 
     const dirRef = useRef<1 | -1>(1);
-
     const current = safeItems[clampIdx(idx, count)];
     const accent = current?.accent ?? defaultAccent(current?.kind ?? "freelance");
 
@@ -189,22 +219,27 @@ export default function ExperienceLabSlider({
     const next = () => go(idx + 1, 1);
 
     useEffect(() => {
-        if (!count || hovered || zoom) return;
+        if (!count || hovered) return;
         const t = window.setInterval(() => {
             setIdx((v) => clampIdx(v + 1, count));
             dirRef.current = 1;
-        }, Math.max(4000, autoMs));
+        }, Math.max(3000, autoMs));
         return () => window.clearInterval(t);
-    }, [count, hovered, autoMs, zoom]);
+    }, [count, hovered, autoMs]);
 
     if (!count) return null;
 
     const kindLabel =
         current.kind === "freelance"
-            ? "Client work"
+            ? "CLIENT WORK"
             : current.kind === "proposal"
-                ? "Deck / Proposal"
-                : "Report";
+                ? "DECK / PROPOSAL"
+                : "REPORT";
+
+    const openZoom = (rawSrc: string, label: string) => {
+        const src = normalizePublicSrc(rawSrc);
+        setZoom({ open: true, src, label });
+    };
 
     return (
         <div
@@ -212,8 +247,8 @@ export default function ExperienceLabSlider({
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            {/* ✅ NAV 버튼: 플레이트 밖(안 잘림) */}
-            <div className="absolute right-3 top-[-16px] md:right-5 md:top-[-18px] z-50">
+            {/* NAV (플레이트 밖으로 올려서 절대 안 잘림) */}
+            <div className="absolute right-3 top-[-18px] md:right-5 md:top-[-20px] z-50">
                 <div
                     className="flex items-center gap-2 rounded-full border border-white/12 px-2 py-2"
                     style={{
@@ -231,14 +266,13 @@ export default function ExperienceLabSlider({
                         className="grid h-10 w-10 place-items-center rounded-full border border-white/14 text-zinc-100 transition"
                         style={{
                             background:
-                                "radial-gradient(circle at 30% 15%, rgba(255,255,255,0.10), transparent 55%), linear-gradient(180deg, rgba(16,16,16,0.95), rgba(6,6,6,0.95))",
+                                "radial-gradient(circle at 30% 15%, rgba(255,255,255,0.12), transparent 55%), linear-gradient(180deg, rgba(16,16,16,0.95), rgba(6,6,6,0.95))",
                             boxShadow:
                                 "0 0 24px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 1px rgba(255,255,255,0.14)",
                         }}
                     >
                         ‹
                     </button>
-
                     <button
                         type="button"
                         onClick={next}
@@ -246,7 +280,7 @@ export default function ExperienceLabSlider({
                         className="grid h-10 w-10 place-items-center rounded-full border border-white/14 text-zinc-100 transition"
                         style={{
                             background:
-                                "radial-gradient(circle at 30% 15%, rgba(255,255,255,0.10), transparent 55%), linear-gradient(180deg, rgba(16,16,16,0.95), rgba(6,6,6,0.95))",
+                                "radial-gradient(circle at 30% 15%, rgba(255,255,255,0.12), transparent 55%), linear-gradient(180deg, rgba(16,16,16,0.95), rgba(6,6,6,0.95))",
                             boxShadow:
                                 "0 0 24px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 1px rgba(255,255,255,0.14)",
                         }}
@@ -256,7 +290,7 @@ export default function ExperienceLabSlider({
                 </div>
             </div>
 
-            {/* ✅ 기계 플레이트 */}
+            {/* 메인 플레이트 */}
             <div
                 className="relative mx-auto rounded-[28px] border border-white/10 p-4 sm:p-5 md:p-6 overflow-hidden"
                 style={{
@@ -270,20 +304,16 @@ export default function ExperienceLabSlider({
                         "inset 1px 1px 2px rgba(255,255,255,0.16), 0 28px 90px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.06)",
                 }}
             >
-                {/* inset rings */}
+                {/* frame lines */}
                 <div className="pointer-events-none absolute inset-0 rounded-[28px] ring-1 ring-white/5" />
                 <div className="pointer-events-none absolute inset-[10px] rounded-[22px] ring-1 ring-white/5" />
                 <div className="pointer-events-none absolute inset-[18px] rounded-[18px] ring-1 ring-white/5" />
-
-                {/* noise */}
                 <div className="noise pointer-events-none absolute inset-0 opacity-[0.08]" />
-
-                {/* top/bottom lighting */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-white/10 to-transparent opacity-35" />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/75 to-transparent" />
 
                 <div className="relative z-10">
-                    {/* top label */}
+                    {/* 상단 라벨 */}
                     <div className="mb-4 flex items-center justify-between">
                         <div className="text-[11px] tracking-[0.28em] uppercase text-zinc-500">
                             Experience Lab <span className="text-zinc-600">•</span>
@@ -293,9 +323,8 @@ export default function ExperienceLabSlider({
                         </div>
                     </div>
 
-                    {/* 3 columns */}
                     <div className="grid gap-6 md:grid-cols-3">
-                        {/* LEFT: title + problem/solution/impact */}
+                        {/* LEFT: 타이틀 + 문제/솔루션/임팩트 */}
                         <div
                             className="relative rounded-2xl border border-white/12 bg-black/35 p-5 overflow-hidden"
                             style={{
@@ -304,55 +333,58 @@ export default function ExperienceLabSlider({
                             }}
                         >
                             <div className="pointer-events-none absolute inset-0 ring-1 ring-white/5" />
+                            <div className="pointer-events-none absolute inset-[10px] rounded-[14px] ring-1 ring-white/5" />
 
-                            <div className="mb-3 flex items-center justify-between gap-2">
+                            <div className="mb-4 flex items-center justify-between gap-2">
                                 <span className="inline-flex items-center rounded-full border border-zinc-700/70 bg-black/50 px-3 py-1 text-[11px] font-medium tracking-[0.18em] uppercase text-zinc-300">
                                     {current.badge}
                                 </span>
                                 <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent }} />
                             </div>
 
-                            <h3 className="text-[17px] md:text-[18px] font-semibold text-zinc-50 leading-snug">
+                            <h3 className="text-[18px] font-semibold text-zinc-50 leading-snug">
                                 {current.title}
                             </h3>
 
-                            {current.lead && (
-                                <p className="mt-3 text-[13px] leading-relaxed text-zinc-200/85">
+                            {current.lead ? (
+                                <p className="mt-3 text-[13px] leading-relaxed text-zinc-300">
                                     {current.lead}
                                 </p>
-                            )}
+                            ) : null}
 
-                            <div className="mt-4 space-y-3">
-                                <Block title="Problem" items={current.problem} />
-                                <Block title="Solution" items={current.solution} />
-                                <Block title="Impact" items={current.impact} />
+                            <div className="mt-5 space-y-4">
+                                <Section title="Problem" items={current.problem} />
+                                <Section title="Solution" items={current.solution} />
+                                <Section title="Impact" items={current.impact} />
                             </div>
                         </div>
 
-                        {/* CENTER: images (50/50 full) */}
+                        {/* CENTER: 이미지 (상/하 50% 꽉 채움) */}
                         <div
-                            className="relative rounded-2xl border border-white/12 bg-black/30 p-4 overflow-hidden flex flex-col gap-3"
+                            className="relative rounded-2xl border border-white/12 bg-black/30 p-4 overflow-hidden"
                             style={{
                                 boxShadow:
                                     "inset 1px 1px 2px rgba(255,255,255,0.10), inset -2px -2px 10px rgba(0,0,0,0.65), 0 18px 44px rgba(0,0,0,0.70)",
                             }}
                         >
                             <div className="pointer-events-none absolute inset-0 ring-1 ring-white/5" />
-                            <div className="flex-1 flex flex-col gap-3 min-h-[520px]">
+                            <div className="pointer-events-none absolute inset-[10px] rounded-[14px] ring-1 ring-white/5" />
+
+                            <div className="grid gap-3" style={{ gridTemplateRows: "1fr 1fr", height: "100%" }}>
                                 <FigureCard
                                     label="BEFORE"
-                                    src={current.beforeImg}
-                                    onZoom={(src, label) => setZoom({ src, label })}
+                                    rawSrc={current.beforeImg}
+                                    onClick={() => current.beforeImg && openZoom(current.beforeImg, "BEFORE")}
                                 />
                                 <FigureCard
                                     label="AFTER"
-                                    src={current.afterImg}
-                                    onZoom={(src, label) => setZoom({ src, label })}
+                                    rawSrc={current.afterImg}
+                                    onClick={() => current.afterImg && openZoom(current.afterImg, "AFTER")}
                                 />
                             </div>
                         </div>
 
-                        {/* RIGHT: client work + specs(박스 없이) + key notes + conclusion + CTA */}
+                        {/* RIGHT: 상단 spec(박스 없이) + 결론/키노트 + 하단 CTA */}
                         <div
                             className="relative rounded-2xl border border-white/12 bg-black/35 p-5 overflow-hidden flex flex-col"
                             style={{
@@ -361,43 +393,59 @@ export default function ExperienceLabSlider({
                             }}
                         >
                             <div className="pointer-events-none absolute inset-0 ring-1 ring-white/5" />
+                            <div className="pointer-events-none absolute inset-[10px] rounded-[14px] ring-1 ring-white/5" />
 
-                            {/* top: client work + specs */}
-                            <div className="flex items-start justify-between gap-4">
-                                <div>
-                                    <p className="text-[11px] tracking-[0.18em] uppercase text-zinc-400">
-                                        {kindLabel}
+                            {/* 상단: CLIENT WORK + 스펙 */}
+                            <div className="flex items-center justify-between">
+                                <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-400">
+                                    {kindLabel}
+                                </p>
+                                <span
+                                    className="h-1.5 w-1.5 rounded-full"
+                                    style={{ backgroundColor: accent, boxShadow: `0 0 14px ${accent}` }}
+                                />
+                            </div>
+
+                            <div className="mt-4 border-t border-white/12 pt-4">
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[12px]">
+                                    <div className="text-zinc-500">Period</div>
+                                    <div className="text-zinc-200 text-right">{current.period ?? "-"}</div>
+                                    <div className="text-zinc-500">Role</div>
+                                    <div className="text-zinc-200 text-right">{current.role ?? "-"}</div>
+                                </div>
+                            </div>
+
+                            {/* 결론 */}
+                            {current.conclusion?.length ? (
+                                <div className="mt-6">
+                                    <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-400">
+                                        Conclusion
                                     </p>
+                                    <div className="mt-3 rounded-xl border border-white/10 bg-black/35 p-4 text-[13px] leading-relaxed text-zinc-200">
+                                        {current.conclusion[0]}
+                                    </div>
                                 </div>
+                            ) : null}
 
-                                <div className="text-right">
-                                    {current.period && (
-                                        <div className="text-[12px] text-zinc-300">
-                                            <span className="text-zinc-500 mr-2">Period</span>
-                                            {current.period}
-                                        </div>
-                                    )}
-                                    {current.role && (
-                                        <div className="mt-1 text-[12px] text-zinc-300">
-                                            <span className="text-zinc-500 mr-2">Role</span>
-                                            {current.role}
-                                        </div>
+                            {/* 키노트 */}
+                            <div className="mt-6">
+                                <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-400">
+                                    Key Notes
+                                </p>
+                                <div className="mt-3 space-y-3">
+                                    {(current.keyNotes?.length ? current.keyNotes : ["핵심 포인트 3줄 요약"]).map(
+                                        (t, i) => (
+                                            <div key={i} className="flex gap-3">
+                                                <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/25" />
+                                                <p className="text-[13px] leading-relaxed text-zinc-300">{t}</p>
+                                            </div>
+                                        )
                                     )}
                                 </div>
                             </div>
 
-                            {/* divider line under top */}
-                            <div className="mt-4 h-px w-full bg-white/10" />
-
-                            {/* content blocks */}
-                            <div className="mt-4 space-y-3">
-                                <Block title="Key notes" items={current.keyNotes} />
-                                <Block title="Conclusion" items={current.conclusion} />
-                                {/* (원하면 conclusion 대신 impact를 우측으로 보내도 됨) */}
-                            </div>
-
-                            {/* bottom: dots + CTA */}
-                            <div className="mt-auto pt-5">
+                            {/* 하단: 페이지/닷 + CTA */}
+                            <div className="mt-auto pt-6">
                                 <div className="border-t border-white/12 pt-4 flex items-center justify-between">
                                     <span className="text-[12px] text-zinc-500">
                                         {idx + 1} / {count}
@@ -413,9 +461,7 @@ export default function ExperienceLabSlider({
                                                 className="h-2 w-2 rounded-full transition"
                                                 style={{
                                                     backgroundColor:
-                                                        i === idx
-                                                            ? "rgba(255,255,255,0.65)"
-                                                            : "rgba(255,255,255,0.18)",
+                                                        i === idx ? "rgba(255,255,255,0.65)" : "rgba(255,255,255,0.18)",
                                                 }}
                                             />
                                         ))}
@@ -428,7 +474,7 @@ export default function ExperienceLabSlider({
                                             href={current.href}
                                             target="_blank"
                                             rel="noreferrer"
-                                            className="group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-semibold tracking-[0.14em]"
+                                            className="group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[12px] font-semibold tracking-[0.14em] uppercase"
                                             style={{
                                                 borderColor: "rgba(255,255,255,0.18)",
                                                 color: "rgba(255,255,255,0.92)",
@@ -437,20 +483,17 @@ export default function ExperienceLabSlider({
                                                 boxShadow: [
                                                     "0 0 0 1px rgba(255,255,255,0.08)",
                                                     "inset 0 1px 1px rgba(255,255,255,0.16)",
-                                                    `0 0 26px ${accent}`, // ✅ 글로우 더 강하게
-                                                    "0 18px 40px rgba(0,0,0,0.70)",
+                                                    `0 0 22px ${accent}`,
+                                                    `0 0 52px rgba(0,0,0,0.75)`,
                                                 ].join(", "),
                                             }}
                                         >
                                             <span
                                                 className="h-2 w-2 rounded-full"
-                                                style={{
-                                                    background: accent,
-                                                    boxShadow: `0 0 18px ${accent}`,
-                                                }}
+                                                style={{ background: accent, boxShadow: `0 0 18px ${accent}` }}
                                             />
                                             <span className="transition-all duration-200 group-hover:font-extrabold">
-                                                {current.cta ?? "열어보기"}
+                                                {current.cta ?? "Open"}
                                             </span>
                                             <span className="translate-y-[1px]">↗</span>
                                         </a>
@@ -463,46 +506,19 @@ export default function ExperienceLabSlider({
                     </div>
                 </div>
 
-                {/* plate top/bottom lines */}
+                {/* top/bottom line */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-white/10" />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[1px] bg-white/10" />
             </div>
 
-            {/* ✅ zoom modal */}
-            {zoom && (
-                <div
-                    className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-[2px] flex items-center justify-center p-4"
-                    onClick={() => setZoom(null)}
-                >
-                    <div
-                        className="relative w-full max-w-5xl overflow-hidden rounded-2xl border border-white/15 bg-black/60"
-                        style={{
-                            boxShadow:
-                                "0 30px 90px rgba(0,0,0,0.85), inset 0 1px 1px rgba(255,255,255,0.10)",
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-                            <div className="text-[12px] tracking-[0.18em] uppercase text-zinc-300">
-                                {zoom.label}
-                            </div>
-                            <button
-                                type="button"
-                                className="h-9 w-9 grid place-items-center rounded-full border border-white/12 text-zinc-200 hover:text-white"
-                                onClick={() => setZoom(null)}
-                            >
-                                ✕
-                            </button>
-                        </div>
+            {/* zoom modal */}
+            <ZoomModal
+                open={zoom.open}
+                src={zoom.src}
+                label={zoom.label}
+                onClose={() => setZoom({ open: false, src: "", label: "" })}
+            />
 
-                        <div className="relative aspect-[16/9] w-full">
-                            <Image src={zoom.src} alt="Zoomed preview" fill className="object-contain" />
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* global effects */}
             <style jsx global>{`
         .noise {
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
@@ -528,7 +544,7 @@ export default function ExperienceLabSlider({
           background: linear-gradient(
             to bottom,
             rgba(255, 255, 255, 0),
-            rgba(255, 255, 255, 0.10),
+            rgba(255, 255, 255, 0.1),
             rgba(255, 255, 255, 0)
           );
           animation: scanSweep 1.6s linear infinite;
@@ -544,6 +560,26 @@ export default function ExperienceLabSlider({
           }
         }
       `}</style>
+        </div>
+    );
+}
+
+function Section({ title, items }: { title: string; items?: string[] }) {
+    if (!items?.length) return null;
+    return (
+        <div className="rounded-xl border border-white/10 bg-black/25 p-4">
+            <div className="flex items-center justify-between">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-400">{title}</p>
+                <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
+            </div>
+            <div className="mt-3 space-y-2">
+                {items.slice(0, 3).map((t, i) => (
+                    <div key={i} className="flex gap-3">
+                        <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/25" />
+                        <p className="text-[13px] leading-relaxed text-zinc-300">{t}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

@@ -545,8 +545,21 @@ function TileBoard({
             </div>
 
             {/* 오른쪽: CLICK 라벨 */}
-            <span className="ml-4 inline-flex items-center text-[11px] font-semibold tracking-[0.22em] uppercase text-zinc-600 group-hover:text-zinc-800 transition-colors">
-              <span className="mr-[2px] underline underline-offset-2">
+            <span
+              className="
+    ml-4 inline-flex items-center text-[11px] font-semibold
+    tracking-[0.22em] uppercase
+    text-zinc-300/90 transition group-hover:text-white
+  "
+            >
+              <span
+                className="mr-[2px] underline underline-offset-2"
+                style={{
+                  color: accent,
+                  textShadow: `0 0 10px ${accent}, 0 0 22px rgba(0,0,0,0.55)`,
+                  textDecorationColor: "rgba(255, 0, 0, 0.55)",
+                }}
+              >
                 Click
               </span>
             </span>
@@ -645,55 +658,57 @@ export default function Home() {
       kind: "freelance",
       badge: "FREELANCE · WEB",
       title: "Global VCC · 화상 영어 플랫폼 리뉴얼",
+      lead: "비교 → 선택 → 신청을 한 화면에서 끝내는 3단 흐름으로 재정리.",
       period: "2024 (약 3개월)",
-      role: "IA 설계 · UX/UI · 퍼블리싱",
-      summary:
-        "탐색·비교·신청을 한 화면 흐름으로 묶어, 선택 피로와 이탈 지점을 줄였습니다.",
-      href: "https://tiffanyblue-iam.github.io/Project-VCC-website/",
-      cta: "사이트 보기",
+      role: "IA · UX/UI · 퍼블리싱",
       beforeImg: "lab/globalvcc_before.png",
       afterImg: "lab/globalvcc_after.png",
-      problem: ["선택 기준이 분산되어 탐색 피로", "신청 단계에서 이탈 발생"],
-      solution: ["3단 흐름으로 재구성(선택→비교→신청)", "옵션/견적을 신청 플로우에 결합"],
-      result: ["결정 속도 개선", "모바일 입력/검증 단계 정돈"],
-      detail: ["선택 항목 고정으로 판단 부담 감소", "견적/옵션을 ‘결정 지점’에 배치", "상태/피드백 UX를 단계화"],
+      problem: ["선택 기준이 흩어져 탐색 피로", "신청 단계에서 이탈 발생"],
+      solution: ["강사→커리큘럼→결제 3단 통합", "옵션/견적을 신청 플로우에 결합"],
+      impact: ["결정 속도 개선", "모바일 입력/검증 상태 정돈"],
+      keyNotes: ["선택항목 고정", "이탈 포인트 제거", "상태 피드백 정리"],
+      conclusion: ["‘복잡함’을 ‘선택 순서’로 바꿔 전환을 만든 리빌딩"],
+      href: "https://tiffanyblue-iam.github.io/Project-VCC-website/",
+      cta: "사이트 보기",
     },
     {
       id: "lawdidim",
       kind: "freelance",
       badge: "FREELANCE · WEB",
       title: "LawDidim · 회생·파산 랜딩",
+      lead: "불안한 사용자에게 ‘최소 정보 + 즉시 행동’ 구조로 설계.",
       period: "2024 (약 2개월)",
-      role: "UX 구조 · 웹디자인 · 카피",
-      summary:
-        "불안한 사용자가 ‘지금 해야 할 것’을 바로 이해하도록 정보량을 줄이고 신뢰 흐름을 정리했습니다.",
-      href: "https://www.lawdidim.com/",
-      cta: "사이트 보기",
+      role: "UX · 디자인 · 카피",
       beforeImg: "lab/lawdidim_before.png",
       afterImg: "lab/lawdidim_after.png",
-      problem: ["정보가 길어 핵심 판단이 늦음", "신뢰 요소가 흩어져 있음"],
-      solution: ["첫 화면에서 해당 여부 판단", "후기/사례/FAQ를 한 흐름으로 연결"],
-      result: ["문의 결정 장벽 감소", "신뢰 메시지 전달력 강화"],
-      detail: ["핵심 질문 3개로 진입 단축", "신뢰 요소를 스크롤 흐름에 배치", "CTA를 결정 구간에 반복"],
+      problem: ["결정이 느린 고관여 주제", "신뢰 축적 구조가 약함"],
+      solution: ["핵심 안내 우선 배치", "후기/FAQ를 한 흐름으로 연결"],
+      impact: ["문의 결심 허들 감소", "읽기 부담 축소"],
+      keyNotes: ["판단 문장", "신뢰 흐름", "CTA 반복"],
+      conclusion: ["‘안심’이 먼저 보이게 만든 상담 퍼널"],
+      href: "https://www.lawdidim.com/",
+      cta: "사이트 보기",
     },
     {
       id: "josun-routeworld",
       kind: "proposal",
       badge: "PROPOSAL · DECK",
       title: "Josun Palace × Routeworld · 공동구매 제안서",
+      lead: "비수기 재고를 ‘폐쇄형 랜딩 + 공동구매’로 전환하는 제안.",
       period: "2023 (약 3주)",
-      role: "제안 구조 · 슬라이드 디자인",
-      summary:
-        "비수기 재고를 ‘폐쇄형 랜딩 + 공동구매’로 전환해 ADR을 지키면서 전환을 설계했습니다.",
+      role: "구조 설계 · 슬라이드",
+      beforeImg: "", // 있으면
+      afterImg: "lab/routeworld_josun-palace.png",  // 없으면 동일 처리
+      problem: ["비수기 재고/가격 압박", "프리미엄 톤 유지 필요"],
+      solution: ["폐쇄형 랜딩 + 단순 퍼널", "혜택을 ‘이유있는 할인’으로 설계"],
+      impact: ["ADR 방어 관점 제시", "실행 플로우 명확화"],
+      keyNotes: ["유입→전환 단순화", "톤 유지", "운영 리스크 고려"],
+      conclusion: ["‘브랜드 유지’와 ‘판매 전환’을 동시에 잡는 구조"],
       href: "/lab/routeworld_josun-palace.pdf",
       cta: "PDF 제안서 열기",
-      afterImg: "lab/routeworld_josun-palace.png",
-      problem: ["비수기 재고 소진 압박", "할인 중심 판매 시 브랜드 훼손 리스크"],
-      solution: ["폐쇄형 랜딩으로 가격 노출 제어", "혜택 중심 패키지로 가치 유지"],
-      result: ["전환 흐름 단순화", "운영 리스크 고려한 실행안 제시"],
-      detail: ["유입→랜딩→패키지 선택 3스텝", "혜택을 ‘이유 있는 구성’으로 정리", "재고/ADR 관점 실행 플로우 포함"],
     },
   ];
+
 
 
 
@@ -858,7 +873,7 @@ export default function Home() {
             </header>
 
             {/* 2) DEVICE SHELL : CONSTELLATION + VISUAL PANEL */}
-            <section className="mt-12">
+            <section className="mt-36">
               {/* ▶ 패널 기준으로 절대좌표 잡는 래퍼 */}
               <div className="relative max-w-5xl mx-auto">
 
@@ -1305,12 +1320,12 @@ export default function Home() {
             </section >
 
             {/* 2) SELECTED WORK – 바둑판 3분할 풀폭 + 디테일 패널 */}
-            < section className="full-bleed mt-20 border-t border-white/7 pt-10" >
+            < section className="full-bleed mt-30 border-t border-white/7 pt-10" >
               {/* 위쪽 타이틀 영역 */}
               < header className="mb-10 text-center space-y-3 max-w-5xl mx-auto" >
                 <p className={`${TYPE.sectionKicker} text-zinc-500`}>Web Design Projects</p>
-                <h2 className="text-2xl md:text-[28px] tracking-tight">
-                  Web Design Projects - Real Client Work & Results
+                <h2 className="text-[40px] md:text-[56px] font-semibold leading-tight tracking-tight text-zinc-50">
+                  Web Design Projects - <br />Work & Results
                 </h2>
                 <p
                   className={`mx-auto max-w-3xl text-zinc-400 ${TYPE.sectionBody}`}
@@ -1322,7 +1337,7 @@ export default function Home() {
               </header >
 
               {/* ▼▼▼ 바둑판 영역 – 가로 풀폭 */}
-              < div className="mt-8 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
+              < div className="mt-30 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
                 <div className="w-screen px-6 md:px-12 lg:px-20">
                   {/* 바둑판 전체를 감싸는 패널 – 화이트 10% 배경 */}
                   <div className="rounded-[8px] border border-white/7 bg-white/5 px-6 py-8 shadow-[0_26px_70px_rgba(0,0,0,0.85)]">
@@ -1719,7 +1734,7 @@ export default function Home() {
             {/* 3) STUDIO LAB + STUDIO STATUS 그룹  */}
             < div className="full-bleed space-y-0" >
               {/* STUDIO LAB */}
-              < section className="mt-24" >
+              < section className="mt-30" >
                 {/* 뷰포트 풀폭 래핑 */}
                 < div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
                   <div className="relative w-screen min-h-screen overflow-hidden bg-black">
@@ -1766,7 +1781,7 @@ export default function Home() {
                       </div>
 
                       {/* 카드 데크(배경 플레이트) – 기계 패널 느낌 3겹 프레임 */}
-                      <div className="mx-auto max-w-6xl">
+                      <div className="mt-30 mx-auto max-w-6xl">
                         {/* 카드 그리드 – 프리랜서 2 + 제안서 1 */}
                         <ExperienceLabSlider items={LAB_ITEMS} mainColor="#4C9990" autoMs={6500} />
 
@@ -1808,7 +1823,7 @@ export default function Home() {
                     </div >
 
 
-                    <footer className="mt-6 border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-2 w-full max-w-5xl mx-auto">
+                    <footer className="mt-40 border-t border-white/5 pt-10 flex flex-wrap items-center justify-between gap-2 w-full max-w-5xl mx-auto">
                       <span className={`${TYPE.footer} text-zinc-500`}>
                         © {new Date().getFullYear()} AENEAS Studio. All rights reserved.
                       </span>

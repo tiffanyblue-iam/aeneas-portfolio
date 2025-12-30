@@ -3,11 +3,11 @@
 
 import Image from "next/image";
 import { useState, useEffect, type ReactNode } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
 import VisualPanelTabs from "./VisualPanelTabs";
 import { MODES, type ModeId } from "./modes";
-import { motion, AnimatePresence } from "framer-motion";
 import ExperienceLabSlider, { type LabItem } from "./components/ExperienceLabSlider";
-
 
 
 
@@ -469,6 +469,8 @@ function TileBoard({
         ? "text-sky-300"
         : "text-amber-200";
 
+
+
   return (
     <button
       type="button"
@@ -512,7 +514,6 @@ function TileBoard({
                   </div>
                 );
               }
-
               // 백돌
               return (
                 <div
@@ -547,13 +548,7 @@ function TileBoard({
             </div>
 
             {/* 오른쪽: CLICK 라벨 */}
-            <span
-              className="
-    ml-4 inline-flex items-center text-[11px] font-semibold
-    tracking-[0.22em] uppercase
-    text-zinc-300/90 transition group-hover:text-white
-  "
-            >
+            <span className="ml-4 inline-flex items-center text-[11px] font-semibold tracking-[0.22em] uppercase text-zinc-300/90 transition group-hover:text-white">
               <span
                 className="mr-[2px] underline underline-offset-2"
                 style={{
@@ -729,6 +724,17 @@ export default function Home() {
   const CONSTELLATION_AURORA_OFF =
     "linear-gradient(180deg, #111111ff 0%, #0e0e0eff 40%, #000000 100%)";
 
+  // ───────────────── SCROLL LOCK ─────────────────
+  useEffect(() => {
+    if (activeProjectDetail) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [activeProjectDetail]);
 
 
   return (
@@ -781,7 +787,7 @@ export default function Home() {
                   priority
                   className="drop-shadow-[0_0_32px_rgba(0,0,0,0.9)]"
                 />
-                <span className="mb-1 text-[11px] font-medium tracking-[0.28em] text-zinc-500 uppercase">
+                <span className="mb-1 text-[22px] font-medium tracking-[0.28em] text-zinc-500">
                   Studio
                 </span>
               </div>
@@ -807,10 +813,9 @@ export default function Home() {
 
               <p className={`max-w-4xl text-zinc-300 ${TYPE.heroBody}`}>
                 <span className="text-zinc-50">명확한 이야기, 선명한 UX,</span>{" "}
-                그리고{" "}
+                그리고<br />
                 <span className="text-zinc-50">런칭 플랜</span>이 필요한
-                브랜드를 위한 Aeneas Studio.<br />첫 번째 데크부터 라이브
-                사이트까지, 사막을 건너 다음 그린 플레이스에 도착할 때까지 함께
+                브랜드를 위한 Aeneas Studio.{" "}<br />사막을 건너 다음 그린 플레이스에 도착할 때까지 함께
                 걷습니다.
               </p>
 
@@ -1315,12 +1320,19 @@ export default function Home() {
                 >
                   Each board is a small system map for a project.
                   <br />
-                  포인트 흑돌에는 프로젝트명을, 카드에는 타이틀만 남겼습니다.
+                  포인트 흑돌에는 프로젝트명을, 카드를 클릭하시면 프로젝트에 대한 정보를 볼 수 있습니다.
                 </p>
               </header >
 
               {/* ▼▼▼ 바둑판 영역 – 가로 풀폭 */}
-              < div className="mt-30 relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
+              <div
+                className={`
+                  mt-30 relative left-1/2 right-1/2
+                  -ml-[50vw] -mr-[50vw]
+                  transition-all duration-500
+                  ${activeProjectDetail ? "blur-[3px] opacity-40" : ""}
+                `}
+              >
                 <div className="w-screen px-6 md:px-12 lg:px-20">
                   {/* 바둑판 전체를 감싸는 패널 – 화이트 10% 배경 */}
                   <div className="rounded-[8px] border border-white/7 bg-white/5 px-6 py-8 shadow-[0_26px_70px_rgba(0,0,0,0.85)]">
@@ -1425,222 +1437,254 @@ export default function Home() {
               {/* ▲▲▲ 바둑판 영역 끝 */}
 
 
-              {/* ▼▼▼ 하단 디테일 – 종이 펼쳐짐 + 비주얼 토글 */}
-              <div
-                className={`mt-14 max-w-5xl mx-auto overflow-hidden transform-gpu transition-all duration-500 ease-out origin-top
-      ${activeProjectDetail
-                    ? "max-h-[1800px] opacity-100 scale-y-100"
-                    : "max-h-0 opacity-0 scale-y-95"
-                  }`}
-              >
+              {/* ▼▼▼ 디테일 패널 */}
+              <AnimatePresence>
                 {activeProjectDetail && (
-                  <div
-                    className={`relative rounded-[26px] bg-gradient-to-b ${detailAccentClass} to-black/96 p-[1.5px]`}
-                  >
-                    {/* 우측 상단 X 버튼 */}
-                    <button
-                      type="button"
+                  <>
+                    {/* BACKDROP */}
+                    <motion.div
+                      key="detail-backdrop"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 2 }}
+                      className="fixed inset-0 z-[55] bg-black/60 backdrop-blur-[3px]"
                       onClick={() => setActiveProject(null)}
-                      className="absolute right-4 top-4 flex h-7 w-7 items-center justify-center rounded-full border border-white/25 bg-black/70 text-[13px] text-zinc-200/80 hover:bg-black/95 hover:text-zinc-50"
-                      aria-label="닫기"
-                    >
-                      ×
-                    </button>
+                    />
 
-                    <div
-                      className={`rounded-[24px] border border-white/16 bg-gradient-to-b ${activeProjectDetail.id === "zigzag"
-                        ? "from-emerald-500/12 via-[#050609]/96 to-black/98"
-                        : activeProjectDetail.id === "gmarket"
-                          ? "from-sky-500/12 via-[#050609]/96 to-black/98"
-                          : "from-amber-300/14 via-[#050609]/96 to-black/98"
-                        } px-8 py-7 shadow-[0_30px_80px_rgba(0,0,0,0.9)]`}
-                    >
-                      {/* 상단 헤더 + 토글 버튼 */}
-                      <div className="mb-6 flex items-center justify-between gap-4">
-                        <div className="space-y-1">
-                          <p
-                            className={`${TYPE.projectKicker} text-xs text-zinc-300 mb-1`}
-                          >
-                            {activeProjectDetail.kicker}
-                          </p>
-                          <h3
-                            className={`text-[22px] md:text-[24px] font-semibold ${activeProjectDetail.id === "zigzag"
-                              ? "text-emerald-100"
-                              : activeProjectDetail.id === "gmarket"
-                                ? "text-sky-100"
-                                : "text-amber-100"
-                              }`}
-                          >
-                            {activeProjectDetail.title}
-                          </h3>
+                    {/* STAGE */}
+                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-6">
+                      <motion.div
+                        key="detail-panel"
+                        initial={{ y: "120%", opacity: 0 }}
+                        animate={{ y: "0%", opacity: 1 }}
+                        exit={{ y: "12%", opacity: 0 }}
+                        transition={{ delay: 0.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                        className="relative w-full max-w-5xl h-[80vh]"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {/* PANEL BODY */}
+                        <div className="relative h-full rounded-[26px] overflow-hidden bg-[#0B0E13] border border-white/14 shadow-[0_48px_160px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.06)]">
+                          {/* 표면 하이라이트 */}
+                          <div
+                            className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_18%,rgba(0,0,0,0)_60%)]"
+                          />
 
-                          <div className="flex flex-wrap gap-3 text-zinc-400 text-[13px] md:text-[14px]">
-                            {activeProjectDetail.period && (
-                              <span>Period · {activeProjectDetail.period}</span>
-                            )}
-                            {activeProjectDetail.clientType && (
-                              <span>Client · {activeProjectDetail.clientType}</span>
-                            )}
-                          </div>
+                          {/* 미세 스캔 라인 */}
+                          <div
+                            className="pointer-events-none absolute inset-0 opacity-[0.06] bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.6)_0px,rgba(255,255,255,0.6)_1px,transparent_1px,transparent_24px)]"
+                          />
 
-                          {/* Tools – 아이콘 배지로 표현 */}
-                          {activeProjectDetail.tools && (
-                            <div className="mt-2 flex flex-wrap items-center gap-2">
-                              {parseTools(activeProjectDetail.tools).map((tool) => (
-                                <span
-                                  key={tool.name}
-                                  className="inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-zinc-50"
-                                >
-                                  <span>{tool.icon}</span>
-                                  <span>{tool.name}</span>
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          <p className={`${TYPE.projectMeta} text-zinc-400 mt-1`}>
-                            Role · {activeProjectDetail.role}
-                          </p>
-                        </div>
-
-                        {/* 프로젝트 보기 / 설명 보기 토글 – 강조된 pill 버튼 */}
-                        <div className="flex flex-col items-end gap-2">
+                          {/* 닫기 버튼 */}
                           <button
                             type="button"
-                            onClick={() =>
-                              setDetailView(detailView === "case" ? "visual" : "case")
-                            }
-                            className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.22em] transition-all ${activeProjectDetail.id === "zigzag"
-                              ? "border-emerald-400/80 text-emerald-100 hover:bg-emerald-500/10"
-                              : activeProjectDetail.id === "gmarket"
-                                ? "border-sky-400/80 text-sky-100 hover:bg-sky-500/10"
-                                : "border-amber-300/80 text-amber-100 hover:bg-amber-400/10"
-                              }`}
+                            onClick={() => setActiveProject(null)}
+                            className="absolute right-5 top-5 z-20 h-9 w-9 rounded-full border border-white/20 bg-black/80 text-zinc-200 hover:bg-black/90"
                           >
-                            <span>
-                              {detailView === "case" ? "프로젝트 보기" : "설명 보기"}
-                            </span>
-                            <span className="translate-y-[1px]">
-                              {detailView === "case" ? "→" : "←"}
-                            </span>
+                            ×
                           </button>
-                        </div>
-                      </div>
 
-                      {/* 내용 영역 */}
-                      <div className="space-y-7 md:space-y-8">
-                        {/* CASE VIEW – 기존 텍스트 설명 */}
-                        {detailView === "case" && (
-                          <>
-                            {/* Context */}
-                            <div className="space-y-3 md:space-y-4">
-                              <h4 className="text-sm font-semibold text-zinc-200">
-                                Context &amp; Problem
-                              </h4>
-                              <p className={`${TYPE.projectBody} text-zinc-300`}>
-                                {activeProjectDetail.id === "zigzag"
-                                  ? highlightZigzagContext(activeProjectDetail.context as string)
-                                  : activeProjectDetail.context}
-                              </p>
-                            </div>
+                          <div
+                            className={`rounded-[24px] border border-white/16 bg-[#0B0D10]
+                            shadow-[0_40px_120px_rgba(0,0,0,0.85)]
+                            ${activeProjectDetail.id === "zigzag"
+                                ? "from-emerald-500/12 via-[#050609]/96 to-black/98"
+                                : activeProjectDetail.id === "gmarket"
+                                  ? "from-sky-500/12 via-[#050609]/96 to-black/98"
+                                  : "from-amber-300/14 via-[#050609]/96 to-black/98"
+                              } px-8 py-7 shadow-[0_30px_80px_rgba(0,0,0,0.9)]`}
+                          >
+                            {/* 상단 헤더 + 토글 버튼 */}
+                            <div className="mb-6 flex items-center justify-between gap-4">
+                              <div className="space-y-1">
+                                <p
+                                  className={`${TYPE.projectKicker} text-xs text-zinc-300 mb-1`}
+                                >
+                                  {activeProjectDetail.kicker}
+                                </p>
+                                <h3
+                                  className={`text-[22px] md:text-[24px] font-semibold ${activeProjectDetail.id === "zigzag"
+                                    ? "text-emerald-100"
+                                    : activeProjectDetail.id === "gmarket"
+                                      ? "text-sky-100"
+                                      : "text-amber-100"
+                                    }`}
+                                >
+                                  {activeProjectDetail.title}
+                                </h3>
 
-                            {/* Goals */}
-                            <div className="space-y-3 md:space-y-4">
-                              <h4 className="text-sm font-semibold text-zinc-200">
-                                Goals
-                              </h4>
-                              <ul className="grid gap-3 md:grid-cols-2 text-[14px] md:text-[15px]">
-                                {activeProjectDetail.goal.map((g) => (
-                                  <li
-                                    key={g}
-                                    className="rounded-2xl border border-white/10 bg-zinc-900/60 px-4 py-3 text-zinc-200 leading-relaxed"
-                                  >
-                                    • {g}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                                <div className="flex flex-wrap gap-3 text-zinc-400 text-[13px] md:text-[14px]">
+                                  {activeProjectDetail.period && (
+                                    <span>Period · {activeProjectDetail.period}</span>
+                                  )}
+                                  {activeProjectDetail.clientType && (
+                                    <span>Client · {activeProjectDetail.clientType}</span>
+                                  )}
+                                </div>
 
-                            {/* Process */}
-                            <div className="space-y-4 md:space-y-5">
-                              <h4 className="text-sm font-semibold text-zinc-200">
-                                Process
-                              </h4>
-                              <div className="grid gap-4 md:grid-cols-3">
-                                {activeProjectDetail.process.map((step) => (
-                                  <div
-                                    key={step.label}
-                                    className="rounded-2xl border border-white/12 bg-zinc-900/70 px-4 py-4 space-y-3"
-                                  >
-                                    <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-zinc-400">
-                                      {step.label}
-                                    </p>
-                                    <p className="text-[13px] md:text-[14px] text-zinc-300 leading-relaxed">
-                                      {step.body}
-                                    </p>
+                                {/* Tools – 아이콘 배지로 표현 */}
+                                {activeProjectDetail.tools && (
+                                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                                    {parseTools(activeProjectDetail.tools).map((tool) => (
+                                      <span
+                                        key={tool.name}
+                                        className="inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-zinc-50"
+                                      >
+                                        <span>{tool.icon}</span>
+                                        <span>{tool.name}</span>
+                                      </span>
+                                    ))}
                                   </div>
-                                ))}
+                                )}
+
+                                <p className={`${TYPE.projectMeta} text-zinc-400 mt-1`}>
+                                  Role · {activeProjectDetail.role}
+                                </p>
+                              </div>
+
+                              {/* 프로젝트 보기 / 설명 보기 토글 – 강조된 pill 버튼 */}
+                              <div className="flex flex-col items-end gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setDetailView(detailView === "case" ? "visual" : "case")
+                                  }
+                                  className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.22em] transition-all ${activeProjectDetail.id === "zigzag"
+                                    ? "border-emerald-400/80 text-emerald-100 hover:bg-emerald-500/10"
+                                    : activeProjectDetail.id === "gmarket"
+                                      ? "border-sky-400/80 text-sky-100 hover:bg-sky-500/10"
+                                      : "border-amber-300/80 text-amber-100 hover:bg-amber-400/10"
+                                    }`}
+                                >
+                                  <span>
+                                    {detailView === "case" ? "프로젝트 보기" : "설명 보기"}
+                                  </span>
+                                  <span className="translate-y-[1px]">
+                                    {detailView === "case" ? "→" : "←"}
+                                  </span>
+                                </button>
                               </div>
                             </div>
 
-                            {/* Outcome */}
-                            <div className="space-y-3 md:space-y-4">
-                              <h4 className="text-sm font-semibold text-zinc-200">
-                                Outcome
-                              </h4>
-                              <p className={`${TYPE.projectBody} whitespace-pre-line text-zinc-300`}>
-                                {activeProjectDetail.outcome}
-                              </p>
-                            </div>
-                          </>
-                        )}
-
-                        {/* VISUAL VIEW – 산출물 갤러리 */}
-                        {detailView === "visual" && (
-                          <div className="mt-2 grid gap-5 md:grid-cols-3">
-                            {currentVisuals.map((visual) => (
-                              <figure key={visual.title} className="space-y-3">
-                                <button
-                                  type="button"
-                                  onClick={() => setActiveVisual(visual)}
-                                  className="group relative block w-full aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-black/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 focus:ring-offset-2 focus:ring-offset-black"
-                                >
-                                  <Image
-                                    src={visual.src}
-                                    alt={visual.title}
-                                    fill
-                                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                                  />
-                                  {/* 오버레이 힌트 */}
-                                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/35 group-hover:opacity-100">
-                                    <span className="rounded-full border border-white/40 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-zinc-100">
-                                      Click to Zoom
-                                    </span>
+                            {/* 내용 영역 */}
+                            <div className="relative z-10 overflow-y-auto overscroll-contain scroll-smooth px-8 pb-10 space-y-7 md:space-y-8"
+                              style={{ height: "calc(80vh - 200px)" }}
+                            >
+                              {/* CASE VIEW – 기존 텍스트 설명 */}
+                              {detailView === "case" && (
+                                <>
+                                  {/* Context */}
+                                  <div className="space-y-3 md:space-y-4">
+                                    <h4 className="text-sm font-semibold text-zinc-200">
+                                      Context &amp; Problem
+                                    </h4>
+                                    <p className={`${TYPE.projectBody} text-zinc-300`}>
+                                      {activeProjectDetail.id === "zigzag"
+                                        ? highlightZigzagContext(activeProjectDetail.context as string)
+                                        : activeProjectDetail.context}
+                                    </p>
                                   </div>
-                                </button>
 
-                                <figcaption className="space-y-1">
-                                  <p className="text-[13px] font-semibold text-zinc-100">
-                                    {visual.title}
-                                  </p>
-                                  <p className="text-[12px] leading-relaxed text-zinc-400">
-                                    {visual.caption}
-                                  </p>
-                                </figcaption>
-                              </figure>
-                            ))}
+                                  {/* Goals */}
+                                  <div className="space-y-3 md:space-y-4">
+                                    <h4 className="text-sm font-semibold text-zinc-200">
+                                      Goals
+                                    </h4>
+                                    <ul className="grid gap-3 md:grid-cols-2 text-[14px] md:text-[15px]">
+                                      {activeProjectDetail.goal.map((g) => (
+                                        <li
+                                          key={g}
+                                          className="rounded-2xl border border-white/10 bg-zinc-900/60 px-4 py-3 text-zinc-200 leading-relaxed"
+                                        >
+                                          • {g}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+
+                                  {/* Process */}
+                                  <div className="space-y-4 md:space-y-5">
+                                    <h4 className="text-sm font-semibold text-zinc-200">
+                                      Process
+                                    </h4>
+                                    <div className="grid gap-4 md:grid-cols-3">
+                                      {activeProjectDetail.process.map((step) => (
+                                        <div
+                                          key={step.label}
+                                          className="rounded-2xl border border-white/12 bg-zinc-900/70 px-4 py-4 space-y-3"
+                                        >
+                                          <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-zinc-400">
+                                            {step.label}
+                                          </p>
+                                          <p className="text-[13px] md:text-[14px] text-zinc-300 leading-relaxed">
+                                            {step.body}
+                                          </p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+
+                                  {/* Outcome */}
+                                  <div className="space-y-3 md:space-y-4">
+                                    <h4 className="text-sm font-semibold text-zinc-200">
+                                      Outcome
+                                    </h4>
+                                    <p className={`${TYPE.projectBody} whitespace-pre-line text-zinc-300`}>
+                                      {activeProjectDetail.outcome}
+                                    </p>
+                                  </div>
+                                </>
+                              )}
+
+                              {/* VISUAL VIEW – 산출물 갤러리 */}
+                              {detailView === "visual" && (
+                                <div className="mt-2 grid gap-5 md:grid-cols-3">
+                                  {currentVisuals.map((visual) => (
+                                    <figure key={visual.title} className="space-y-3">
+                                      <button
+                                        type="button"
+                                        onClick={() => setActiveVisual(visual)}
+                                        className="group relative block w-full aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-black/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 focus:ring-offset-2 focus:ring-offset-black"
+                                      >
+                                        <Image
+                                          src={visual.src}
+                                          alt={visual.title}
+                                          fill
+                                          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                                        />
+                                        {/* 오버레이 힌트 */}
+                                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/35 group-hover:opacity-100">
+                                          <span className="rounded-full border border-white/40 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-zinc-100">
+                                            Click to Zoom
+                                          </span>
+                                        </div>
+                                      </button>
+
+                                      <figcaption className="space-y-1">
+                                        <p className="text-[13px] font-semibold text-zinc-100">
+                                          {visual.title}
+                                        </p>
+                                        <p className="text-[12px] leading-relaxed text-zinc-400">
+                                          {visual.caption}
+                                        </p>
+                                      </figcaption>
+                                    </figure>
+                                  ))}
+                                </div>
+                              )}
+
+
+
+                            </div>
                           </div>
-                        )}
-
-
-
-                      </div>
+                        </div>
+                      </motion.div>
                     </div>
-                  </div>
+                  </>
                 )}
-              </div>
+              </AnimatePresence>
 
-              {/* 확대 모달 – 모든 프로젝트 공통 */}
+              {/* ▼▼▼ 확대 모달 – 디테일 패널과 "분리" */}
               <AnimatePresence>
                 {activeVisual && (
                   <>
@@ -1661,19 +1705,14 @@ export default function Home() {
                       initial={{ opacity: 0, scale: 0.6, y: 40 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                      transition={{
-                        delay: 0.5,              // 0.5초 뒤에 시작
-                        duration: 0.5,           // 펼쳐지는 시간
-                        ease: [0.16, 1, 0.3, 1], // 점점 빨라지는 느낌
-                      }}
+                      transition={{ delay: 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                       className="fixed inset-0 z-[90] flex items-center justify-center p-4 md:p-8"
                       onClick={() => setActiveVisual(null)}
                     >
                       <div
                         className="relative w-full max-w-6xl h-[88vh] rounded-3xl border border-white/16 bg-gradient-to-b from-zinc-900/95 to-black shadow-[0_40px_120px_rgba(0,0,0,0.9)] overflow-hidden"
-                        onClick={(e) => e.stopPropagation()} // 안쪽 클릭 시 닫히지 않게
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        {/* 닫기 버튼 */}
                         <button
                           type="button"
                           onClick={() => setActiveVisual(null)}
@@ -1682,7 +1721,6 @@ export default function Home() {
                           닫기 ✕
                         </button>
 
-                        {/* 이미지 + 설명 */}
                         <div className="relative h-full w-full">
                           <Image
                             src={activeVisual.src}
@@ -1692,7 +1730,6 @@ export default function Home() {
                             sizes="(min-width: 1024px) 80vw, 100vw"
                           />
 
-                          {/* 하단 텍스트 그라데이션 */}
                           <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-4 md:p-6">
                             <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-400">
                               Detail View
@@ -1710,9 +1747,11 @@ export default function Home() {
                   </>
                 )}
               </AnimatePresence>
+              {/* ▲▲▲ 확대 모달 끝 */}
 
-              {/* ▲▲▲ 디테일 영역 끝 */}
-            </section >
+
+              {/* ▲▲▲ 디테일 영역 끝*/}
+            </section>
 
             {/* 3) STUDIO LAB + STUDIO STATUS 그룹  */}
             < div className="full-bleed space-y-0" >

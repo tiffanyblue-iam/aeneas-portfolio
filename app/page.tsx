@@ -1130,7 +1130,7 @@ export default function Home() {
                                   Naming &amp; Storyframe
                                 </h2>
                                 <p className={`${TYPE.panelBody} text-zinc-400`}>
-                                  브랜드의 첫 문장과 구조를 잡는 모드입니다.
+
                                 </p>
                               </button>
 
@@ -1167,7 +1167,7 @@ export default function Home() {
                                   Site &amp; Funnel Design
                                 </h2>
                                 <p className={`${TYPE.panelBody} text-zinc-400`}>
-                                  Figma에서 설계한 여정을 라이브 사이트까지 이어붙입니다.
+
                                 </p>
                               </button>
 
@@ -1204,7 +1204,7 @@ export default function Home() {
                                   Decks &amp; Visual Systems
                                 </h2>
                                 <p className={`${TYPE.panelBody} text-zinc-400`}>
-                                  슬라이드·피드·카드까지 반복해서 쓰는 시각 언어를 설계합니다.
+
                                 </p>
                               </button>
                             </div>

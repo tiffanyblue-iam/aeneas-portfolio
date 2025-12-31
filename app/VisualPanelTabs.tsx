@@ -274,8 +274,9 @@ export default function VisualPanelTabs({
                                                 '"Subway Ticker Grid", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
                                             fontSize: "clamp(20px, 2vw, 36px)",
                                             lineHeight: 1.1,
-                                            letterSpacing: "0.3em",
+                                            letterSpacing: "0.2em",
                                             color: "#B0B0B0",
+                                            whiteSpace: "normal", wordBreak: "keep-all",
                                         }}
                                     >
                                         {mode.titleInTarget}

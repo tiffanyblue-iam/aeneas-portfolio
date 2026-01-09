@@ -353,9 +353,9 @@ export default function ExperienceLabSlider({
                             ) : null}
 
                             <div className="mt-5 space-y-4">
-                                <Section title="Problem" items={current.problem} />
-                                <Section title="Solution" items={current.solution} />
-                                <Section title="Impact" items={current.impact} />
+                                <Section stage="problem" title="Problem" items={current.problem} accent={accent} />
+                                <Section stage="solution" title="Solution" items={current.solution} accent={accent} />
+                                <Section stage="impact" title="Impact" items={current.impact} accent={accent} />
                             </div>
                         </div>
 
@@ -564,22 +564,119 @@ export default function ExperienceLabSlider({
     );
 }
 
-function Section({ title, items }: { title: string; items?: string[] }) {
+function Section({
+    stage,
+    title,
+    items,
+    accent,
+}: {
+    stage: "problem" | "solution" | "impact";
+    title: string;
+    items?: string[];
+    accent?: string;
+}) {
     if (!items?.length) return null;
+
+    // 단계별 컬러 톤(너의 기계 패널 톤 유지하면서, 텍스트가 "순서"로 보이게)
+    const palette =
+        stage === "problem"
+            ? {
+                chip: "rgba(244,63,94,0.95)", // rose
+                ring: "rgba(244,63,94,0.22)",
+                bgA: "rgba(244,63,94,0.10)",
+                bgB: "rgba(0,0,0,0.18)",
+                label: "Issue",
+            }
+            : stage === "solution"
+                ? {
+                    chip: "rgba(56,189,248,0.95)", // sky
+                    ring: "rgba(56,189,248,0.22)",
+                    bgA: "rgba(56,189,248,0.10)",
+                    bgB: "rgba(0,0,0,0.18)",
+                    label: "Plan",
+                }
+                : {
+                    chip: accent ?? "rgba(76,153,144,0.95)", // accent(emerald-ish)
+                    ring: `${accent ?? "rgba(76,153,144,0.95)"}33`,
+                    bgA: `${accent ?? "rgba(76,153,144,0.95)"}22`,
+                    bgB: "rgba(0,0,0,0.18)",
+                    label: "Result",
+                };
+
     return (
-        <div className="rounded-xl border border-white/10 bg-black/25 p-4">
+        <div
+            className="
+        relative rounded-2xl border border-white/10 p-4 overflow-hidden
+        shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
+      "
+            style={{
+                background: [
+                    `linear-gradient(180deg, ${palette.bgA} 0%, ${palette.bgB} 100%)`,
+                    "radial-gradient(circle at 18% 12%, rgba(255,255,255,0.08), transparent 55%)",
+                    "radial-gradient(circle at 85% 80%, rgba(255,255,255,0.05), transparent 60%)",
+                ].join(", "),
+                boxShadow: [
+                    "inset 1px 1px 2px rgba(255,255,255,0.10)",
+                    "inset -2px -2px 10px rgba(0,0,0,0.65)",
+                    `0 10px 26px rgba(0,0,0,0.55)`,
+                    `0 0 0 1px rgba(255,255,255,0.06)`,
+                ].join(", "),
+            }}
+        >
+            {/* 상단 ‘순차’ 라인/글로우 */}
+            <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
+                style={{
+                    background: `linear-gradient(90deg, transparent 0%, ${palette.chip} 50%, transparent 100%)`,
+                    opacity: 0.85,
+                }}
+            />
+            <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                    boxShadow: `inset 0 0 0 1px ${palette.ring}`,
+                }}
+            />
+
+            {/* 헤더 */}
             <div className="flex items-center justify-between">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-400">{title}</p>
-                <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
+                <div className="flex items-center gap-2">
+                    <span
+                        className="h-2 w-2 rounded-full"
+                        style={{
+                            backgroundColor: palette.chip,
+                            boxShadow: `0 0 18px ${palette.chip}`,
+                        }}
+                    />
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-300">
+                        {title}
+                    </p>
+                    <span className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
+                        · {palette.label}
+                    </span>
+                </div>
+
+                {/* 미세 하이라이트 점 */}
+                <span className="h-1.5 w-1.5 rounded-full bg-white/18" />
             </div>
-            <div className="mt-3 space-y-2">
+
+            {/* 리스트 */}
+            <div className="mt-3 space-y-2.5">
                 {items.slice(0, 3).map((t, i) => (
                     <div key={i} className="flex gap-3">
-                        <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-white/25" />
-                        <p className="text-[13px] leading-relaxed text-zinc-300">{t}</p>
+                        <span
+                            className="mt-[7px] h-1.5 w-1.5 rounded-full"
+                            style={{ backgroundColor: "rgba(255,255,255,0.22)" }}
+                        />
+                        <p className="text-[13px] leading-relaxed text-zinc-200/90">
+                            {t}
+                        </p>
                     </div>
                 ))}
             </div>
+
+            {/* 바닥 그라데이션로 “박스 떠있는 느낌” */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/55 to-transparent" />
         </div>
     );
 }

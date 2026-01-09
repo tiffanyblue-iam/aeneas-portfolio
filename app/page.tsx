@@ -668,6 +668,23 @@ export default function Home() {
       cta: "사이트 보기",
     },
     {
+      id: "mare-design",
+      kind: "freelance",
+      badge: "PERSONAL · FRAMER",
+      title: "Mare Design · Portfolio Hub",
+      lead: "Framer 기반의 소규모 브랜드·개인 사업자를 위한 빠르게 만들고 바로 쓰는 포트폴리오 허브",
+      period: "2025 (Personal)",
+      role: "기획 · 구조 설계 · UI · Framer 구현",
+      afterImg: "lab/mare_design.png", // ✅ 너가 캡쳐해서 넣을 파일
+      problem: ["지금 보여줄 수 있는 정리된 페이지가 없음, 개인 브랜드 표현 일관성", "지금 보여줄 수 있는 정리된 페이지가 없음"],
+      solution: ["Framer 기반 단일 페이지로 정보 통합", "텍스트·이미지 교체만으로 즉시 수정 가능", "브랜드 톤을 해치지 않는 최소 UI 설계"],
+      impact: ["처음 보는 사람도 한눈에 이해하는 구조", "제안·미팅 시 바로 공유 가능한 링크 확보", "운영 중에도 직접 수정 가능한 포트폴리오 완성"],
+      keyNotes: ["컴포넌트 기반", "시각적 위계", "빠른 iteration"],
+      conclusion: ["정신없는 작업 기록’을 ‘검증 가능한 포트폴리오’로 정리한 사이트."],
+      href: "https://mare-design.framer.website/",
+      cta: "사이트 보기",
+    },
+    {
       id: "josun-routeworld",
       kind: "proposal",
       badge: "PROPOSAL · DECK",

@@ -243,15 +243,8 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     role: "브랜드 코어 정의 · 웹 IA/와이어 설계 · 인스타/피드 시각 언어 설계 · 제휴 제안서/리포트 템플릿 제작",
     context: (
       <>
-        프로젝트는{" "}
-        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
-          라우트웨이컨설팅 주식회사
-        </span>
-        가 운영하던 사이드 프로젝트{" "}
-        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
-          RouteWorld
-        </span>
-        에서 시작되었습니다. 뷰티에서 여행, 다시{" "}
+        프로젝트는{" "}  라우트웨이컨설팅 주식회사가 운영하던 사이드 프로젝트{" "}
+        RouteWorld에서 시작되었습니다. 뷰티에서 여행, 다시{" "}
         <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
           여행+라이프스타일 커머스
         </span>
@@ -852,6 +845,7 @@ export default function Home() {
             filter: "blur(12px)", // 조금 더 퍼뜨리기
           }}
         />
+
         {/* 2. 실제 컨텐츠 */}
         <main className="w-full px-6 md:px-12 py-16 md:py-24 space-y-24 md:space-y-28">
           {/* 1) HERO + CONSTELLATION + PANEL */}
@@ -1388,17 +1382,17 @@ export default function Home() {
               </div>
             </section >
 
-            {/* 2) SELECTED WORK SECTION - [Updated Layout 2x2] */}
+            {/* 3) SELECTED WORK SECTION - [Updated Layout 2x2] */}
             <section className="full-bleed mt-30 border-t border-white/7 pt-10">
 
               <header className="mb-14 text-center space-y-4 max-w-5xl mx-auto">
-                <p className="text-[14px] tracking-[0.3em] uppercase text-orange-500/90 font-bold">
+                <span className="inline-block px-5 py-2 rounded-full bg-zinc-50 text-black text-[14px] font-bold tracking-widest uppercase">
                   System Archives
-                </p>
-                <h2 className="text-[36px] md:text-[72px] font-bold leading-tight tracking-tight text-zinc-100">
-                  Selected Works
+                </span>
+                <h2 className="text-[36px] md:text-[68px] font-bold leading-tight tracking-tight text-zinc-100">
+                  SELECTED WORKS
                 </h2>
-                <p className="mx-auto max-w-2xl text-[24px] text-zinc-400 leading-relaxed">
+                <p className="mx-auto max-w-2xl text-[20px] text-zinc-400 leading-relaxed">
                   프로젝트의 설계 구조를 확인하려면 키보드를 눌러 접속하세요.
                 </p>
               </header>
@@ -1561,7 +1555,7 @@ export default function Home() {
               {/* ▲▲▲ 바둑판 영역 끝 */}
 
 
-              {/* ▼▼▼ 디테일 패널 (V6.4 Sophisticated Editorial) */}
+              {/* ▼▼▼ 디테일 패널 (V12.1 Typography Refined: Less Bold, Better Hierarchy) */}
               <AnimatePresence>
                 {activeProjectDetail && (
                   <>
@@ -1584,11 +1578,11 @@ export default function Home() {
                         animate={{ y: "0%", opacity: 1 }}
                         exit={{ y: "100%", opacity: 0 }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="relative w-full max-w-4xl h-full md:h-[90vh] pointer-events-auto"
+                        className="relative w-full max-w-6xl h-full md:h-[95vh] pointer-events-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {/* PANEL BODY: Clean White Paper */}
-                        <div className="relative h-full w-full bg-white md:rounded-[12px] shadow-2xl overflow-hidden flex flex-col font-sans text-zinc-900 selection:bg-[#fff3b0] selection:text-black">
+                        {/* PANEL BODY */}
+                        <div className="relative h-full w-full bg-white md:rounded-[20px] shadow-2xl overflow-hidden flex flex-col font-sans text-zinc-900 selection:bg-[#fff3b0] selection:text-black">
 
                           {/* Paper Texture */}
                           <div className="absolute inset-0 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none mix-blend-multiply" />
@@ -1597,40 +1591,43 @@ export default function Home() {
                           <button
                             type="button"
                             onClick={() => setActiveProject(null)}
-                            className="absolute right-6 top-6 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-900 transition-colors shadow-sm border border-zinc-200"
+                            className="absolute right-6 top-6 z-30 flex items-center justify-center w-12 h-12 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-900 transition-colors shadow-sm border border-zinc-200 text-lg"
                           >
                             ✕
                           </button>
 
                           {/* SCROLL AREA */}
-                          <div className="flex-1 overflow-y-auto overscroll-contain px-6 md:px-12 py-10 md:py-14 space-y-16">
+                          <div className="flex-1 overflow-y-auto overscroll-contain px-8 md:px-16 py-12 md:py-20 space-y-20">
 
                             {/* 1. Header: 타이틀 & 메타데이터 */}
-                            <header className="space-y-8 border-b border-zinc-900/10 pb-10">
-                              <div className="space-y-3">
-                                <span className={`inline-block text-[12px] font-bold tracking-[0.15em] uppercase px-2 py-1 rounded bg-zinc-100 border border-zinc-200 text-zinc-600`}>
+                            <header className="space-y-10 border-b border-zinc-900/10 pb-12">
+                              <div className="space-y-4">
+                                <span className={`inline-block text-[13px] font-bold tracking-[0.15em] uppercase px-3 py-1.5 rounded bg-zinc-100 border border-zinc-200 text-zinc-600`}>
                                   {activeProjectDetail.clientType}
                                 </span>
+                                {/* ✅ [수정] 타이틀 사이즈 축소 (7xl -> 5xl) / 굵기 조정 (black -> extrabold) */}
                                 <h2 className="text-3xl md:text-5xl font-extrabold text-zinc-950 tracking-tight leading-[1.1] break-keep">
                                   {activeProjectDetail.title}
                                 </h2>
                               </div>
 
                               {/* 메타 정보 */}
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-zinc-50 rounded-xl border border-zinc-200">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-zinc-50 rounded-2xl border border-zinc-200">
                                 <div>
-                                  <span className="block text-xs font-bold uppercase text-zinc-400 tracking-wider mb-1.5">Period</span>
-                                  <span className="text-sm font-medium text-zinc-800">{activeProjectDetail.period}</span>
+                                  <span className="block text-[12px] font-bold uppercase text-zinc-400 tracking-widest mb-2">Period</span>
+                                  {/* ✅ [수정] 텍스트 굵기 Medium으로 완화 */}
+                                  <span className="text-[16px] font-medium text-zinc-800">{activeProjectDetail.period}</span>
                                 </div>
                                 <div>
-                                  <span className="block text-xs font-bold uppercase text-zinc-400 tracking-wider mb-1.5">Role</span>
-                                  <span className="text-sm font-medium text-zinc-800">{activeProjectDetail.role}</span>
+                                  <span className="block text-[12px] font-bold uppercase text-zinc-400 tracking-widest mb-2">Role</span>
+                                  {/* ✅ [수정] 텍스트 굵기 Medium으로 완화 */}
+                                  <span className="text-[16px] font-medium text-zinc-800">{activeProjectDetail.role}</span>
                                 </div>
                                 <div className="md:col-span-2">
-                                  <span className="block text-xs font-bold uppercase text-zinc-400 tracking-wider mb-2">Tools</span>
+                                  <span className="block text-[12px] font-bold uppercase text-zinc-400 tracking-widest mb-3">Tools</span>
                                   <div className="flex flex-wrap gap-2">
                                     {parseTools(activeProjectDetail.tools).map((tool) => (
-                                      <span key={tool.name} className="text-zinc-700 bg-white border border-zinc-200 px-2.5 py-1 rounded-md text-xs font-medium shadow-sm">
+                                      <span key={tool.name} className="text-zinc-700 bg-white border border-zinc-200 px-3 py-1.5 rounded-lg text-[13px] font-medium shadow-sm">
                                         {tool.name}
                                       </span>
                                     ))}
@@ -1642,30 +1639,34 @@ export default function Home() {
 
                             {/* 2. Context (문제 정의) */}
                             <section>
-                              <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-5 border-l-4 border-zinc-900 pl-3">Context & Problem</h3>
-                              <div className="text-[16px] md:text-[18px] leading-[1.75] text-zinc-800 font-medium whitespace-pre-line">
-                                {/* 데이터 파일의 <span> 클래스를 꼭 수정해주세요! */}
+                              <h3 className="text-[14px] font-extrabold text-zinc-950 uppercase tracking-widest mb-6 border-l-4 border-zinc-900 pl-4">
+                                Context & Problem
+                              </h3>
+                              {/* 본문은 가독성을 위해 Medium 유지 */}
+                              <div className="text-[18px] md:text-[20px] leading-[1.75] text-zinc-800 font-medium whitespace-pre-line">
                                 {activeProjectDetail.context}
                               </div>
                             </section>
 
 
-                            {/* ✅ [NEW PLACE] 3. Key Visuals (상단으로 이동 - 시각적 환기) */}
+                            {/* 3. Key Visuals */}
                             {currentVisuals.length > 0 && (
                               <section>
-                                <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-5 border-l-4 border-zinc-900 pl-3">Key Visuals</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <h3 className="text-[14px] font-extrabold text-zinc-950 uppercase tracking-widest mb-8 border-l-4 border-zinc-900 pl-4">
+                                  Key Visuals
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                   {currentVisuals.slice(0, 2).map((visual, idx) => (
-                                    <div key={idx} className="group cursor-pointer flex flex-col gap-3" onClick={() => setActiveVisual(visual)}>
-                                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-100 border border-zinc-200 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:border-zinc-300 group-hover:scale-[1.01]">
+                                    <div key={idx} className="group cursor-pointer flex flex-col gap-4" onClick={() => setActiveVisual(visual)}>
+                                      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-zinc-100 border border-zinc-200 shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:border-zinc-300 group-hover:scale-[1.01]">
                                         <Image src={visual.src} alt={visual.title} fill className="object-cover" />
-                                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/5 backdrop-blur-[1px]">
-                                          <span className="bg-white text-zinc-900 px-4 py-2 rounded-full text-xs font-bold shadow-lg border border-zinc-100">ZOOM +</span>
+                                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 backdrop-blur-[2px]">
+                                          <span className="bg-white text-zinc-900 px-5 py-2.5 rounded-full text-xs font-bold shadow-2xl transform translate-y-2 group-hover:translate-y-0 transition-transform">ZOOM VIEW</span>
                                         </div>
                                       </div>
                                       <div className="px-1">
-                                        <p className="text-[15px] font-bold text-zinc-900 leading-tight mb-1">{visual.title}</p>
-                                        <p className="text-[13px] text-zinc-500 leading-relaxed">{visual.caption}</p>
+                                        <p className="text-[16px] font-bold text-zinc-900 leading-tight mb-1.5">{visual.title}</p>
+                                        <p className="text-[14px] text-zinc-500 leading-relaxed font-medium">{visual.caption}</p>
                                       </div>
                                     </div>
                                   ))}
@@ -1674,47 +1675,55 @@ export default function Home() {
                             )}
 
 
-                            {/* ✅ [UPDATED] 4. Outcome (세련된 다크 차콜 + 미디엄 폰트) */}
-                            <section className="bg-[#1A1A1A] text-zinc-100 p-8 md:p-12 rounded-2xl shadow-xl relative overflow-hidden">
+                            {/* 4. Outcome */}
+                            <section className="bg-[#111] text-zinc-100 p-10 md:p-14 rounded-[32px] shadow-2xl relative overflow-hidden">
                               <div className="relative z-10">
-                                <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-4">Final Outcome</h3>
-                                {/* font-bold -> font-medium 으로 변경하여 눈 피로도 감소 */}
-                                <p className="text-[17px] md:text-[21px] leading-relaxed whitespace-pre-line font-medium text-zinc-50">
+                                <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-[0.25em] mb-6">
+                                  Final Outcome
+                                </h3>
+                                {/* ✅ [수정] 폰트 사이즈 2단계 축소 (24px -> 20px) */}
+                                <p className="text-[16px] md:text-[20px] leading-relaxed whitespace-pre-line font-medium text-zinc-50">
                                   {activeProjectDetail.outcome}
                                 </p>
                               </div>
-                              {/* Decorative Blob (투명도 낮춤) */}
-                              <div className={`absolute top-0 right-0 w-80 h-80 bg-gradient-to-br opacity-15 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/3
-                              ${activeProjectDetail.id === "zigzag" ? "from-emerald-500 to-transparent"
+                              <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-br opacity-20 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/3
+                  ${activeProjectDetail.id === "zigzag" ? "from-emerald-500 to-transparent"
                                   : activeProjectDetail.id === "gmarket" ? "from-sky-500 to-transparent"
                                     : "from-amber-500 to-transparent"}`}
                               />
                             </section>
 
 
-                            {/* 5. Strategy & Process (과정) */}
-                            <section className="grid md:grid-cols-[1fr_1.5fr] gap-8 md:gap-12 border-t border-zinc-100 pt-10">
-                              {/* Goals */}
+                            {/* 5. Strategy & Process */}
+                            <section className="grid md:grid-cols-[1fr_1.5fr] gap-12 md:gap-20 border-t border-zinc-100 pt-16">
                               <div>
-                                <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-5 border-l-4 border-zinc-900 pl-3">Goals</h3>
-                                <ul className="space-y-3">
+                                <h3 className="text-[14px] font-extrabold text-zinc-950 uppercase tracking-widest mb-6 border-l-4 border-zinc-900 pl-4">
+                                  Goals
+                                </h3>
+                                <ul className="space-y-5">
                                   {activeProjectDetail.goal.map((g) => (
-                                    <li key={g} className="flex items-start gap-3 text-zinc-700 leading-relaxed text-[15px]">
-                                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-zinc-400" />
+                                    <li key={g} className="flex items-start gap-4 text-zinc-800 leading-relaxed text-[16px] font-medium">
+                                      <span className="mt-2.5 w-1.5 h-1.5 rounded-full shrink-0 bg-zinc-900" />
                                       {g}
                                     </li>
                                   ))}
                                 </ul>
                               </div>
 
-                              {/* Process Cards */}
                               <div>
-                                <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-5 border-l-4 border-zinc-900 pl-3">Process</h3>
-                                <div className="space-y-4">
+                                <h3 className="text-[14px] font-extrabold text-zinc-950 uppercase tracking-widest mb-6 border-l-4 border-zinc-900 pl-4">
+                                  Process
+                                </h3>
+                                <div className="space-y-5">
                                   {activeProjectDetail.process.map((step) => (
-                                    <div key={step.label} className="bg-white p-6 rounded-xl border border-zinc-200 shadow-[0_4px_20px_-12px_rgba(0,0,0,0.1)]">
-                                      <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">{step.label}</p>
-                                      <p className="text-zinc-800 text-[15px] leading-relaxed font-medium">{step.body}</p>
+                                    <div key={step.label} className="bg-white p-7 rounded-2xl border border-zinc-200 shadow-[0_4px_20px_-12px_rgba(0,0,0,0.05)] hover:border-zinc-300 transition-colors">
+                                      <p className="text-[12px] font-bold text-zinc-400 uppercase tracking-widest mb-3">
+                                        {step.label}
+                                      </p>
+                                      {/* ✅ [수정] 프로세스 본문: Bold -> Medium으로 완화 */}
+                                      <p className="text-zinc-900 text-[16px] leading-relaxed font-medium">
+                                        {step.body}
+                                      </p>
                                     </div>
                                   ))}
                                 </div>
@@ -1722,26 +1731,30 @@ export default function Home() {
                             </section>
 
 
-                            {/* 6. More Visuals (나머지 이미지 갤러리) */}
+                            {/* 6. More Visuals (2x2 Layout) */}
                             {currentVisuals.length > 2 && (
-                              <section className="pt-6 border-t border-zinc-100">
-                                <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-8 border-l-4 border-zinc-900 pl-3">More Visuals</h3>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                              <section className="pt-10 border-t border-zinc-100">
+                                <h3 className="text-[14px] font-extrabold text-zinc-950 uppercase tracking-widest mb-10 border-l-4 border-zinc-900 pl-4">
+                                  More Visuals
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                   {currentVisuals.slice(2).map((visual, idx) => (
-                                    <div key={idx} className="group cursor-pointer flex flex-col gap-2" onClick={() => setActiveVisual(visual)}>
-                                      <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-zinc-100 border border-zinc-200 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:border-zinc-300 group-hover:scale-[1.01]">
+                                    <div key={idx} className="group cursor-pointer flex flex-col gap-4" onClick={() => setActiveVisual(visual)}>
+                                      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-zinc-100 border border-zinc-200 shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:border-zinc-300 group-hover:scale-[1.01]">
                                         <Image src={visual.src} alt={visual.title} fill className="object-cover transition-opacity hover:opacity-90" />
                                       </div>
-                                      <p className="text-[12px] text-zinc-500 truncate pl-1">{visual.title}</p>
+                                      <div className="px-1">
+                                        <p className="text-[16px] font-bold text-zinc-800 truncate pl-1 mb-1">{visual.title}</p>
+                                        <p className="text-[14px] text-zinc-500 pl-1 font-medium">{visual.caption}</p>
+                                      </div>
                                     </div>
                                   ))}
                                 </div>
                               </section>
                             )}
 
-                            {/* Footer Mark */}
-                            <div className="flex justify-center pt-10 pb-6 opacity-30">
-                              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
+                            <div className="flex justify-center pt-16 pb-8 opacity-20">
+                              <div className="w-2 h-2 rounded-full bg-zinc-900" />
                             </div>
 
                           </div>
@@ -1842,110 +1855,114 @@ export default function Home() {
               {/* ▲▲▲ 디테일 영역 끝*/}
             </section>
 
-            {/* 3) STUDIO LAB + STUDIO STATUS 그룹  */}
-            < div className="full-bleed space-y-0" >
-              {/* STUDIO LAB */}
-              < section className="mt-30" >
-                {/* 뷰포트 풀폭 래핑 */}
-                < div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]" >
-                  <div className="relative w-screen min-h-screen overflow-hidden bg-black">
-                    {/* 상단~하단 그라데이션 */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950 to-black" />
+            {/* 4) STUDIO LAB + STUDIO STATUS + FOOTER 그룹 */}
+            <div className="full-bleed space-y-0 relative z-20">
 
-                    {/* 하단 레이어 이미지 */}
-                    <div
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-[420px] opacity-80"
-                      style={{
-                        backgroundImage: "url('/lab/layer-grid.jpg')",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "bottom center",
-                        backgroundSize: "contain",
-                      }}
-                    />
+              {/* 4) [WHITE] STUDIO LABORATORY (bg2) */}
+              <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#EFEFF1] py-24 md:py-32 overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{ backgroundImage: "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
 
-                    {/* 컨텐츠 래퍼 */}
-                    <div className="relative z-10 mx-auto max-w-7xl px-8 md:px-16 pt-14 pb-4 space-y-10">
-                      {/* 상단 타이틀 */}
-                      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                        {/* 왼쪽: 라벨 + 큰 타이틀 */}
-                        <div className="max-w-xl space-y-4">
-                          <p className={`${TYPE.sectionKicker} text-zinc-500`}>
-                            STUDIO LAB
-                          </p>
-                          <h2 className="text-[40px] md:text-[56px] font-semibold leading-tight tracking-tight text-zinc-50">
-                            WE LAYER
-                            <br />
-                            EXPERIENCE LAB
-                          </h2>
+                <div className="relative z-10 mx-auto max-w-7xl px-6">
+                  <header className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-zinc-300/50 pb-10">
+                    <div className="text-left space-y-4">
+                      {/* ✅ [통일] 헤더 Span 스타일 (Light Ver.) */}
+                      <span className="inline-block px-4 py-1.5 rounded-full bg-[#222222] border border-zinc-300 text-zinc-200 text-[11px] font-bold tracking-[0.2em] uppercase">
+                        Experimental Zone
+                      </span>
+                      {/* ✅ [통일] 타이틀 사이즈 (4xl~7xl) */}
+                      <h2 className="text-4xl md:text-7xl font-black text-zinc-900 tracking-tighter leading-none">
+                        STUDIO<br /><span className="text-zinc-400">LABORATORY</span>
+                      </h2>
+                    </div>
+                    <p className="max-w-sm md:text-right text-zinc-500 font-medium leading-relaxed text-sm">
+                      프리랜서 작업과 제안서를 모아,<br />문제를 정의하고 경험을 설계하는 방식을 실험하는 구역입니다.
+                    </p>
+                  </header>
+
+                  {/* 기계 패널 */}
+                  <div className="p-3 md:p-6 rounded-[36px] bg-[#EAEAEA] border border-white/80 shadow-2xl">
+                    <div className="rounded-[24px] overflow-hidden bg-white border border-zinc-200 shadow-inner">
+
+                      {/* ✅ [수정] Status Bar: 블랙 배경 + 컬러풀 도트 */}
+                      <div className="flex items-center justify-between px-6 py-4 bg-[#111] border-b border-zinc-800">
+                        <div className="flex gap-2">
+                          <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /> {/* Red */}
+                          <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /> {/* Yellow */}
+                          <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" /> {/* Green */}
                         </div>
-
-                        {/* 오른쪽: 설명 + 키워드 */}
-                        <div className="max-w-md space-y-3 md:text-right">
-                          <p className={`${TYPE.sectionBody} text-zinc-300`}>
-                            프리랜서 웹·브랜딩 작업과 제안서를 모아, <br />
-                            AENEAS가 문제를 정의하고 경험을 설계하는 방식을 실험하는 구역입니다.
-                          </p>
-                          <p className="text-[12px] tracking-[0.18em] uppercase text-zinc-500">
-                            FREELANCE · PROPOSAL · SYSTEM THINKING
-                          </p>
-                        </div>
+                        <span className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase">AENEAS_LAB_OS_V14.0</span>
                       </div>
 
-                      {/* 카드 데크(배경 플레이트) – 기계 패널 느낌 3겹 프레임 */}
-                      <div className="mt-30 mx-auto max-w-6xl">
-                        {/* 카드 그리드 – 프리랜서 2 + 제안서 1 */}
-                        <ExperienceLabSlider items={LAB_ITEMS} mainColor="#4C9990" autoMs={6500} />
-
+                      {/* Slider Container */}
+                      <div className="py-12 md:py-16 bg-white">
+                        <ExperienceLabSlider items={LAB_ITEMS} mainColor="#1a1a1a" theme="light" />
                       </div>
-
-                      {/* STUDIO STATUS */}
-                      < section className="mt-0 border-t border-white/7 pt-8 md:pt-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between w-full max-w-5xl mx-auto" >
-                        <div className="space-y-2">
-                          <p className="text-xs font-medium text-emerald-400 tracking-[0.25em] uppercase">
-                            Studio Status
-                          </p>
-                          <p className={`${TYPE.statusBody} text-zinc-300`}>
-
-                            <span className="text-zinc-50">
-                              브랜드·웹 리빌딩
-                            </span>
-                            에 집중합니다. <br />
-                            <a href="https://github.com/tiffanyblue-iam/aeneas-portfolio" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-zinc-400 transition-colors text-[14px] underline">
-                              GitHub 레포지토리
-                            </a>
-                          </p>
-                        </div>
-
-                        <div className="flex gap-3">
-                          <a
-                            href="mailto:lightblue1369@gmail.com"
-                            className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-6 py-2 text-sm font-medium text-zinc-900 hover:bg-emerald-300 transition-colors"
-                          >
-                            프로젝트 상의하기
-                          </a>
-                          <a
-                            href="https://github.com/tiffanyblue-iam/aeneas-portfolio" target="_blank" rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center rounded-full border border-zinc-700 px-6 py-2 text-sm font-medium text-zinc-200 hover:border-zinc-500 hover:bg-zinc-900 transition-colors"
-                          >
-                            작업 노트 보기
-                          </a>
-                        </div>
-                      </section >
-                    </div >
-
-
-                    <footer className="mt-40 border-t border-white/5 pt-10 flex flex-wrap items-center justify-between gap-2 w-full max-w-5xl mx-auto">
-                      <span className={`${TYPE.footer} text-zinc-500`}>
-                        © {new Date().getFullYear()} AENEAS Studio. All rights reserved.
-                      </span>
-                      <span className={`${TYPE.footer} text-zinc-500`}>
-                        Based in Seoul · Working remotely.
-                      </span>
-                    </footer>
-                  </div >
-                </div >
+                    </div>
+                  </div>
+                </div>
               </section>
-            </div >
+
+
+              {/* ▼▼▼ [V8.1 FINAL FOOTER] The Dark Terminal */}
+              <footer className="relative w-full py-24 md:py-32 px-6 md:px-12 bg-[#050505] text-white border-t border-zinc-900">
+
+                <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-16">
+
+                  {/* Left: Signal & CTA */}
+                  <div className="space-y-10">
+
+                    {/* Status */}
+                    <div className="flex items-center gap-3">
+                      <span className="relative flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                      </span>
+                      <p className="text-xs font-bold text-emerald-500 tracking-[0.2em] uppercase">
+                        Signal Status: Online
+                      </p>
+                    </div>
+
+                    {/* Typography */}
+                    <div className="space-y-2">
+                      <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-[0.9]">
+                        READY TO<br />
+                        <span className="text-zinc-600">COLLABORATE?</span>
+                      </h2>
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex flex-wrap gap-4 pt-4">
+                      <a
+                        href="mailto:lightblue1369@gmail.com"
+                        className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-bold text-lg hover:bg-zinc-200 transition-all active:scale-95"
+                      >
+                        <span>Send Signal</span>
+                        <span className="group-hover:translate-x-1 transition-transform">→</span>
+                      </a>
+
+                      {/* Download CV -> Profile Deck (혹은 삭제 가능) */}
+                      <a
+                        href="#"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-zinc-700 text-zinc-400 font-medium hover:border-white hover:text-white transition-colors"
+                      >
+                        Profile Deck
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Right: Info */}
+                  <div className="text-left md:text-right space-y-8">
+                    <div className="text-zinc-600 text-[11px] tracking-widest uppercase font-bold space-y-1">
+                      <p>© 2024 AENEAS Studio.</p>
+                      <p>System Engineered with Next.js & React</p>
+                    </div>
+                  </div>
+
+                </div>
+              </footer>
+
+            </div>
+
           </div>
         </main>
       </div >

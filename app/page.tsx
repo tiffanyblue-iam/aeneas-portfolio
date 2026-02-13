@@ -4,11 +4,11 @@
 import Image from "next/image";
 import { useState, useEffect, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import VisualPanelTabs from "./VisualPanelTabs";
 import { MODES, type ModeId } from "./modes";
 import ExperienceLabSlider, { type LabItem } from "./components/ExperienceLabSlider";
-
 
 
 
@@ -420,7 +420,7 @@ type LetterStone = {
   char: string;
 };
 
-type Accent = "emerald" | "sky" | "amber";
+type Accent = "emerald" | "sky" | "amber" | "orange";
 type BoardVariant = "wide" | "narrow";
 
 type BoardProps = {
@@ -432,6 +432,13 @@ type BoardProps = {
   onClick: () => void;
 };
 
+
+/** ─────────────────────────────────
+ * [Updated V4.1] TileBoard - Brightness & Visibility
+ * - Default: #1E1E20 (너무 어둡지 않은 차콜 그레이)
+ * - Hover: #252528 (확실히 밝아짐) + 강한 Border Glow
+ * - Layout: V4.0의 패딩/간격 유지
+ * ──────────────────────────────── */
 function TileBoard({
   letters,
   card,
@@ -445,47 +452,76 @@ function TileBoard({
     letterMap.set(`${l.row}-${l.col}`, l.char);
   });
 
-  // 태그 카드 가로 폭
-  const cardWidthPercent = variant === "narrow" ? 64 : 72;
+  const cardWidthPercent = variant === "narrow" ? 70 : 76;
 
-  const ringActive =
-    accent === "emerald"
-      ? "ring-2 ring-emerald-400/70 shadow-[0_0_40px_rgba(34,197,94,0.45)]"
-      : accent === "sky"
-        ? "ring-2 ring-sky-400/70 shadow-[0_0_40px_rgba(56,189,248,0.5)]"
-        : "ring-2 ring-amber-300/70 shadow-[0_0_40px_rgba(252,211,77,0.55)]";
+  const getStyles = (color: Accent) => {
+    // ✅ 공통 서브텍스트 스타일 (하단 텍스트: 레귤러 + 투명도 80% + 호버시 화이트)
+    const subtitleStyle = "[&>span:last-child]:font-normal [&>span:last-child]:opacity-80 group-hover:[&>span:last-child]:text-white group-hover:[&>span:last-child]:opacity-100 transition-colors duration-300";
 
-  const ringHover =
-    accent === "emerald"
-      ? "hover:ring-[1.5px] hover:ring-emerald-300/65"
-      : accent === "sky"
-        ? "hover:ring-[1.5px] hover:ring-sky-300/65"
-        : "hover:ring-[1.5px] hover:ring-amber-200/70";
+    switch (color) {
+      case "emerald":
+        return {
+          activeRing: "ring-2 ring-emerald-400 shadow-[0_0_60px_rgba(52,211,153,0.5)]",
+          hoverStyle: "hover:border-emerald-400/80 hover:shadow-[0_20px_50px_-10px_rgba(52,211,153,0.4)]",
+          text: "text-emerald-400",
+          textGlow: "drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]",
+          // ✅ roleText에 subtitleStyle 추가
+          roleText: `text-emerald-400/90 ${subtitleStyle}`,
+          btnText: "text-emerald-300",
+        };
+      case "sky":
+        return {
+          activeRing: "ring-2 ring-sky-400 shadow-[0_0_60px_rgba(56,189,248,0.5)]",
+          hoverStyle: "hover:border-sky-400/80 hover:shadow-[0_20px_50px_-10px_rgba(56,189,248,0.4)]",
+          text: "text-sky-400",
+          textGlow: "drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]",
+          roleText: `text-sky-400/90 ${subtitleStyle}`,
+          btnText: "text-sky-300",
+        };
+      case "amber":
+        return {
+          activeRing: "ring-2 ring-amber-400 shadow-[0_0_60px_rgba(251,191,36,0.5)]",
+          hoverStyle: "hover:border-amber-400/80 hover:shadow-[0_20px_50px_-10px_rgba(251,191,36,0.4)]",
+          text: "text-amber-400",
+          textGlow: "drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]",
+          roleText: `text-amber-400/90 ${subtitleStyle}`,
+          btnText: "text-amber-200",
+        };
+      case "orange":
+        return {
+          activeRing: "ring-2 ring-orange-500 shadow-[0_0_70px_rgba(249,115,22,0.6)]",
+          hoverStyle: "hover:border-orange-400/80 hover:shadow-[0_20px_50px_-10px_rgba(249,115,22,0.4)]",
+          text: "text-orange-500",
+          textGlow: "drop-shadow-[0_0_10px_rgba(249,115,22,0.9)]",
+          roleText: `text-orange-400/90 ${subtitleStyle}`,
+          btnText: "text-orange-200",
+        };
+    }
+  };
 
-  const tagTextColor =
-    accent === "emerald"
-      ? "text-emerald-300"
-      : accent === "sky"
-        ? "text-sky-300"
-        : "text-amber-200";
-
-
+  const s = getStyles(accent);
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`group relative w-full cursor-pointer overflow-hidden rounded-[8px] border border-white/6 bg-black/82 px-6 py-5
-        shadow-[0_22px_60px_rgba(0,0,0,0.9)]
-        transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+      className={`group relative w-full cursor-pointer rounded-[24px] 
+        border border-white/15 px-10 py-16  // ✅ 기본 보더도 조금 더 잘 보이게 (10% -> 15%)
+        shadow-[0_22px_60px_rgba(0,0,0,0.6)]
+        transition-all duration-300 ease-out // 반응 속도 약간 빠르게 (500 -> 300)
+        z-0 hover:z-10
         ${active
-          ? `${ringActive} scale-[1.01]`
-          : `${ringHover} scale-[0.995] hover:scale-[1.01] hover:shadow-[0_28px_80px_rgba(0,0,0,0.95)]`
+          ? `${s.activeRing} scale-[1.01] bg-[#121212]` // Active: 가장 어둡고 깊게
+          : `bg-[#1E1E20] hover:bg-[#252528] hover:-translate-y-2 ${s.hoverStyle}` // ✅ Default: #1E1E20 (밝음) -> Hover: #252528 (더 밝음)
         }`}
     >
+      {/* 배경 노이즈 레이어 */}
+      <div className="absolute inset-0 rounded-[24px] overflow-hidden pointer-events-none z-0">
+        <div className="absolute inset-0 opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      </div>
 
-      {/* 바둑판 / 키캡 그리드 */}
-      <div className="relative h-full w-full">
+      <div className="relative h-full w-full z-10">
+        {/* Grid Gap */}
         <div
           className="grid h-full w-full gap-[6px]"
           style={{
@@ -497,72 +533,88 @@ function TileBoard({
               const key = `${row}-${col}`;
               const char = letterMap.get(key);
 
-              // 흑돌(키캡)
+              // ⬛️ [Keycap] 흑돌
               if (char) {
                 return (
                   <div
                     key={key}
-                    className="flex items-center justify-center aspect-square rounded-[8px]
-                      border border-white/35
-                      bg-[radial-gradient(circle_at_25%_12%,rgba(255,255,255,0.45),rgba(40,40,52,0.75)_40%,rgba(0,0,0,1)_88%)]
-                      text-[13px] font-medium tracking-[0.32em] uppercase text-zinc-50
-                      shadow-[0_10px_22px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.55)]
-                      transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
-                      group-hover:-translate-y-[1px]"
+                    className={`flex items-center justify-center aspect-square rounded-[8px]
+                      border border-white/20
+                      bg-gradient-to-br from-[#404045] to-[#222222] // ✅ 흑돌 그라데이션도 한 톤 Up
+                      
+                      text-[16px] md:text-[18px] font-bold tracking-widest
+                      
+                      ${active
+                        ? `${s.text} ${s.textGlow}`
+                        : "text-zinc-50 group-hover:text-white" // ✅ 기본 텍스트도 더 밝은 zinc-50
+                      }
+                      
+                      shadow-[0_4px_8px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.35)]
+                      transition-all duration-300
+                      group-hover:-translate-y-[1px] group-hover:shadow-[0_6px_12px_rgba(0,0,0,0.7)]`}
                   >
                     {char}
                   </div>
                 );
               }
-              // 백돌
+
+              // ⬜️ [Keycap] 백돌 (세라믹 화이트)
               return (
                 <div
                   key={key}
                   className="aspect-square rounded-[8px]
-                    bg-[radial-gradient(circle_at_30%_22%,rgba(255,255,255,0.98),rgba(233,233,240,0.9)_65%,rgba(16,16,24,0.9)_100%)]
-                    opacity-[0.7]
-                    shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_6px_14px_rgba(0,0,0,0.85)]"
+                    /* ✅ 백돌 밝기 유지 (충분히 밝음) */
+                    bg-[radial-gradient(130%_130%_at_30%_20%,#e4e4e7_0%,#a1a1aa_50%,#52525b_100%)]
+                    opacity-[0.9] group-hover:opacity-[1]
+                    border border-white/30
+                    shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_3px_6px_rgba(0,0,0,0.8)]
+                    transition-opacity duration-500"
                 />
               );
             })
           )}
         </div>
 
-        {/* 타이틀 태그 + CLICK */}
+        {/* 🔘 [Label Card] */}
         <div
-          className="pointer-events-none absolute left-1/2 bottom-6 -translate-x-1/2"
+          className="pointer-events-none absolute left-1/2 bottom-8 -translate-x-1/2 z-20"
           style={{ width: `${cardWidthPercent}%` }}
         >
           <div
-            className="pointer-events-auto flex items-center justify-between
-              rounded-[8px] border border-white/70 bg-white/0
-              px-6 py-3
-              shadow-[0_18px_40px_rgba(0,0,0,0.75)]
-              backdrop-blur-[14px]
-              transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
-              group-hover:-translate-y-[10px]"
+            className={`pointer-events-auto flex items-center justify-between
+              rounded-[14px] 
+              bg-black/45 border border-white/35 backdrop-blur-sm 
+              px-6 py-4
+              shadow-[0_8px_32px_rgba(0,0,0,0.5)]
+              transition-all duration-300
+              hover:bg-black/60 hover:border-white/30 cursor-pointer`}
           >
-            {/* 왼쪽: 프로젝트 카테고리/타이틀 */}
             <div className="text-left leading-tight">
-              <div className={`flex flex-col gap-0.5 ${tagTextColor}`}>{card}</div>
+              {/* ✅ flex-col gap-1: 상하 간격
+                 ✅ font-semibold: 기본(상단) 텍스트 굵기
+                 ✅ ${s.roleText}: 여기서 하단 텍스트(Regular, Opacity)와 호버 효과(White)를 제어함
+              */}
+              <div className={`flex flex-col gap-1 tracking-widest uppercase
+                font-semibold
+                text-[13px] sm:text-[14px]
+                drop-shadow-md`}
+              >
+                {card}
+              </div>
             </div>
 
-            {/* 오른쪽: CLICK 라벨 */}
-            <span className="ml-4 inline-flex items-center text-[11px] font-semibold tracking-[0.22em] uppercase text-zinc-300/90 transition group-hover:text-white">
-              <span
-                className="mr-[2px] underline underline-offset-2"
-                style={{
-                  color: accent,
-                  textShadow: `0 0 10px ${accent}, 0 0 22px rgba(0,0,0,0.55)`,
-                  textDecorationColor: "rgba(255, 0, 0, 0.55)",
-                }}
-              >
-                Click
-              </span>
+            <span className={`ml-4 hidden sm:inline-flex items-center 
+              text-[11px] font-bold tracking-[0.2em] uppercase transition-colors 
+              
+              bg-white/20 border border-white/30
+              px-4 py-2 rounded-[8px] 
+              shadow-sm backdrop-blur
+              group-hover:bg-white/10 group-hover:border-white/60 text-white`}
+            >
+              OPEN ↗
             </span>
           </div>
         </div>
-
       </div>
     </button>
   );
@@ -571,7 +623,10 @@ function TileBoard({
 /** ─────────────────────────────────
  *  Home
  *  ──────────────────────────────── */
+
 export default function Home() {
+  const router = useRouter();
+
   // ── 기계 전원 상태 ─────────────────
   const [powerOn, setPowerOn] = useState(false);
 
@@ -756,7 +811,8 @@ export default function Home() {
 
   return (
     // 0. 기본 우주 배경 (항상 어두운 하늘)
-    <div className="aeneas-bg min-h-screen text-zinc-50">
+    <div className="aeneas-bg min-h-screen text-zinc-50 bg-[#050505]">
+
       {/* 북극성 & 북두칠성 – 장식 레이어 */}
       <div className="north-star" aria-hidden="true" />
 
@@ -1324,69 +1380,124 @@ export default function Home() {
               </div>
             </section >
 
-            {/* 2) SELECTED WORK – 바둑판 3분할 풀폭 + 디테일 패널 */}
-            < section className="full-bleed mt-30 border-t border-white/7 pt-10" >
-              {/* 위쪽 타이틀 영역 */}
-              < header className="mb-10 text-center space-y-3 max-w-5xl mx-auto" >
-                <p className={`${TYPE.sectionKicker} text-zinc-500`}>Web Design Projects</p>
-                <h2 className="text-[40px] md:text-[56px] font-semibold leading-tight tracking-tight text-zinc-50">
-                  Web Design Projects - <br />Work & Results
-                </h2>
-                <p
-                  className={`mx-auto max-w-3xl text-zinc-400 ${TYPE.sectionBody}`}
-                >
-                  Each board is a small system map for a project.
-                  <br />
-                  포인트 흑돌에는 프로젝트명을, 카드를 클릭하시면 프로젝트에 대한 정보를 볼 수 있습니다.
+            {/* 2) SELECTED WORK SECTION - [Updated Layout 2x2] */}
+            <section className="full-bleed mt-30 border-t border-white/7 pt-10">
+
+              <header className="mb-14 text-center space-y-4 max-w-5xl mx-auto">
+                <p className="text-[14px] tracking-[0.3em] uppercase text-orange-500/90 font-bold">
+                  System Archives
                 </p>
-              </header >
+                <h2 className="text-[36px] md:text-[72px] font-bold leading-tight tracking-tight text-zinc-100">
+                  Selected Works
+                </h2>
+                <p className="mx-auto max-w-2xl text-[24px] text-zinc-400 leading-relaxed">
+                  프로젝트의 설계 구조를 확인하려면 키보드를 눌러 접속하세요.
+                </p>
+              </header>
 
               {/* ▼▼▼ 바둑판 영역 – 가로 풀폭 */}
               <div
                 className={`
-                  mt-30 relative left-1/2 right-1/2
+                  mt-10 relative left-1/2 right-1/2
                   -ml-[50vw] -mr-[50vw]
                   transition-all duration-500
                   ${activeProjectDetail ? "blur-[3px] opacity-40" : ""}
                 `}
               >
-                <div className="w-screen px-6 md:px-12 lg:px-20">
-                  {/* 바둑판 전체를 감싸는 패널 – 화이트 10% 배경 */}
-                  <div className="rounded-[8px] border border-white/7 bg-white/5 px-6 py-8 shadow-[0_26px_70px_rgba(0,0,0,0.85)]">
-                    <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3 lg:gap-7">
-                      {/* ZIGZAG */}
-                      <TileBoard
-                        letters={
-                          [
+                <div className="w-screen px-4 md:px-10 lg:px-16 overflow-x-hidden">
+                  <div className="max-w-[1400px] mx-auto">
+
+                    {/* ✅ [FIX] 부모 컨테이너 패딩 대폭 확대 
+                        - py-8 -> py-24 (96px) : 상하 여백 확보 (잘림 방지 핵심)
+                        - px-6 -> px-12 : 좌우 여백 확보
+                        - rounded-8 -> rounded-[32px] : 부드러운 모서리
+                    */}
+                    <div className="rounded-[32px] border border-white/7 bg-white/5 px-8 md:px-12 py-24 shadow-[0_26px_70px_rgba(0,0,0,0.85)]">
+
+                      {/* ✅ [FIX] 그리드 간격 확대 (gap-10) */}
+                      <div className="grid gap-10 lg:gap-12 md:grid-cols-2">
+
+                        {/* 1. DETAIL POSITIONING (Orange) */}
+                        <TileBoard
+                          letters={[
+                            { row: 1, col: 2, char: "D" },
+                            { row: 1, col: 3, char: "E" },
+                            { row: 1, col: 4, char: "T" },
+                            { row: 1, col: 5, char: "A" },
+                            { row: 1, col: 6, char: "I" },
+                            { row: 1, col: 7, char: "L" },
+                          ]}
+                          variant="wide"
+                          accent="orange"
+                          active={false}
+                          onClick={() => window.location.href = "/work/detail-positioning"} // router 대신 window 이동 (또는 상단 router 사용)
+                          card={
+                            <>
+                              <span className={`${TYPE.projectKicker} text-orange-500`}>
+                                STRATEGIC UX
+                              </span>
+                              <span className={`font-light opacity-90`}>
+                                REPOSITIONING
+                              </span>
+                            </>
+                          }
+                        />
+
+                        {/* 2. ZIGZAG (Emerald) */}
+                        <TileBoard
+                          letters={[
                             { row: 1, col: 2, char: "Z" },
                             { row: 1, col: 3, char: "I" },
                             { row: 1, col: 4, char: "G" },
                             { row: 1, col: 5, char: "Z" },
                             { row: 1, col: 6, char: "A" },
                             { row: 1, col: 7, char: "G" },
-                          ] as LetterStone[]
-                        }
-                        variant="wide"
-                        accent="emerald"
-                        active={activeProject === "zigzag"}
-                        onClick={() => setActiveProject("zigzag")}
-                        card={
-                          <>
-                            <span className={`${TYPE.projectKicker} text-emerald-500`}>
-                              FASHION COMMERCE
-                            </span>
-                            <span className={`${TYPE.projectKicker} text-emerald-500`}>
-                              UX / BRANDING
-                            </span>
-                          </>
-                        }
-                      />
+                          ]}
+                          variant="wide"
+                          accent="emerald"
+                          active={activeProject === "zigzag"}
+                          onClick={() => setActiveProject("zigzag")}
+                          card={
+                            <>
+                              <span className={`${TYPE.projectKicker} text-emerald-500`}>
+                                FASHION COMMERCE
+                              </span>
+                              <span className={`font-light opacity-90`}>
+                                UX / BRANDING
+                              </span>
+                            </>
+                          }
+                        />
 
-                      {/* GMARKET / RAKUTEN */}
-                      <TileBoard
-                        letters={
-                          [
-                            // GMARKET
+                        {/* 3. TRAVEL (Amber) */}
+                        <TileBoard
+                          letters={[
+                            { row: 1, col: 2, char: "T" },
+                            { row: 1, col: 3, char: "R" },
+                            { row: 1, col: 4, char: "A" },
+                            { row: 1, col: 5, char: "V" },
+                            { row: 1, col: 6, char: "E" },
+                            { row: 1, col: 7, char: "L" },
+                          ]}
+                          variant="wide"
+                          accent="amber"
+                          active={activeProject === "travel"}
+                          onClick={() => setActiveProject("travel")}
+                          card={
+                            <>
+                              <span className={`${TYPE.projectKicker} text-amber-400`}>
+                                TRAVEL / LIFESTYLE
+                              </span>
+                              <span className={`font-light opacity-90`}>
+                                BRAND &amp; WEB
+                              </span>
+                            </>
+                          }
+                        />
+
+                        {/* 4. GMARKET (Sky) */}
+                        <TileBoard
+                          letters={[
                             { row: 1, col: 1, char: "G" },
                             { row: 1, col: 2, char: "M" },
                             { row: 1, col: 3, char: "A" },
@@ -1394,7 +1505,6 @@ export default function Home() {
                             { row: 1, col: 5, char: "K" },
                             { row: 1, col: 6, char: "E" },
                             { row: 1, col: 7, char: "T" },
-                            // RAKUTEN
                             { row: 2, col: 2, char: "R" },
                             { row: 2, col: 3, char: "A" },
                             { row: 2, col: 4, char: "K" },
@@ -1402,55 +1512,28 @@ export default function Home() {
                             { row: 2, col: 6, char: "T" },
                             { row: 2, col: 7, char: "E" },
                             { row: 2, col: 8, char: "N" },
-                          ] as LetterStone[]
-                        }
-                        variant="narrow"
-                        accent="sky"
-                        active={activeProject === "gmarket"}
-                        onClick={() => setActiveProject("gmarket")}
-                        card={
-                          <>
-                            <span className={`${TYPE.projectKicker} text-sky-400`}>
-                              GLOBAL MARKETPLACE
-                            </span>
-                            <span className={`${TYPE.projectKicker} text-sky-400`}>
-                              UX / SEO
-                            </span>
-                          </>
-                        }
-                      />
+                          ]}
+                          variant="wide" // 2열 레이아웃이므로 wide로 통일해도 무방
+                          accent="sky"
+                          active={activeProject === "gmarket"}
+                          onClick={() => setActiveProject("gmarket")}
+                          card={
+                            <>
+                              <span className={`${TYPE.projectKicker} text-sky-400`}>
+                                GLOBAL MARKETPLACE
+                              </span>
+                              <span className={`font-light opacity-90`}>
+                                UX / SEO
+                              </span>
+                            </>
+                          }
+                        />
 
-                      {/* TRAVEL */}
-                      <TileBoard
-                        letters={
-                          [
-                            { row: 1, col: 2, char: "T" },
-                            { row: 1, col: 3, char: "R" },
-                            { row: 1, col: 4, char: "A" },
-                            { row: 1, col: 5, char: "V" },
-                            { row: 1, col: 6, char: "E" },
-                            { row: 1, col: 7, char: "L" },
-                          ] as LetterStone[]
-                        }
-                        variant="wide"
-                        accent="amber"
-                        active={activeProject === "travel"}
-                        onClick={() => setActiveProject("travel")}
-                        card={
-                          <>
-                            <span className={`${TYPE.projectKicker} text-amber-400`}>
-                              TRAVEL / LIFESTYLE
-                            </span>
-                            <span className={`${TYPE.projectKicker} text-amber-400`}>
-                              BRAND &amp; WEB
-                            </span>
-                          </>
-                        }
-                      />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div >
+              </div>
               {/* ▲▲▲ 바둑판 영역 끝 */}
 
 
@@ -1875,8 +1958,8 @@ export default function Home() {
               </section>
             </div >
           </div>
-        </main >
-      </div >
+        </main>
+      </div>
     </div >
   );
 

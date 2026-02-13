@@ -789,30 +789,48 @@ export default function Home() {
 
 
   return (
-    // 0. 기본 우주 배경 (항상 어두운 하늘)
-    // ✅ [Global Wrap] 기본은 가장 깊은 블랙 (#050505)
-    <div className="relative min-h-screen w-full overflow-x-hidden bg-[#050505] text-zinc-50 selection:bg-orange-500/30 selection:text-orange-200 transition-colors duration-1000">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-[#050505] text-zinc-50 transition-colors duration-1000">
 
-      {/* ✅ [V5.3 Atmosphere Layer] "Power On 시에만 켜지는 미세한 우주광" */}
-      <div className="fixed inset-0 pointer-events-none z-0">
+      {/* ▼▼▼ [수정됨] 배경 레이어: 붉은기/탁함 완전 제거 -> '아이스 블루 & 크리스탈 화이트' ▼▼▼ */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
 
-        {/* 1. Cosmic Light (활성 상태일 때만 나타남)
-            - 채도 높은 색이 아닌, 아주 깊은 네이비/블랙의 그라데이션 빛으로 표현
-            - 상단 중앙에서 은은하게 퍼짐
-        */}
+        {/* 1. 기본 베이스: 깊은 어둠 */}
+        <div className="absolute inset-0 bg-[#000000]" />
+
+        {/* 2. 전원 ON: Crystal Cool Light */}
         <div
-          className={`absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_#0f121f_0%,_#050505_60%,_#050505_100%)] transition-opacity duration-1000 ease-in-out
-          ${activeProjectDetail ? 'opacity-80' : 'opacity-0'}`}
+          className="absolute inset-0 transition-all duration-[2000ms] ease-in-out"
+          style={{
+            opacity: powerOn ? 1 : 0,
+            transform: powerOn ? "scale(1)" : "scale(1.1)",
+            filter: "blur(30px)",              // 블러를 약간 줄여서(140->100) 빛을 좀 더 선명하게 모음
+            mixBlendMode: "screen",             // 스크린 모드: 쿨톤이 더 쨍하게 먹힘
+            background: `
+              /* 1. 좌측 상단 코어: '아이스 블루 화이트' (Ice Blue White)
+                 - R200 G240 B255 -> 파란색 값을 높여서 붉은/갈색 느낌을 물리적으로 차단
+                 - Opacity를 0.3까지 올려서 '회색'이 아니라 '빛'으로 보이게 함 */
+              radial-gradient(at 15% 15%, rgba(222, 237, 255, 0.3) 0px, transparent 35%),
+              
+              /* 1-1. 좌측 하이라이트: '창백한 시안' (Pale Cyan) 
+                 - 중심부에 차가운 냉기를 더함 */
+              radial-gradient(at 5% 10%, rgba(224, 255, 255, 0.25) 0px, transparent 45%),
+
+              /* 2. 우측 상단: '쿨 민트' (Cool Mint) - 기존보다 노란기를 빼고 청록쪽으로 이동 */
+              radial-gradient(at 90% 15%, rgba(72, 247, 223, 0.18) 0px, transparent 40%),
+              
+              /* 3. 중앙: 완전한 어둠 (유지) */
+              radial-gradient(at 50% 50%, rgba(0, 0, 0, 0) 0px, transparent 100%)
+            `
+          }}
         />
 
-        {/* 2. Vignette (비네팅 강화)
-            - 활성 시 주변부를 더 어둡게 눌러 패널 집중도 향상
-        */}
-        <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#000_100%)] transition-opacity duration-1000 ${activeProjectDetail ? 'opacity-100' : 'opacity-0'}`} />
+        {/* 3. Vignette: 가장자리는 어둡게 */}
+        <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_120%)] transition-opacity duration-1000 ${powerOn ? 'opacity-70' : 'opacity-100'}`} />
 
-        {/* 3. Texture: 아주 옅은 노이즈 질감 (디지털 느낌 중화) */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-screen" />
-      </div>
+        {/* 4. Texture: 노이즈 질감 */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.04] mix-blend-overlay" />
+      </div >
+
 
       {/* 북극성 & 북두칠성 – 장식 레이어 */}
       <div className="north-star" aria-hidden="true" />
@@ -1036,17 +1054,21 @@ export default function Home() {
                 )}
 
                 {/* 2. 실제 기계 프레임 – overflow-hidden 유지 */}
+                {/* ▼▼▼ [수정 2] 기계 패널: 오로라 대신 '흑돌(Black Stone)' 그라데이션 적용 ▼▼▼ */}
                 <div
-                  className="rounded-[28px] overflow-hidden border"
+                  className="rounded-[28px] overflow-hidden border transition-all duration-700"
                   style={{
-                    background: powerOn ? CONSTELLATION_AURORA_ON : CONSTELLATION_AURORA_OFF,
-                    borderColor: "#171717",
-                    boxShadow: [
-                      "0 32px 80px rgba(0,0,0,0.95)",
-                      "inset 0 1px 0 rgba(255,255,255,0.08)",
-                      "inset 0 -18px 40px rgba(0,0,0,0.9)",
-                      "inset 1px 1px 2px rgba(255,255,255,0.25)",
-                    ].join(", "),
+                    // ✅ Power ON: 흑돌 그라데이션 (Selected Works 느낌)
+                    // ✅ Power OFF: 기존의 어두운 메탈 느낌
+                    background: powerOn
+                      ? "linear-gradient(145deg, #1E1E20 0%, #0a0a0a 100%)"
+                      : CONSTELLATION_AURORA_OFF,
+
+                    borderColor: powerOn ? "#333333" : "#171717",
+
+                    boxShadow: powerOn
+                      ? "0 0 60px -10px rgba(50,255,150,0.1), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 40px rgba(0,0,0,0.8)" // 켜졌을 때: 미세한 그린 글로우 + 깊은 내부 그림자
+                      : "0 32px 80px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -18px 40px rgba(0,0,0,0.9)",
                   }}
                 >
 
@@ -1055,13 +1077,12 @@ export default function Home() {
                     <section className="mt-4 md:mt-10">
                       {/* 바깥 프레임 */}
                       <div
-                        className="relative rounded-[20px] overflow-hidden"
+                        className="relative rounded-[20px] overflow-hidden transition-colors duration-500"
                         style={{
-                          // 살짝 투명한 다크 그레이
-                          backgroundColor: "rgba(0,0,0,0.32)",
+                          // ✅ 켜졌을 때 내부 프레임도 살짝 더 밝은 차콜로 변경하여 입체감 줌
+                          backgroundColor: powerOn ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.32)",
                           border: "1px solid rgba(120,120,120,0.6)",
-                          boxShadow:
-                            "inset 1px 1px 2px rgba(255,255,255,0.25), 0 0 0 1px rgba(0,0,0,0.9)", // ← 남색 대신 순수 블랙
+                          boxShadow: "inset 1px 1px 2px rgba(255,255,255,0.1), 0 0 0 1px rgba(0,0,0,0.8)",
                         }}
                       >
                         {/* 안쪽 살짝 들어간 프레임 */}
@@ -1858,50 +1879,47 @@ export default function Home() {
             {/* 4) STUDIO LAB + STUDIO STATUS + FOOTER 그룹 */}
             <div className="full-bleed space-y-0 relative z-20">
 
-              {/* 4) [WHITE] STUDIO LABORATORY (bg2) */}
-              <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#EFEFF1] py-24 md:py-32 overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{ backgroundImage: "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+              {/* 4) [WHITE] STUDIO LABORATORY (bg2) - ✅ 수정 3: 글래스모피즘 & 뒤 배경 비침 */}
+              <section className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-white/90 backdrop-blur-3xl py-24 md:py-32 overflow-hidden border-t border-white/10">
+
+                {/* 배경 체크 패턴 */}
+                <div className="absolute inset-0 pointer-events-none opacity-[0.02] bg-[linear-gradient(#000_1px,transparent_1px),linear-gradient(90deg,#000_1px,transparent_1px)] bg-[size:32px_32px]" />
+
+                {/* 뒤쪽 오로라가 살짝 비치도록 함 */}
+                <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white/40 to-white/65" />
 
                 <div className="relative z-10 mx-auto max-w-7xl px-6">
-                  <header className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-zinc-300/50 pb-10">
-                    <div className="text-left space-y-4">
-                      {/* ✅ [통일] 헤더 Span 스타일 (Light Ver.) */}
-                      <span className="inline-block px-4 py-1.5 rounded-full bg-[#222222] border border-zinc-300 text-zinc-200 text-[11px] font-bold tracking-[0.2em] uppercase">
-                        Experimental Zone
-                      </span>
-                      {/* ✅ [통일] 타이틀 사이즈 (4xl~7xl) */}
-                      <h2 className="text-4xl md:text-7xl font-black text-zinc-900 tracking-tighter leading-none">
-                        STUDIO<br /><span className="text-zinc-400">LABORATORY</span>
-                      </h2>
+                  <header className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-zinc-300/50 pb-8">
+                    <div className="text-left">
+                      <span className="inline-block px-5 py-2 rounded-full bg-zinc-900 text-white text-[14px] font-bold tracking-widest uppercase">Experimental Zone</span>
+                      <h2 className="text-3xl md:text-5xl font-black leading-tight tracking-tighter text-zinc-900 mt-2">STUDIO<br /><span className="text-zinc-400">LABORATORY</span></h2>
                     </div>
-                    <p className="max-w-sm md:text-right text-zinc-500 font-medium leading-relaxed text-sm">
-                      프리랜서 작업과 제안서를 모아,<br />문제를 정의하고 경험을 설계하는 방식을 실험하는 구역입니다.
-                    </p>
+                    <p className="max-w-sm md:text-right text-zinc-500 font-medium leading-relaxed text-sm">프리랜서 작업과 제안서를 모아,<br />문제를 정의하고 경험을 설계하는 방식을 실험하는 구역입니다.</p>
                   </header>
 
-                  {/* 기계 패널 */}
-                  <div className="p-3 md:p-6 rounded-[36px] bg-[#EAEAEA] border border-white/80 shadow-2xl">
+                  <div className="p-3 md:p-6 rounded-[36px] bg-[#F8F8F8] border border-white/90 shadow-2xl">
                     <div className="rounded-[24px] overflow-hidden bg-white border border-zinc-200 shadow-inner">
 
-                      {/* ✅ [수정] Status Bar: 블랙 배경 + 컬러풀 도트 */}
-                      <div className="flex items-center justify-between px-6 py-4 bg-[#111] border-b border-zinc-800">
+                      {/* ▼▼▼ [수정됨] Lab 헤더: 블랙 터미널 스타일 + 신호등 컬러 복구 ▼▼▼ */}
+                      <div className="flex items-center justify-between px-5 py-3 bg-[#1A1A1A] border-b border-zinc-800 ">
                         <div className="flex gap-2">
-                          <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /> {/* Red */}
-                          <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /> {/* Yellow */}
-                          <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" /> {/* Green */}
+                          <div className="w-3 h-3 rounded-full bg-[#FF5F56] shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]" /> {/* Red */}
+                          <div className="w-3 h-3 rounded-full bg-[#FFBD2E] shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]" /> {/* Yellow */}
+                          <div className="w-3 h-3 rounded-full bg-[#27C93F] shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]" /> {/* Green */}
                         </div>
-                        <span className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase">AENEAS_LAB_OS_V14.0</span>
+                        <span className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase opacity-80">
+                          AENEAS_LAB_OS_V15.0
+                        </span>
                       </div>
+                      {/* ▲▲▲ 수정 끝 ▲▲▲ */}
 
-                      {/* Slider Container */}
-                      <div className="py-12 md:py-16 bg-white">
+                      <div className="py-10 md:py-12 bg-white">
                         <ExperienceLabSlider items={LAB_ITEMS} mainColor="#1a1a1a" theme="light" />
                       </div>
                     </div>
                   </div>
                 </div>
               </section>
-
 
               {/* ▼▼▼ [V8.1 FINAL FOOTER] The Dark Terminal */}
               <footer className="relative w-full py-24 md:py-32 px-6 md:px-12 bg-[#050505] text-white border-t border-zinc-900">
@@ -1924,7 +1942,7 @@ export default function Home() {
 
                     {/* Typography */}
                     <div className="space-y-2">
-                      <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-[0.9]">
+                      <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-[0.9]">
                         READY TO<br />
                         <span className="text-zinc-600">COLLABORATE?</span>
                       </h2>
@@ -1934,7 +1952,7 @@ export default function Home() {
                     <div className="flex flex-wrap gap-4 pt-4">
                       <a
                         href="mailto:lightblue1369@gmail.com"
-                        className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-bold text-lg hover:bg-zinc-200 transition-all active:scale-95"
+                        className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-bold text-md hover:bg-zinc-200 transition-all active:scale-95"
                       >
                         <span>Send Signal</span>
                         <span className="group-hover:translate-x-1 transition-transform">→</span>

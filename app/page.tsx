@@ -137,24 +137,32 @@ type ProjectDetail = {
 };
 
 // ───────────────────────
-//  프로젝트 텍스트 내용
+//  프로젝트 텍스트 내용 (Updated: V6.5 Zigzag Refined)
 // ───────────────────────
 const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
   zigzag: {
     id: "zigzag",
     kicker: "FASHION COMMERCE · UX / BRANDING",
-    // ✅ 제목 수정
     title: "지그재그 패션 쇼핑몰 런칭",
     period: "2023.03 – 2023.11 (약 10개월)",
-    // ✅ 클라이언트 타입에서 '지그재그 입점사' 삭제
     clientType: "Z세대 타깃 패션 쇼핑몰",
     tools: "Photoshop, Illustrator, Figma, HTML/CSS",
-    role:
-      "시장 조사 · 스튜디오/모델 섭외 · 촬영 콘셉트 기획 · 상세페이지 구조 설계 및 퍼블리싱",
-    context: `클라이언트는 10대 후반~20대 초반 여성 타깃을 노리고 있었지만, 
-기존 상세페이지는 20대 중후반 기준으로 구성되어 있어 톤과 구조 모두 타깃과 어긋나 있었습니다. 
-내부에 브랜딩·기획 리소스가 없어, 시장 조사부터 촬영 시스템·상세 구조까지 처음부터 판을 만들어야 하는 상황이었습니다.`,
-
+    role: "시장 조사 · 스튜디오/모델 섭외 · 촬영 콘셉트 기획 · 상세페이지 구조 설계 및 퍼블리싱",
+    // ✅ [수정됨] 문구 간소화 & 하이라이트 적용
+    context: (
+      <>
+        클라이언트는 10대 후반~20대 초반 여성을 타깃으로 했지만,
+        기존 상세페이지는 20대 중후반 기준으로 구성되어{" "}
+        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
+          톤과 구조 모두 타깃과 어긋난 상태
+        </span>
+        였습니다. 내부에 브랜딩·기획 리소스가 없어,{" "}
+        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
+          시장 조사부터 촬영 시스템·상세 구조까지
+        </span>{" "}
+        처음부터 판을 새로 짜야 했습니다.
+      </>
+    ),
     goal: [
       "10대 후반~20대 초반 Z세대에 맞는 브랜드 톤과 촬영 콘셉트를 새로 정의할 것",
       "지그재그 환경에 맞는 상세페이지 구조를 템플릿화해, 촬영·디자인을 반복 제작 가능하게 할 것",
@@ -164,18 +172,15 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     process: [
       {
         label: "01 · MARKET SCAN & POSITIONING",
-        body:
-          "지그재그 상위 랭킹·리뷰·10대 커뮤니티를 분석해 타깃 인사이트를 정리하고, ‘10대 후반 전용 포지션’ 영역을 정의했습니다.",
+        body: "지그재그 상위 랭킹·리뷰·10대 커뮤니티를 분석해 타깃 인사이트를 정리하고, ‘10대 후반 전용 포지션’ 영역을 정의했습니다.",
       },
       {
         label: "02 · SHOOTING SYSTEM",
-        body:
-          "스튜디오와 모델을 직접 섭외하고, 룩 구성·포즈/구도·컷 수를 표준화한 촬영 가이드·체크리스트 패키지를 제작했습니다.",
+        body: "스튜디오와 모델을 직접 섭외하고, 룩 구성·포즈/구도·컷 수를 표준화한 촬영 가이드·체크리스트 패키지를 제작했습니다.",
       },
       {
         label: "03 · TEMPLATE & ROLL-OUT",
-        body:
-          "‘핵심 정보 카드 → 전체 실루엣 → 디테일’ 순의 모듈형 상세 템플릿을 HTML/CSS로 구현하고, 운영팀이 복제해 쓸 수 있도록 인수인계했습니다.",
+        body: "‘핵심 정보 카드 → 전체 실루엣 → 디테일’ 순의 모듈형 상세 템플릿을 HTML/CSS로 구현하고, 운영팀이 복제해 쓸 수 있도록 인수인계했습니다.",
       },
     ],
     outcome:
@@ -189,30 +194,21 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     period: "약 1년 이상 운영",
     clientType: "글로벌 오픈마켓",
     tools: "Photoshop, HTML/CSS, Rakuten 관리툴",
-    role:
-      "사이트 UI 디자인 · 프로모션 배너 · 퍼블리싱 · SEO 구조 설계 및 운영",
+    role: "사이트 UI 디자인 · 프로모션 배너 · 퍼블리싱 · SEO 구조 설계 및 운영",
     context: (
       <>
         일본 고객을 대상으로 하는 지마켓 글로벌/라쿠텐 스토어는
-        한국에서 쓰던 상세 구조를 거의 그대로 가져온 상태라,
-        일본 사용자 입장에서는 정보 순서와 표현 방식이 낯설었습니다.
+        한국식 상세 구조를 그대로 가져와 일본 사용자에게 낯설었습니다.
         게다가 라쿠텐 입점·운영은{" "}
-        <span className="text-amber-300">
-          기존에 다른 사업체가 진행하다가 중간에 포기된 상태
+        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
+          기존 사업체가 중도 포기한 상태
         </span>
-        였고, 저는 그 이후에 합류해 구조를 처음부터 다시 잡는
-        리빌드 역할을 맡았습니다. 상품 구조·노출 전략도 카테고리마다
-        제각각이라 브랜드 인지와 구매 흐름이 끊기는 상황이었습니다.{" "}
-        <span className="text-amber-300">
-          국내와는 다른 일본 시장 특성과 라쿠텐 주 고객층의 UX 습관,
-          라쿠텐 검색/SEO 룰
+        였고, 저는 구조를 처음부터 다시 잡는 리빌드 역할을 맡았습니다.{" "}
+        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
+          일본 시장 특성과 라쿠텐 UX/SEO 룰
         </span>
-        을 먼저 이해한 뒤,{" "}
-        <span className="text-amber-300">
-          일본 사용자가 편하게 느끼는 정보 구조와
-          내부 운영 여건이 동시에 맞는 레이아웃
-        </span>
-        을 설계해야 했습니다.
+        을 먼저 이해한 뒤, 일본 사용자가 편하게 느끼는 정보 구조와
+        내부 운영 여건이 동시에 맞는 레이아웃을 설계해야 했습니다.
       </>
     ),
     goal: [
@@ -223,18 +219,15 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     process: [
       {
         label: "01 · ENVIRONMENT STUDY",
-        body:
-          "라쿠텐 상위 스토어의 카테고리 구조·키워드·쿠폰/혜택 노출 방식을 분석해, 우리 상품군과 매칭한 레퍼런스 맵을 만들었습니다.",
+        body: "라쿠텐 상위 스토어의 카테고리 구조·키워드·쿠폰/혜택 노출 방식을 분석해, 우리 상품군과 매칭한 레퍼런스 맵을 만들었습니다.",
       },
       {
         label: "02 · UX & LAYOUT",
-        body:
-          "리스트·상세·기획전을 일본 사용자가 익숙한 순서(가격·쿠폰·리뷰·혜택) 기준으로 재배치하고, 공통 레이아웃 가이드를 정의했습니다.",
+        body: "리스트·상세·기획전을 일본 사용자가 익숙한 순서(가격·쿠폰·리뷰·혜택) 기준으로 재배치하고, 공통 레이아웃 가이드를 정의했습니다.",
       },
       {
         label: "03 · SEO & OPERATION",
-        body:
-          "카테고리별 필수 키워드 세트를 만들고 타이틀·설명·배너 카피에 반영했습니다. 운영 중에도 검색 리포트를 보며 노출/클릭을 주기적으로 튜닝했습니다.",
+        body: "카테고리별 필수 키워드 세트를 만들고 타이틀·설명·배너 카피에 반영했습니다. 운영 중에도 검색 리포트를 보며 노출/클릭을 주기적으로 튜닝했습니다.",
       },
     ],
     outcome:
@@ -248,32 +241,29 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     period: "약 6개월, ongoing",
     clientType: "여행/숙박 커머스",
     tools: "Cafe24, Figma, Notion, Photoshop, Toss",
-    role:
-      "브랜드 코어 정의 · 웹 IA/와이어 설계 · 인스타/피드 시각 언어 설계 · 제휴 제안서/리포트 템플릿 제작",
+    role: "브랜드 코어 정의 · 웹 IA/와이어 설계 · 인스타/피드 시각 언어 설계 · 제휴 제안서/리포트 템플릿 제작",
     context: (
       <>
         프로젝트는{" "}
-        <span className="text-amber-300">라우트웨이컨설팅 주식회사</span>가
-        운영하던 사이드 프로젝트{" "}
-        <span className="text-amber-300">RouteWorld</span>에서 시작되었습니다.
-        초기에는 뷰티 커머스로 출발했지만,
-        이후 호텔·여행 상품, 다시{" "}
-        <span className="text-amber-300">여행+라이프스타일 커머스</span>로
-        사업 축이 크게 바뀌어 왔습니다. 캠페인마다 타깃과 상품이 달라지면서
-        톤과 페이지 구조도 함께 흔들렸고, 프리미엄 호텔·리조트 브랜드를
-        지향하다가 IPSC 체험, 국내 숙소 등으로 피봇이 잦았습니다. 이런 환경에서
+        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
+          라우트웨이컨설팅 주식회사
+        </span>
+        가 운영하던 사이드 프로젝트{" "}
+        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
+          RouteWorld
+        </span>
+        에서 시작되었습니다. 뷰티에서 여행, 다시{" "}
+        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
+          여행+라이프스타일 커머스
+        </span>
+        로 사업 축이 바뀌며 톤과 구조가 흔들리는 상황이었습니다.
         저는{" "}
-        <span className="text-amber-300">
-          계속 바뀌는 상품·사업자 구조 위에도 유지되는 브랜드 코어와
-          운영 시스템
+        <span className="bg-[#fff3b0] px-1 py-0.5 rounded-sm font-bold text-black box-decoration-clone">
+          계속 바뀌는 구조 위에도 유지되는 브랜드 코어와 운영 시스템
         </span>
-        을 설계하고, 어떤 캠페인이 와도 팀과 외부 파트너가 따라갈 수 있는
-        기준선을 만드는 역할을 맡았습니다. 이후 회사 사정으로
-        RouteWorld 사업은 정리되었지만,{" "}
-        <span className="text-amber-300">
-          방향 전환과 종료 과정까지 포함해 브랜드를 어떻게 핸들링했는지
-        </span>
-        가 이 프로젝트의 중요한 경험으로 남았습니다.
+        을 설계하고, 어떤 캠페인이 와도 흔들리지 않는 기준선을 만들었습니다.
+        사업 종료 과정까지 포함해 브랜드를 핸들링한 경험이
+        이 프로젝트의 핵심입니다.
       </>
     ),
     goal: [
@@ -285,24 +275,21 @@ const PROJECT_DETAILS: Record<ProjectId, ProjectDetail> = {
     process: [
       {
         label: "01 · BRAND CORE & ROUTE",
-        body:
-          "대표·리더 인터뷰와 기존 캠페인/피드를 정리해 ‘무엇을 팔고 싶은지 vs 실제로 팔리고 있는 것’을 분리했습니다. 그 위에 ‘도시에 닿는 가장 빠른 여행’이라는 코어 문장과 호텔·체험·콘텐츠를 잇는 여정 맵을 만들었습니다.",
+        body: "대표·리더 인터뷰와 기존 캠페인/피드를 정리해 ‘무엇을 팔고 싶은지 vs 실제로 팔리고 있는 것’을 분리했습니다. 그 위에 ‘도시에 닿는 가장 빠른 여행’이라는 코어 문장과 호텔·체험·콘텐츠를 잇는 여정 맵을 만들었습니다.",
       },
       {
         label: "02 · SYSTEM & TEAM WORKFLOW",
-        body:
-          "캠페인 흐름을 브리핑 → 제작 → 리뷰 3단계로 단순화하고, Notion 태스크보드와 Figma 템플릿으로 역할·산출물을 규격화했습니다. 팀원들이 같은 포맷으로 카드·배너·피드를 만들 수 있는 기준선을 세웠습니다.",
+        body: "캠페인 흐름을 브리핑 → 제작 → 리뷰 3단계로 단순화하고, Notion 태스크보드와 Figma 템플릿으로 역할·산출물을 규격화했습니다. 팀원들이 같은 포맷으로 카드·배너·피드를 만들 수 있는 기준선을 세웠습니다.",
       },
       {
         label: "03 · EXTERNAL COLLAB & POSITIONING",
-        body:
-          "호텔/체험 제휴사용 소개 데크와 제안서 템플릿을 제작해, 쇼핑몰 명의나 조건이 바뀌어도 브랜드 설명 구조는 유지되도록 설계했습니다. 외부 파트너와의 커뮤니케이션에서 브랜드 코어·타깃·딜 구조를 한 장표로 설명할 수 있게 정리했습니다.",
+        body: "호텔/체험 제휴사용 소개 데크와 제안서 템플릿을 제작해, 쇼핑몰 명의나 조건이 바뀌어도 브랜드 설명 구조는 유지되도록 설계했습니다. 외부 파트너와의 커뮤니케이션에서 브랜드 코어·타깃·딜 구조를 한 장표로 설명할 수 있게 정리했습니다.",
       },
     ],
     outcome:
       "뷰티 → 여행 → 여행+라이프스타일로 사업 축이 여러 번 바뀌는 동안에도,\n브랜드 코어 문장과 여정 맵, 제안서·피드 템플릿을 기준으로 캠페인과 제휴사가 바뀌어도 설명 구조를 유지할 수 있었습니다.\n리더·사업자 구성이 바뀌고 결국 RouteWorld 사업이 정리되는 과정까지,\n브랜드 기준선과 산출물 시스템을 문서와 템플릿으로 남겨 이후 AENEAS Studio 포트폴리오 설계의 기반이 되었습니다.",
   },
-}; // 🔚 PROJECT_DETAILS 끝
+};
 
 
 
@@ -811,7 +798,29 @@ export default function Home() {
 
   return (
     // 0. 기본 우주 배경 (항상 어두운 하늘)
-    <div className="aeneas-bg min-h-screen text-zinc-50 bg-[#050505]">
+    // ✅ [Global Wrap] 기본은 가장 깊은 블랙 (#050505)
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-[#050505] text-zinc-50 selection:bg-orange-500/30 selection:text-orange-200 transition-colors duration-1000">
+
+      {/* ✅ [V5.3 Atmosphere Layer] "Power On 시에만 켜지는 미세한 우주광" */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+
+        {/* 1. Cosmic Light (활성 상태일 때만 나타남)
+            - 채도 높은 색이 아닌, 아주 깊은 네이비/블랙의 그라데이션 빛으로 표현
+            - 상단 중앙에서 은은하게 퍼짐
+        */}
+        <div
+          className={`absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_#0f121f_0%,_#050505_60%,_#050505_100%)] transition-opacity duration-1000 ease-in-out
+          ${activeProjectDetail ? 'opacity-80' : 'opacity-0'}`}
+        />
+
+        {/* 2. Vignette (비네팅 강화)
+            - 활성 시 주변부를 더 어둡게 눌러 패널 집중도 향상
+        */}
+        <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#000_100%)] transition-opacity duration-1000 ${activeProjectDetail ? 'opacity-100' : 'opacity-0'}`} />
+
+        {/* 3. Texture: 아주 옅은 노이즈 질감 (디지털 느낌 중화) */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-screen" />
+      </div>
 
       {/* 북극성 & 북두칠성 – 장식 레이어 */}
       <div className="north-star" aria-hidden="true" />
@@ -1395,27 +1404,43 @@ export default function Home() {
                 </p>
               </header>
 
-              {/* ▼▼▼ 바둑판 영역 – 가로 풀폭 */}
+              {/* ▼▼▼ 바둑판 영역 (The Machine Panel) */}
               <div
                 className={`
-                  mt-10 relative left-1/2 right-1/2
-                  -ml-[50vw] -mr-[50vw]
-                  transition-all duration-500
-                  ${activeProjectDetail ? "blur-[3px] opacity-40" : ""}
-                `}
+              mt-10 relative left-1/2 right-1/2
+              -ml-[50vw] -mr-[50vw]
+              transition-all duration-1000 ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+              ${activeProjectDetail ? "blur-[2px] opacity-40 scale-[0.98]" : "opacity-100 scale-100"}
+            `}
               >
                 <div className="w-screen px-4 md:px-10 lg:px-16 overflow-x-hidden">
                   <div className="max-w-[1400px] mx-auto">
 
-                    {/* ✅ [FIX] 부모 컨테이너 패딩 대폭 확대 
-                        - py-8 -> py-24 (96px) : 상하 여백 확보 (잘림 방지 핵심)
-                        - px-6 -> px-12 : 좌우 여백 확보
-                        - rounded-8 -> rounded-[32px] : 부드러운 모서리
-                    */}
-                    <div className="rounded-[32px] border border-white/7 bg-white/5 px-8 md:px-12 py-24 shadow-[0_26px_70px_rgba(0,0,0,0.85)]">
+                    {/* ✅ [V5.3 The Machine Panel] 활성 시 날카롭게 빛나는 엣지 */}
+                    <div
+                      className={`
+                    rounded-[40px] 
+                    border transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] relative overflow-hidden
+                    
+                    ${activeProjectDetail
+                          // ▶ Power On 상태:
+                          // 1. border-white/30: 테두리가 더 밝고 날카로워짐
+                          // 2. bg-black/80: 패널이 더 어두워지며 컨텐츠 집중
+                          // 3. shadow: 바깥쪽으로 퍼지는 미세한 쿨톤 글로우 + 안쪽 상단의 날카로운 림 라이트(inset)
+                          // 4. scale-[1.02]: 아주 살짝 앞으로 튀어나옴
+                          ? "border-white/30 bg-black/80 shadow-[0_0_60px_-15px_rgba(120,140,255,0.1),inset_0_1px_0_rgba(255,255,255,0.4)] backdrop-blur-xl scale-[1.02]"
 
-                      {/* ✅ [FIX] 그리드 간격 확대 (gap-10) */}
-                      <div className="grid gap-10 lg:gap-12 md:grid-cols-2">
+                          // ▶ Default 상태:
+                          // 은은한 테두리와 묵직한 기본 그림자
+                          : "border-white/5 bg-white/[0.02] shadow-2xl backdrop-blur-sm scale-100"
+                        }
+                    px-6 md:px-12 py-16 md:py-24 
+                  `}
+                    >
+                      {/* (옵션) 활성 시 패널 표면을 타고 흐르는 미세한 빛 반사 */}
+                      <div className={`absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none rounded-[40px] transition-opacity duration-700 ${activeProjectDetail ? 'opacity-100' : 'opacity-0'}`} />
+
+                      <div className="relative z-10 grid gap-10 lg:gap-14 md:grid-cols-2">
 
                         {/* 1. DETAIL POSITIONING (Orange) */}
                         <TileBoard
@@ -1430,7 +1455,7 @@ export default function Home() {
                           variant="wide"
                           accent="orange"
                           active={false}
-                          onClick={() => window.location.href = "/work/detail-positioning"} // router 대신 window 이동 (또는 상단 router 사용)
+                          onClick={() => window.location.href = "/work/detail-positioning"}
                           card={
                             <>
                               <span className={`${TYPE.projectKicker} text-orange-500`}>
@@ -1513,7 +1538,7 @@ export default function Home() {
                             { row: 2, col: 7, char: "E" },
                             { row: 2, col: 8, char: "N" },
                           ]}
-                          variant="wide" // 2열 레이아웃이므로 wide로 통일해도 무방
+                          variant="wide"
                           accent="sky"
                           active={activeProject === "gmarket"}
                           onClick={() => setActiveProject("gmarket")}
@@ -1537,7 +1562,7 @@ export default function Home() {
               {/* ▲▲▲ 바둑판 영역 끝 */}
 
 
-              {/* ▼▼▼ 디테일 패널 */}
+              {/* ▼▼▼ 디테일 패널 (V6.4 Sophisticated Editorial) */}
               <AnimatePresence>
                 {activeProjectDetail && (
                   <>
@@ -1547,235 +1572,179 @@ export default function Home() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 2 }}
-                      className="fixed inset-0 z-[55] bg-black/60 backdrop-blur-[3px]"
+                      transition={{ duration: 0.4 }}
+                      className="fixed inset-0 z-[55] bg-black/70 backdrop-blur-sm"
                       onClick={() => setActiveProject(null)}
                     />
 
                     {/* STAGE */}
-                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-6">
+                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-0 md:p-6 pointer-events-none">
                       <motion.div
                         key="detail-panel"
-                        initial={{ y: "120%", opacity: 0 }}
+                        initial={{ y: "100%", opacity: 0 }}
                         animate={{ y: "0%", opacity: 1 }}
-                        exit={{ y: "12%", opacity: 0 }}
-                        transition={{ delay: 0.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative w-full max-w-5xl h-[80vh]"
+                        exit={{ y: "100%", opacity: 0 }}
+                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                        className="relative w-full max-w-4xl h-full md:h-[90vh] pointer-events-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {/* PANEL BODY */}
-                        <div className="relative h-full rounded-[26px] overflow-hidden bg-[#0B0E13] border border-white/14 shadow-[0_48px_160px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.06)]">
-                          {/* 표면 하이라이트 */}
-                          <div
-                            className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_18%,rgba(0,0,0,0)_60%)]"
-                          />
+                        {/* PANEL BODY: Clean White Paper */}
+                        <div className="relative h-full w-full bg-white md:rounded-[12px] shadow-2xl overflow-hidden flex flex-col font-sans text-zinc-900 selection:bg-[#fff3b0] selection:text-black">
 
-                          {/* 미세 스캔 라인 */}
-                          <div
-                            className="pointer-events-none absolute inset-0 opacity-[0.06] bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.6)_0px,rgba(255,255,255,0.6)_1px,transparent_1px,transparent_24px)]"
-                          />
+                          {/* Paper Texture */}
+                          <div className="absolute inset-0 opacity-[0.04] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none mix-blend-multiply" />
 
-                          {/* 닫기 버튼 */}
+                          {/* Close Button */}
                           <button
                             type="button"
                             onClick={() => setActiveProject(null)}
-                            className="absolute right-5 top-5 z-20 h-9 w-9 rounded-full border border-white/20 bg-black/80 text-zinc-200 hover:bg-black/90"
+                            className="absolute right-6 top-6 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-900 transition-colors shadow-sm border border-zinc-200"
                           >
-                            ×
+                            ✕
                           </button>
 
-                          <div
-                            className={`rounded-[24px] border border-white/16 bg-[#0B0D10]
-                            shadow-[0_40px_120px_rgba(0,0,0,0.85)]
-                            ${activeProjectDetail.id === "zigzag"
-                                ? "from-emerald-500/12 via-[#050609]/96 to-black/98"
-                                : activeProjectDetail.id === "gmarket"
-                                  ? "from-sky-500/12 via-[#050609]/96 to-black/98"
-                                  : "from-amber-300/14 via-[#050609]/96 to-black/98"
-                              } px-8 py-7 shadow-[0_30px_80px_rgba(0,0,0,0.9)]`}
-                          >
-                            {/* 상단 헤더 + 토글 버튼 */}
-                            <div className="mb-6 flex items-center justify-between gap-4">
-                              <div className="space-y-1">
-                                <p
-                                  className={`${TYPE.projectKicker} text-xs text-zinc-300 mb-1`}
-                                >
-                                  {activeProjectDetail.kicker}
-                                </p>
-                                <h3
-                                  className={`text-[22px] md:text-[24px] font-semibold ${activeProjectDetail.id === "zigzag"
-                                    ? "text-emerald-100"
-                                    : activeProjectDetail.id === "gmarket"
-                                      ? "text-sky-100"
-                                      : "text-amber-100"
-                                    }`}
-                                >
+                          {/* SCROLL AREA */}
+                          <div className="flex-1 overflow-y-auto overscroll-contain px-6 md:px-12 py-10 md:py-14 space-y-16">
+
+                            {/* 1. Header: 타이틀 & 메타데이터 */}
+                            <header className="space-y-8 border-b border-zinc-900/10 pb-10">
+                              <div className="space-y-3">
+                                <span className={`inline-block text-[12px] font-bold tracking-[0.15em] uppercase px-2 py-1 rounded bg-zinc-100 border border-zinc-200 text-zinc-600`}>
+                                  {activeProjectDetail.clientType}
+                                </span>
+                                <h2 className="text-3xl md:text-5xl font-extrabold text-zinc-950 tracking-tight leading-[1.1] break-keep">
                                   {activeProjectDetail.title}
-                                </h3>
+                                </h2>
+                              </div>
 
-                                <div className="flex flex-wrap gap-3 text-zinc-400 text-[13px] md:text-[14px]">
-                                  {activeProjectDetail.period && (
-                                    <span>Period · {activeProjectDetail.period}</span>
-                                  )}
-                                  {activeProjectDetail.clientType && (
-                                    <span>Client · {activeProjectDetail.clientType}</span>
-                                  )}
+                              {/* 메타 정보 */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-zinc-50 rounded-xl border border-zinc-200">
+                                <div>
+                                  <span className="block text-xs font-bold uppercase text-zinc-400 tracking-wider mb-1.5">Period</span>
+                                  <span className="text-sm font-medium text-zinc-800">{activeProjectDetail.period}</span>
                                 </div>
-
-                                {/* Tools – 아이콘 배지로 표현 */}
-                                {activeProjectDetail.tools && (
-                                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                                <div>
+                                  <span className="block text-xs font-bold uppercase text-zinc-400 tracking-wider mb-1.5">Role</span>
+                                  <span className="text-sm font-medium text-zinc-800">{activeProjectDetail.role}</span>
+                                </div>
+                                <div className="md:col-span-2">
+                                  <span className="block text-xs font-bold uppercase text-zinc-400 tracking-wider mb-2">Tools</span>
+                                  <div className="flex flex-wrap gap-2">
                                     {parseTools(activeProjectDetail.tools).map((tool) => (
-                                      <span
-                                        key={tool.name}
-                                        className="inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-zinc-50"
-                                      >
-                                        <span>{tool.icon}</span>
-                                        <span>{tool.name}</span>
+                                      <span key={tool.name} className="text-zinc-700 bg-white border border-zinc-200 px-2.5 py-1 rounded-md text-xs font-medium shadow-sm">
+                                        {tool.name}
                                       </span>
                                     ))}
                                   </div>
-                                )}
-
-                                <p className={`${TYPE.projectMeta} text-zinc-400 mt-1`}>
-                                  Role · {activeProjectDetail.role}
-                                </p>
+                                </div>
                               </div>
+                            </header>
 
-                              {/* 프로젝트 보기 / 설명 보기 토글 – 강조된 pill 버튼 */}
-                              <div className="flex flex-col items-end gap-2">
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setDetailView(detailView === "case" ? "visual" : "case")
-                                  }
-                                  className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.22em] transition-all ${activeProjectDetail.id === "zigzag"
-                                    ? "border-emerald-400/80 text-emerald-100 hover:bg-emerald-500/10"
-                                    : activeProjectDetail.id === "gmarket"
-                                      ? "border-sky-400/80 text-sky-100 hover:bg-sky-500/10"
-                                      : "border-amber-300/80 text-amber-100 hover:bg-amber-400/10"
-                                    }`}
-                                >
-                                  <span>
-                                    {detailView === "case" ? "프로젝트 보기" : "설명 보기"}
-                                  </span>
-                                  <span className="translate-y-[1px]">
-                                    {detailView === "case" ? "→" : "←"}
-                                  </span>
-                                </button>
+
+                            {/* 2. Context (문제 정의) */}
+                            <section>
+                              <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-5 border-l-4 border-zinc-900 pl-3">Context & Problem</h3>
+                              <div className="text-[16px] md:text-[18px] leading-[1.75] text-zinc-800 font-medium whitespace-pre-line">
+                                {/* 데이터 파일의 <span> 클래스를 꼭 수정해주세요! */}
+                                {activeProjectDetail.context}
                               </div>
-                            </div>
+                            </section>
 
-                            {/* 내용 영역 */}
-                            <div className="relative z-10 overflow-y-auto overscroll-contain scroll-smooth px-8 pb-10 space-y-7 md:space-y-8"
-                              style={{ height: "calc(80vh - 200px)" }}
-                            >
-                              {/* CASE VIEW – 기존 텍스트 설명 */}
-                              {detailView === "case" && (
-                                <>
-                                  {/* Context */}
-                                  <div className="space-y-3 md:space-y-4">
-                                    <h4 className="text-sm font-semibold text-zinc-200">
-                                      Context &amp; Problem
-                                    </h4>
-                                    <p className={`${TYPE.projectBody} text-zinc-300`}>
-                                      {activeProjectDetail.id === "zigzag"
-                                        ? highlightZigzagContext(activeProjectDetail.context as string)
-                                        : activeProjectDetail.context}
-                                    </p>
-                                  </div>
 
-                                  {/* Goals */}
-                                  <div className="space-y-3 md:space-y-4">
-                                    <h4 className="text-sm font-semibold text-zinc-200">
-                                      Goals
-                                    </h4>
-                                    <ul className="grid gap-3 md:grid-cols-2 text-[14px] md:text-[15px]">
-                                      {activeProjectDetail.goal.map((g) => (
-                                        <li
-                                          key={g}
-                                          className="rounded-2xl border border-white/10 bg-zinc-900/60 px-4 py-3 text-zinc-200 leading-relaxed"
-                                        >
-                                          • {g}
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-
-                                  {/* Process */}
-                                  <div className="space-y-4 md:space-y-5">
-                                    <h4 className="text-sm font-semibold text-zinc-200">
-                                      Process
-                                    </h4>
-                                    <div className="grid gap-4 md:grid-cols-3">
-                                      {activeProjectDetail.process.map((step) => (
-                                        <div
-                                          key={step.label}
-                                          className="rounded-2xl border border-white/12 bg-zinc-900/70 px-4 py-4 space-y-3"
-                                        >
-                                          <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-zinc-400">
-                                            {step.label}
-                                          </p>
-                                          <p className="text-[13px] md:text-[14px] text-zinc-300 leading-relaxed">
-                                            {step.body}
-                                          </p>
+                            {/* ✅ [NEW PLACE] 3. Key Visuals (상단으로 이동 - 시각적 환기) */}
+                            {currentVisuals.length > 0 && (
+                              <section>
+                                <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-5 border-l-4 border-zinc-900 pl-3">Key Visuals</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                  {currentVisuals.slice(0, 2).map((visual, idx) => (
+                                    <div key={idx} className="group cursor-pointer flex flex-col gap-3" onClick={() => setActiveVisual(visual)}>
+                                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-100 border border-zinc-200 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:border-zinc-300 group-hover:scale-[1.01]">
+                                        <Image src={visual.src} alt={visual.title} fill className="object-cover" />
+                                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/5 backdrop-blur-[1px]">
+                                          <span className="bg-white text-zinc-900 px-4 py-2 rounded-full text-xs font-bold shadow-lg border border-zinc-100">ZOOM +</span>
                                         </div>
-                                      ))}
+                                      </div>
+                                      <div className="px-1">
+                                        <p className="text-[15px] font-bold text-zinc-900 leading-tight mb-1">{visual.title}</p>
+                                        <p className="text-[13px] text-zinc-500 leading-relaxed">{visual.caption}</p>
+                                      </div>
                                     </div>
-                                  </div>
-
-                                  {/* Outcome */}
-                                  <div className="space-y-3 md:space-y-4">
-                                    <h4 className="text-sm font-semibold text-zinc-200">
-                                      Outcome
-                                    </h4>
-                                    <p className={`${TYPE.projectBody} whitespace-pre-line text-zinc-300`}>
-                                      {activeProjectDetail.outcome}
-                                    </p>
-                                  </div>
-                                </>
-                              )}
-
-                              {/* VISUAL VIEW – 산출물 갤러리 */}
-                              {detailView === "visual" && (
-                                <div className="mt-2 grid gap-5 md:grid-cols-3">
-                                  {currentVisuals.map((visual) => (
-                                    <figure key={visual.title} className="space-y-3">
-                                      <button
-                                        type="button"
-                                        onClick={() => setActiveVisual(visual)}
-                                        className="group relative block w-full aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-black/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/70 focus:ring-offset-2 focus:ring-offset-black"
-                                      >
-                                        <Image
-                                          src={visual.src}
-                                          alt={visual.title}
-                                          fill
-                                          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                                        />
-                                        {/* 오버레이 힌트 */}
-                                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-300 group-hover:bg-black/35 group-hover:opacity-100">
-                                          <span className="rounded-full border border-white/40 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-zinc-100">
-                                            Click to Zoom
-                                          </span>
-                                        </div>
-                                      </button>
-
-                                      <figcaption className="space-y-1">
-                                        <p className="text-[13px] font-semibold text-zinc-100">
-                                          {visual.title}
-                                        </p>
-                                        <p className="text-[12px] leading-relaxed text-zinc-400">
-                                          {visual.caption}
-                                        </p>
-                                      </figcaption>
-                                    </figure>
                                   ))}
                                 </div>
-                              )}
+                              </section>
+                            )}
 
 
+                            {/* ✅ [UPDATED] 4. Outcome (세련된 다크 차콜 + 미디엄 폰트) */}
+                            <section className="bg-[#1A1A1A] text-zinc-100 p-8 md:p-12 rounded-2xl shadow-xl relative overflow-hidden">
+                              <div className="relative z-10">
+                                <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-4">Final Outcome</h3>
+                                {/* font-bold -> font-medium 으로 변경하여 눈 피로도 감소 */}
+                                <p className="text-[17px] md:text-[21px] leading-relaxed whitespace-pre-line font-medium text-zinc-50">
+                                  {activeProjectDetail.outcome}
+                                </p>
+                              </div>
+                              {/* Decorative Blob (투명도 낮춤) */}
+                              <div className={`absolute top-0 right-0 w-80 h-80 bg-gradient-to-br opacity-15 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/3
+                              ${activeProjectDetail.id === "zigzag" ? "from-emerald-500 to-transparent"
+                                  : activeProjectDetail.id === "gmarket" ? "from-sky-500 to-transparent"
+                                    : "from-amber-500 to-transparent"}`}
+                              />
+                            </section>
 
+
+                            {/* 5. Strategy & Process (과정) */}
+                            <section className="grid md:grid-cols-[1fr_1.5fr] gap-8 md:gap-12 border-t border-zinc-100 pt-10">
+                              {/* Goals */}
+                              <div>
+                                <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-5 border-l-4 border-zinc-900 pl-3">Goals</h3>
+                                <ul className="space-y-3">
+                                  {activeProjectDetail.goal.map((g) => (
+                                    <li key={g} className="flex items-start gap-3 text-zinc-700 leading-relaxed text-[15px]">
+                                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-zinc-400" />
+                                      {g}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              {/* Process Cards */}
+                              <div>
+                                <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-5 border-l-4 border-zinc-900 pl-3">Process</h3>
+                                <div className="space-y-4">
+                                  {activeProjectDetail.process.map((step) => (
+                                    <div key={step.label} className="bg-white p-6 rounded-xl border border-zinc-200 shadow-[0_4px_20px_-12px_rgba(0,0,0,0.1)]">
+                                      <p className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">{step.label}</p>
+                                      <p className="text-zinc-800 text-[15px] leading-relaxed font-medium">{step.body}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </section>
+
+
+                            {/* 6. More Visuals (나머지 이미지 갤러리) */}
+                            {currentVisuals.length > 2 && (
+                              <section className="pt-6 border-t border-zinc-100">
+                                <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest mb-8 border-l-4 border-zinc-900 pl-3">More Visuals</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                  {currentVisuals.slice(2).map((visual, idx) => (
+                                    <div key={idx} className="group cursor-pointer flex flex-col gap-2" onClick={() => setActiveVisual(visual)}>
+                                      <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-zinc-100 border border-zinc-200 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:border-zinc-300 group-hover:scale-[1.01]">
+                                        <Image src={visual.src} alt={visual.title} fill className="object-cover transition-opacity hover:opacity-90" />
+                                      </div>
+                                      <p className="text-[12px] text-zinc-500 truncate pl-1">{visual.title}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </section>
+                            )}
+
+                            {/* Footer Mark */}
+                            <div className="flex justify-center pt-10 pb-6 opacity-30">
+                              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
                             </div>
+
                           </div>
                         </div>
                       </motion.div>
@@ -1784,64 +1753,85 @@ export default function Home() {
                 )}
               </AnimatePresence>
 
-              {/* ▼▼▼ 확대 모달 – 디테일 패널과 "분리" */}
+              {/* ▼▼▼ [NEW] 확대 모달 (V6.3 Lightbox with Navigation) */}
               <AnimatePresence>
                 {activeVisual && (
                   <>
-                    {/* 어두운 배경 */}
                     <motion.div
                       key="overlay"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.35 }}
-                      className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm"
+                      transition={{ duration: 0.3 }}
+                      className="fixed inset-0 z-[80] bg-white/95 backdrop-blur-xl" // 배경을 밝은 화이트+블러로 변경
                       onClick={() => setActiveVisual(null)}
                     />
 
-                    {/* 메인 패널 */}
                     <motion.div
                       key="panel"
-                      initial={{ opacity: 0, scale: 0.6, y: 40 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                      transition={{ delay: 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                      className="fixed inset-0 z-[90] flex items-center justify-center p-4 md:p-8"
-                      onClick={() => setActiveVisual(null)}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                      className="fixed inset-0 z-[90] flex flex-col items-center justify-center p-4 pointer-events-none"
                     >
                       <div
-                        className="relative w-full max-w-6xl h-[88vh] rounded-3xl border border-white/16 bg-gradient-to-b from-zinc-900/95 to-black shadow-[0_40px_120px_rgba(0,0,0,0.9)] overflow-hidden"
+                        className="relative w-full max-w-7xl h-[85vh] flex flex-col items-center pointer-events-auto"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <button
-                          type="button"
-                          onClick={() => setActiveVisual(null)}
-                          className="absolute right-4 top-4 z-[95] rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-zinc-100 shadow-lg hover:bg-black/90 md:right-6 md:top-5"
-                        >
-                          닫기 ✕
-                        </button>
 
-                        <div className="relative h-full w-full">
+                        {/* 이미지 컨테이너 */}
+                        <div className="relative flex-1 w-full flex items-center justify-center">
                           <Image
                             src={activeVisual.src}
                             alt={activeVisual.title}
                             fill
-                            className="object-contain"
-                            sizes="(min-width: 1024px) 80vw, 100vw"
+                            className="object-contain drop-shadow-2xl"
+                            sizes="90vw"
                           />
-
-                          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent p-4 md:p-6">
-                            <p className="text-[11px] uppercase tracking-[0.16em] text-zinc-400">
-                              Detail View
-                            </p>
-                            <p className="text-sm md:text-base font-semibold text-zinc-50">
-                              {activeVisual.title}
-                            </p>
-                            <p className="mt-1 text-xs md:text-sm text-zinc-200">
-                              {activeVisual.caption}
-                            </p>
-                          </div>
                         </div>
+
+                        {/* 하단 캡션 */}
+                        <div className="mt-6 text-center max-w-2xl px-4">
+                          <h4 className="text-lg font-bold text-zinc-900 mb-2">{activeVisual.title}</h4>
+                          <p className="text-sm text-zinc-500 font-medium">{activeVisual.caption}</p>
+                        </div>
+
+                        {/* Navigation Buttons */}
+                        {/* Prev Button */}
+                        <button
+                          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-12 p-4 text-zinc-400 hover:text-zinc-900 transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const currentIdx = currentVisuals.findIndex(v => v.src === activeVisual.src);
+                            const prevIdx = (currentIdx - 1 + currentVisuals.length) % currentVisuals.length;
+                            setActiveVisual(currentVisuals[prevIdx]);
+                          }}
+                        >
+                          <span className="text-4xl font-light">‹</span>
+                        </button>
+
+                        {/* Next Button */}
+                        <button
+                          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-12 p-4 text-zinc-400 hover:text-zinc-900 transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const currentIdx = currentVisuals.findIndex(v => v.src === activeVisual.src);
+                            const nextIdx = (currentIdx + 1) % currentVisuals.length;
+                            setActiveVisual(currentVisuals[nextIdx]);
+                          }}
+                        >
+                          <span className="text-4xl font-light">›</span>
+                        </button>
+
+                        {/* Close Button */}
+                        <button
+                          onClick={() => setActiveVisual(null)}
+                          className="absolute top-0 right-0 -mt-12 mr-0 text-sm font-bold text-zinc-400 hover:text-zinc-900 tracking-widest flex items-center gap-2"
+                        >
+                          CLOSE ✕
+                        </button>
+
                       </div>
                     </motion.div>
                   </>
@@ -1959,7 +1949,7 @@ export default function Home() {
             </div >
           </div>
         </main>
-      </div>
+      </div >
     </div >
   );
 

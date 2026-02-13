@@ -122,18 +122,17 @@ function parseTools(tools: string): ToolInfo[] {
 type ProjectId = "zigzag" | "gmarket" | "travel";
 
 type ProjectDetail = {
-  id: ProjectId;
+  id: string;
   kicker: string;
   title: string;
-  period?: string;
-  clientType?: string;
-  tools?: string;
+  period: string;
+  clientType: string;
+  tools: string;
   role: string;
-  context: string | ReactNode;
+  context: React.ReactNode; // ✅ string -> React.ReactNode 로 변경! (태그 허용)
   goal: string[];
   process: { label: string; body: string }[];
   outcome: string;
-  links?: { label: string; href: string }[];
 };
 
 // ───────────────────────

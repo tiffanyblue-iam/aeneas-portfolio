@@ -140,10 +140,17 @@ export default function SilvieraDetailFlow() {
             scrollbarWidth: "none" as const,
             msOverflowStyle: "none" as const,
         },
-        image: {
+        // ✅ 1. 상단 배너용 이미지 스타일 (비율 유지, 잘림 방지)
+        bannerImage: {
             width: "100%",
             height: "100%",
-            objectFit: "cover" as const,
+            objectFit: "contain" as const,
+            display: "block",
+        },
+        // ✅ 2. 하단 스크롤용 이미지 스타일 (세로 길이 무제한, 스크롤 활성화)
+        scrollImage: {
+            width: "100%",
+            height: "auto",
             display: "block",
         }
     };
@@ -253,10 +260,11 @@ export default function SilvieraDetailFlow() {
                         "banner10.jpg"
                     ].map((fileName, index) => (
                         <div key={index} style={styles.slideItem}>
+                            {/* ✅ 배너 이미지 스타일 적용 */}
                             <img
                                 src={`/work/detail-positioning/silviera/${fileName}`}
                                 alt={`Banner ${index + 1}`}
-                                style={styles.image}
+                                style={styles.bannerImage}
                             />
                         </div>
                     ))}
@@ -285,7 +293,8 @@ export default function SilvieraDetailFlow() {
                 </div>
                 <div style={styles.visualCard}>
                     <div style={styles.scrollContainer}>
-                        <img src="/work/detail-positioning/silviera/01-target.jpg" alt="Target Empathy" style={styles.image} />
+                        {/* ✅ 상세페이지 스크롤용 이미지 스타일 적용 */}
+                        <img src="/work/detail-positioning/silviera/01-target.jpg" alt="Target Empathy" style={styles.scrollImage} />
                     </div>
                 </div>
             </div>
@@ -312,7 +321,7 @@ export default function SilvieraDetailFlow() {
                 </div>
                 <div style={styles.visualCard}>
                     <div style={styles.scrollContainer}>
-                        <img src="/work/detail-positioning/silviera/02-proof.jpg" alt="Social Proof Data" style={styles.image} />
+                        <img src="/work/detail-positioning/silviera/02-proof.jpg" alt="Social Proof Data" style={styles.scrollImage} />
                     </div>
                 </div>
             </div>
@@ -332,7 +341,7 @@ export default function SilvieraDetailFlow() {
                 </div>
                 <div style={styles.visualCard}>
                     <div style={styles.scrollContainer}>
-                        <img src="/work/detail-positioning/silviera/03-solution.jpg" alt="Ingredients and Authority" style={styles.image} />
+                        <img src="/work/detail-positioning/silviera/03-solution.jpg" alt="Ingredients and Authority" style={styles.scrollImage} />
                     </div>
                 </div>
             </div>
@@ -360,7 +369,7 @@ export default function SilvieraDetailFlow() {
                 </div>
                 <div style={styles.visualCard}>
                     <div style={styles.scrollContainer}>
-                        <img src="/work/detail-positioning/silviera/04-risk.jpg" alt="100% Refund Guarantee" style={styles.image} />
+                        <img src="/work/detail-positioning/silviera/04-risk.jpg" alt="100% Refund Guarantee" style={styles.scrollImage} />
                     </div>
                 </div>
             </div>

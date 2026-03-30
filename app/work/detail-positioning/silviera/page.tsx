@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
-export default function DetailPositioningFlow() {
+export default function SilvieraDetailFlow() {
     const router = useRouter();
     const [scrolled, setScrolled] = useState(false);
+    const sliderRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -14,6 +15,14 @@ export default function DetailPositioningFlow() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const slide = (direction: 'left' | 'right') => {
+        if (sliderRef.current) {
+            const scrollAmount = sliderRef.current.clientWidth * 0.8;
+            sliderRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+        }
+    };
+
+    // ✅ 첫 번째 페이지(파크골프)와 100% 동일한 스타일 객체 적용
     const styles = {
         container: {
             backgroundColor: "#F5F5F7",
@@ -28,6 +37,56 @@ export default function DetailPositioningFlow() {
             margin: "0 auto 120px auto",
             textAlign: "center" as const,
         },
+        sliderSection: {
+            maxWidth: "1280px",
+            margin: "0 auto 160px auto",
+            position: "relative" as const,
+        },
+        sliderContainer: {
+            display: "flex",
+            gap: "24px",
+            overflowX: "auto" as const,
+            scrollSnapType: "x mandatory",
+            scrollbarWidth: "none" as const,
+            msOverflowStyle: "none" as const,
+            paddingBottom: "20px",
+        },
+        slideItem: {
+            flex: "0 0 auto", // 크기가 늘어나거나 줄어들지 않도록 고정
+            width: "320px",   // 배너 박스의 가로 고정 사이즈
+            height: "460px",  // 배너 박스의 세로 고정 사이즈
+            scrollSnapAlign: "center",
+            borderRadius: "20px",
+            overflow: "hidden",
+            boxShadow: "0 12px 32px rgba(0,0,0,0.08)",
+            backgroundColor: "#FFFFFF", // 가로/세로 비율이 다를 때 여백을 채워줄 배경색
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+        },
+        image: {
+            width: "100%",
+            height: "100%",
+            // ✅ 이미지가 박스를 꽉 채우게 하려면 "cover"
+            // ✅ 잘리는 부분 없이 이미지 전체를 다 보여주려면 "contain"으로 변경하세요.
+            objectFit: "cover" as const,
+        },
+        slideButton: {
+            position: "absolute" as const,
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "56px",
+            height: "56px",
+            backgroundColor: "#FFFFFF",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+            cursor: "pointer",
+            zIndex: 10,
+            border: "none",
+        },
         grid: {
             display: "grid",
             gridTemplateColumns: "1fr 1.2fr",
@@ -40,23 +99,23 @@ export default function DetailPositioningFlow() {
             position: "sticky" as const,
             top: "140px",
             padding: "40px",
-            background: "#FFFFFF",
+            background: "#FFFFFF", // 오리지널 화이트
             borderRadius: "24px",
             boxShadow: "0 10px 40px rgba(0,0,0,0.04)",
-            border: "1px solid #E5E8EB",
+            border: "1px solid #E5E8EB", // 오리지널 연회색 테두리
         },
         node: {
             border: "1px solid #E0E0E0",
             borderRadius: "12px",
             padding: "24px",
-            background: "#FAFAFA",
+            background: "#FAFAFA", // 오리지널 연회색 배경
             marginBottom: "32px",
             position: "relative" as const,
         },
         nodeLabel: {
             fontSize: "12px",
             fontWeight: "700",
-            color: "#00B894",
+            color: "#00B894", // 오리지널 민트그린 포인트
             textTransform: "uppercase" as const,
             marginBottom: "8px",
             display: "block",
@@ -92,11 +151,15 @@ export default function DetailPositioningFlow() {
         image: {
             width: "100%",
             display: "block",
+            objectFit: "cover" as const,
         }
     };
 
     return (
         <div style={styles.container}>
+            <style jsx>{`
+                .hide-scrollbar::-webkit-scrollbar { display: none; }
+            `}</style>
 
             {/* Global Navigation */}
             <motion.header
@@ -122,31 +185,28 @@ export default function DetailPositioningFlow() {
                     </span>
                 </button>
 
-                {/* ✅ [Updated] 우측: 상단 '다른 상세페이지 더 보기' 버튼 추가 */}
+                {/* ✅ 우측 버튼: 첫 번째 페이지와 완벽히 동일한 화이트 버튼 스타일 복구 */}
                 <div className="flex items-center gap-4">
                     <div className="hidden md:block text-[11px] font-bold tracking-[0.2em] uppercase text-zinc-500">
-                        Strategy Log · 001
+                        Strategy Log · 002
                     </div>
                     <button
-                        onClick={() => router.push('/work/detail-positioning/silviera')} // TODO: 실제 다른 상세페이지 목록 경로로 수정해주세요
+                        onClick={() => router.push('/work/detail-positioning')} // 이전 골프 페이지로 이동
                         className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-bold text-[#191F28] shadow-sm ring-1 ring-inset ring-gray-200 transition-all hover:bg-gray-50 hover:scale-105"
                     >
-                        다른 상세페이지
+                        이전 상세페이지
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </button>
                 </div>
             </motion.header>
 
 
-            {/* 1. Header: Typography & Copy Refinement */}
+            {/* Header: Typography */}
             <header style={styles.header}>
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                >
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                    {/* ✅ 오리지널 민트 컬러로 복구 */}
                     <span style={{
                         color: "#00B894",
                         fontWeight: 500,
@@ -155,9 +215,8 @@ export default function DetailPositioningFlow() {
                         display: "inline-block",
                         marginBottom: "20px"
                     }}>
-                        UX ARCHITECTURE CASE
+                        CONVERSION STRATEGY CASE
                     </span>
-
                     <h1 style={{
                         fontSize: "64px",
                         fontWeight: 800,
@@ -166,170 +225,172 @@ export default function DetailPositioningFlow() {
                         letterSpacing: "-0.03em",
                         lineHeight: 1.05
                     }}>
-                        이중적 심리를 위한 설계
+                        과학적 증명과 우아함의 융합
                     </h1>
-
                     <p style={{
                         fontSize: "19px",
                         color: "#4E5968",
-                        maxWidth: "720px",
+                        maxWidth: "760px",
                         margin: "0 auto",
                         lineHeight: 1.6,
                         wordBreak: "keep-all"
                     }}>
-                        세련된 취향과 기술적 두려움의 공존.<br />
-                        시니어의 <strong>이중적 심리(Dual Psychology)</strong>를 파고들어 진입 장벽을 직관성으로 허물고,<br />
-                        제품의 가치를 단순 소비재에서 <strong>'나를 위한 가치 있는 투자'</strong>로 격상시켰습니다.
+                        남성 중심의 탈모 시장에서 여성만이 겪는 <strong>'정수리 볼륨 저하'</strong>라는 페인포인트를 타겟팅했습니다.<br />
+                        31년 연구소의 기술력(EGCG)과 압도적인 데이터(리뷰/판매량)를 전면에 내세워,<br />
+                        타겟의 불안을 확신으로 바꾼 <strong>전환(Conversion) 중심의 설계</strong>입니다.
                     </p>
                 </motion.div>
             </header>
 
+            {/* --- BANNER SLIDER --- */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.8 }} style={styles.sliderSection}>
+                <div style={{ textAlign: "center", marginBottom: "32px" }}>
+                    <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#191F28" }}>Key Visual & Advertising Assets</h2>
+                    <p style={{ fontSize: "14px", color: "#8B95A1", marginTop: "8px" }}>자사몰 메인 배너 및 광고 소재 아카이브</p>
+                </div>
 
-            {/* --- SECTION 1: TARGET (Psychology) --- */}
+                <button onClick={() => slide('left')} style={{ ...styles.slideButton, left: "-28px" }}>←</button>
+                <button onClick={() => slide('right')} style={{ ...styles.slideButton, right: "-28px" }}>→</button>
+
+                <div ref={sliderRef} className="hide-scrollbar" style={styles.sliderContainer}>
+                    {/* ✅ 배열에 실제 파일명과 확장자를 그대로 적어주시면 됩니다! */}
+                    {[
+                        "banner1.png",
+                        "banner2.jpg",
+                        "banner3.jpg",
+                        "banner4.jpg",
+                        "banner5.png",
+                        "banner6.jpg",
+                        "banner7.jpg",
+                        "banner8.jpg",
+                        "banner9.png",
+                        "banner10.jpg"
+                    ].map((fileName, index) => (
+                        <div key={index} style={styles.slideItem}>
+                            <img
+                                src={`/work/detail-positioning/silviera/${fileName}`}
+                                alt={`Banner ${index + 1}`}
+                                style={styles.image}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </motion.div>
+
+
+            {/* --- SECTION 1: Target Empathy --- */}
             <div style={styles.grid}>
                 <div style={styles.flowChartBox}>
-                    <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>01. The Dual Psychology</h3>
+                    <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>01. Target Empathy</h3>
                     <div style={styles.node}>
+                        {/* ✅ 오리지널 레드 포인트 */}
                         <span style={{ ...styles.nodeLabel, color: "#FF6B6B" }}>⚠ INSIGHT</span>
                         <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.5 }}>
-                            치열한 경쟁 시대를 살아온 유복한 시니어.<br />
-                            돈은 있지만 평생을 아끼며 살아왔기에,<br />
-                            단순한 소비보다는 <strong>'가치 있는 투자'</strong>를 원합니다.
+                            "모임 갈 때마다 신경 쓰이는 정수리."<br />
+                            중년 여성의 큰 스트레스지만, 독한 남성용 탈모약은 거부감이 듭니다.
                         </p>
                         <div style={styles.connectorLine}></div>
                     </div>
+                    {/* ✅ 오리지널 민트 박스 콤보 */}
                     <div style={{ ...styles.node, background: "#F0FAF8", borderColor: "#00B894" }}>
                         <span style={styles.nodeLabel}>⚡ STRATEGY</span>
-                        <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>Sophistication vs. Fear</p>
+                        <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>Lifestyle Anti-aging</p>
                         <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.5 }}>
-                            그들은 촌스러운 것은 싫어하지만,<br />
-                            동시에 <strong>새로운 기계 연동에 대한 막연한 두려움</strong>을<br />
-                            가지고 있습니다. 이 모순을 해결해야 합니다.
+                            "딸 성화에 뿌려본" 같은 일상적 카피와 모녀 모델을 교차 배치하여 의약품의 무거운 느낌을 덜어내고, <strong>프리미엄 안티에이징 케어</strong>로 타겟을 확장했습니다.
                         </p>
                     </div>
                 </div>
                 <div style={styles.visualCard}>
-                    <style jsx>{`
-                        div::-webkit-scrollbar { display: none; }
-                    `}</style>
                     <div style={styles.scrollContainer}>
-                        <img
-                            src="/work/detail-positioning/01-hook-hero.jpg"
-                            alt="The Active Senior Persona"
-                            style={styles.image}
-                        />
+                        <img src="/work/detail-positioning/silviera/01-target.jpg" alt="Target Empathy" style={styles.image} />
                     </div>
                 </div>
             </div>
 
 
-            {/* --- SECTION 2: BARRIER (Installation Fear) --- */}
+            {/* --- SECTION 2: Social Proof --- */}
             <div style={styles.grid}>
                 <div style={styles.flowChartBox}>
-                    <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>02. Removing Fear</h3>
+                    <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>02. Social Proof</h3>
                     <div style={styles.node}>
                         <span style={{ ...styles.nodeLabel, color: "#FF6B6B" }}>⚠ PAIN POINT</span>
                         <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.5 }}>
-                            "내가 이걸 설치할 수 있을까?"<br />
-                            낯선 기계와의 연동 과정은 가장 큰 심리적 장벽입니다.
+                            수많은 탈모 제품에 속아온 소비자들은 더 이상 감성적인 문구만으로는 지갑을 열지 않습니다.
                         </p>
                         <div style={styles.connectorLine}></div>
                     </div>
                     <div style={{ ...styles.node, background: "#F0FAF8", borderColor: "#00B894" }}>
                         <span style={styles.nodeLabel}>⚡ UX SOLUTION</span>
-                        <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>3-Step Easy Pairing</p>
+                        <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>Data-Driven Trust</p>
                         <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.5 }}>
-                            복잡한 기술 용어를 배제하고,<br />
-                            <strong>[끼우고 - 켜고 - 된다]</strong><br /><br /> 직관적인 <strong>3단계 플로우</strong>로 시각화하여,<br />
-                            설치에 대한 막연한 공포감을 제거했습니다.
+                            <strong>"10초에 1병", "누적 17만 개", "12,037개 리뷰 평점 5.0"</strong><br />
+                            철저하게 숫자로 증명된 강력한 사회적 증거(Social Proof)를 전면에 내세워 이탈률을 방어했습니다.
                         </p>
                     </div>
                 </div>
                 <div style={styles.visualCard}>
                     <div style={styles.scrollContainer}>
-                        <img
-                            src="/work/detail-positioning/02-logic-data.jpg"
-                            alt="3-Step Connection Guide Visualization"
-                            style={styles.image}
-                        />
+                        <img src="/work/detail-positioning/silviera/02-proof.jpg" alt="Social Proof Data" style={styles.image} />
                     </div>
                 </div>
             </div>
 
 
-            {/* --- SECTION 3: DESIRE (My Club) --- */}
+            {/* --- SECTION 3: The Core Solution --- */}
             <div style={styles.grid}>
                 <div style={styles.flowChartBox}>
-                    <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>03. Value Extension</h3>
+                    <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>03. The Core Solution</h3>
                     <div style={{ ...styles.node, background: "#F0FAF8", borderColor: "#00B894" }}>
                         <span style={styles.nodeLabel}>⚡ KEY SELLING POINT</span>
-                        <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>"With Your Own Club"</p>
+                        <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>Authority & Ingredients</p>
                         <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.5 }}>
-                            장난감 채가 아닌, 내가 큰돈을 들여 산<br />
-                            <strong>'나의 명품 골프채'</strong>에 센서만 달면 된다는 점을 강조했습니다.<br />
-                            <br />
-                            이는 기계 구매가 아니라,<br />
-                            <strong>"내 장비의 활용 가치를 높이는 투자"</strong>로<br />
-                            인식을 전환시킵니다.
+                            <strong>'전남바이오 31년 연구소장'</strong>이라는 강력한 권위와 <strong>'녹차 EGCG 원물 93%'</strong>라는 직관적인 성분을 매칭시켰습니다.<br /><br />
+                            싱그러운 녹차밭 비주얼을 활용해 항산화(좀비세포 박멸) 효과를 시각적으로 극대화했습니다.
                         </p>
                     </div>
                 </div>
                 <div style={styles.visualCard}>
                     <div style={styles.scrollContainer}>
-                        <img
-                            src="/work/detail-positioning/03-mood-lifestyle.jpg"
-                            alt="Attaching Sensor to Own Club"
-                            style={styles.image}
-                        />
+                        <img src="/work/detail-positioning/silviera/03-solution.jpg" alt="Ingredients and Authority" style={styles.image} />
                     </div>
                 </div>
             </div>
 
 
-            {/* --- SECTION 4: CREATIVITY (Zero Budget) --- */}
+            {/* --- SECTION 4: Removing Risk --- */}
             <div style={styles.grid}>
                 <div style={styles.flowChartBox}>
-                    <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>04. Zero-Budget Creative</h3>
-
+                    <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>04. Removing Risk</h3>
                     <div style={styles.node}>
                         <span style={{ ...styles.nodeLabel, color: "#FF6B6B" }}>⚠ RESOURCE LIMIT</span>
                         <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.5 }}>
-                            제대로 된 제품 사진조차 없는 열악한 환경.<br />
-                            하지만 20년 전 전단지 느낌으로는 설득할 수 없었습니다.
+                            "효과가 없으면 어쩌지?"<br />
+                            여성 타겟 특유의 꼼꼼함은 구매 직전 마지막 망설임을 만들어냅니다.
                         </p>
                         <div style={styles.connectorLine}></div>
                     </div>
-
                     <div style={{ ...styles.node, background: "#F0FAF8", borderColor: "#00B894" }}>
-                        <span style={styles.nodeLabel}>⚡ AI GENERATION</span>
-                        <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>Premium Mood with AI</p>
+                        <span style={styles.nodeLabel}>⚡ CREATIVE DIRECTION</span>
+                        <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>Triggering Conversion</p>
                         <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.5 }}>
-                            비용이 드는 스튜디오 촬영 대신,<br />
-                            <strong>Generative AI</strong>를 활용해 이상적인 공간과 고급스러운 무드를 창조했습니다.<br />
-                            <br />
-                            자본의 한계를 <strong>기술적 크리에이티브</strong>로 극복하여<br />
-                            고급 가전과 같은 프리미엄 이미지를 완성했습니다.
+                            <strong>"2주의 미학, 불만족 시 100% 환불"</strong><br /><br />
+                            단순히 제품이 좋다는 것을 넘어, 파격적인 개런티를 전면에 내세워 구매 전환(Conversion)의 마지막 허들을 완벽하게 제거했습니다.
                         </p>
                     </div>
                 </div>
-
                 <div style={styles.visualCard}>
                     <div style={styles.scrollContainer}>
-                        <img
-                            src="/work/detail-positioning/04-action-package.jpg"
-                            alt="AI Generated Premium Assets"
-                            style={styles.image}
-                        />
+                        <img src="/work/detail-positioning/silviera/04-risk.jpg" alt="100% Refund Guarantee" style={styles.image} />
                     </div>
                 </div>
             </div>
 
-            {/* Bottom Navigation & View More */}
+            {/* Bottom Navigation */}
             <div style={{ textAlign: "center", marginTop: "120px", paddingBottom: "100px", display: "flex", flexDirection: "column", alignItems: "center", gap: "24px" }}>
 
-                {/* 1) 하단 다른 상세페이지 더 보기 버튼 */}
+                {/* ✅ 첫 번째 페이지와 완벽히 동일한 다크버튼 스타일 복구 */}
                 <button
-                    onClick={() => router.push('/work/detail-positioning/silviera')} // TODO: 실제 다른 상세페이지 목록 경로로 수정해주세요
+                    onClick={() => router.push('/work/detail-positioning')} // 경로 맞춤
                     style={{
                         padding: "16px 32px",
                         backgroundColor: "#191F28",
@@ -348,13 +409,12 @@ export default function DetailPositioningFlow() {
                     onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"}
                     onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
                 >
-                    다른 상세페이지 더 보기
+                    이전 상세페이지로 돌아가기
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </button>
 
-                {/* 2) 기존 아카이브 복귀 버튼 */}
                 <div style={{ marginTop: "40px" }}>
                     <p style={{ fontSize: "12px", color: "#999", marginBottom: "16px", letterSpacing: "0.1em" }}>SYSTEM END</p>
                     <button

@@ -22,7 +22,6 @@ export default function SilvieraDetailFlow() {
         }
     };
 
-    // ✅ 첫 번째 페이지(파크골프)와 100% 동일한 스타일 객체 적용
     const styles = {
         container: {
             backgroundColor: "#F5F5F7",
@@ -52,24 +51,17 @@ export default function SilvieraDetailFlow() {
             paddingBottom: "20px",
         },
         slideItem: {
-            flex: "0 0 auto", // 크기가 늘어나거나 줄어들지 않도록 고정
-            width: "320px",   // 배너 박스의 가로 고정 사이즈
-            height: "460px",  // 배너 박스의 세로 고정 사이즈
+            flex: "0 0 auto",
+            width: "320px",
+            height: "460px",
             scrollSnapAlign: "center",
             borderRadius: "20px",
             overflow: "hidden",
             boxShadow: "0 12px 32px rgba(0,0,0,0.08)",
-            backgroundColor: "#FFFFFF", // 가로/세로 비율이 다를 때 여백을 채워줄 배경색
+            backgroundColor: "#FFFFFF",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-        },
-        image: {
-            width: "100%",
-            height: "100%",
-            // ✅ 이미지가 박스를 꽉 채우게 하려면 "cover"
-            // ✅ 잘리는 부분 없이 이미지 전체를 다 보여주려면 "contain"으로 변경하세요.
-            objectFit: "cover" as const,
         },
         slideButton: {
             position: "absolute" as const,
@@ -99,23 +91,23 @@ export default function SilvieraDetailFlow() {
             position: "sticky" as const,
             top: "140px",
             padding: "40px",
-            background: "#FFFFFF", // 오리지널 화이트
+            background: "#FFFFFF",
             borderRadius: "24px",
             boxShadow: "0 10px 40px rgba(0,0,0,0.04)",
-            border: "1px solid #E5E8EB", // 오리지널 연회색 테두리
+            border: "1px solid #E5E8EB",
         },
         node: {
             border: "1px solid #E0E0E0",
             borderRadius: "12px",
             padding: "24px",
-            background: "#FAFAFA", // 오리지널 연회색 배경
+            background: "#FAFAFA",
             marginBottom: "32px",
             position: "relative" as const,
         },
         nodeLabel: {
             fontSize: "12px",
             fontWeight: "700",
-            color: "#00B894", // 오리지널 민트그린 포인트
+            color: "#00B894",
             textTransform: "uppercase" as const,
             marginBottom: "8px",
             display: "block",
@@ -150,8 +142,9 @@ export default function SilvieraDetailFlow() {
         },
         image: {
             width: "100%",
-            display: "block",
+            height: "100%",
             objectFit: "cover" as const,
+            display: "block",
         }
     };
 
@@ -161,7 +154,6 @@ export default function SilvieraDetailFlow() {
                 .hide-scrollbar::-webkit-scrollbar { display: none; }
             `}</style>
 
-            {/* Global Navigation */}
             <motion.header
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -172,7 +164,6 @@ export default function SilvieraDetailFlow() {
                     borderBottom: scrolled ? "1px solid rgba(0,0,0,0.05)" : "none",
                 }}
             >
-                {/* 좌측: 메인 시스템 복귀 버튼 */}
                 <button
                     onClick={() => router.push('/')}
                     className="group flex items-center gap-3 rounded-full bg-[#121212] px-5 py-2.5 shadow-lg transition-all hover:scale-105 hover:bg-black"
@@ -185,13 +176,12 @@ export default function SilvieraDetailFlow() {
                     </span>
                 </button>
 
-                {/* ✅ 우측 버튼: 첫 번째 페이지와 완벽히 동일한 화이트 버튼 스타일 복구 */}
                 <div className="flex items-center gap-4">
                     <div className="hidden md:block text-[11px] font-bold tracking-[0.2em] uppercase text-zinc-500">
                         Strategy Log · 002
                     </div>
                     <button
-                        onClick={() => router.push('/work/detail-positioning')} // 이전 골프 페이지로 이동
+                        onClick={() => router.push('/work/detail-positioning')}
                         className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[12px] font-bold text-[#191F28] shadow-sm ring-1 ring-inset ring-gray-200 transition-all hover:bg-gray-50 hover:scale-105"
                     >
                         이전 상세페이지
@@ -203,10 +193,8 @@ export default function SilvieraDetailFlow() {
             </motion.header>
 
 
-            {/* Header: Typography */}
             <header style={styles.header}>
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                    {/* ✅ 오리지널 민트 컬러로 복구 */}
                     <span style={{
                         color: "#00B894",
                         fontWeight: 500,
@@ -242,7 +230,6 @@ export default function SilvieraDetailFlow() {
                 </motion.div>
             </header>
 
-            {/* --- BANNER SLIDER --- */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.8 }} style={styles.sliderSection}>
                 <div style={{ textAlign: "center", marginBottom: "32px" }}>
                     <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#191F28" }}>Key Visual & Advertising Assets</h2>
@@ -253,7 +240,6 @@ export default function SilvieraDetailFlow() {
                 <button onClick={() => slide('right')} style={{ ...styles.slideButton, right: "-28px" }}>→</button>
 
                 <div ref={sliderRef} className="hide-scrollbar" style={styles.sliderContainer}>
-                    {/* ✅ 배열에 실제 파일명과 확장자를 그대로 적어주시면 됩니다! */}
                     {[
                         "banner1.png",
                         "banner2.jpg",
@@ -278,12 +264,10 @@ export default function SilvieraDetailFlow() {
             </motion.div>
 
 
-            {/* --- SECTION 1: Target Empathy --- */}
             <div style={styles.grid}>
                 <div style={styles.flowChartBox}>
                     <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>01. Target Empathy</h3>
                     <div style={styles.node}>
-                        {/* ✅ 오리지널 레드 포인트 */}
                         <span style={{ ...styles.nodeLabel, color: "#FF6B6B" }}>⚠ INSIGHT</span>
                         <p style={{ fontSize: "15px", color: "#555", lineHeight: 1.5 }}>
                             "모임 갈 때마다 신경 쓰이는 정수리."<br />
@@ -291,7 +275,6 @@ export default function SilvieraDetailFlow() {
                         </p>
                         <div style={styles.connectorLine}></div>
                     </div>
-                    {/* ✅ 오리지널 민트 박스 콤보 */}
                     <div style={{ ...styles.node, background: "#F0FAF8", borderColor: "#00B894" }}>
                         <span style={styles.nodeLabel}>⚡ STRATEGY</span>
                         <p style={{ fontSize: "16px", fontWeight: 600, marginBottom: "8px" }}>Lifestyle Anti-aging</p>
@@ -308,7 +291,6 @@ export default function SilvieraDetailFlow() {
             </div>
 
 
-            {/* --- SECTION 2: Social Proof --- */}
             <div style={styles.grid}>
                 <div style={styles.flowChartBox}>
                     <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>02. Social Proof</h3>
@@ -336,7 +318,6 @@ export default function SilvieraDetailFlow() {
             </div>
 
 
-            {/* --- SECTION 3: The Core Solution --- */}
             <div style={styles.grid}>
                 <div style={styles.flowChartBox}>
                     <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>03. The Core Solution</h3>
@@ -357,7 +338,6 @@ export default function SilvieraDetailFlow() {
             </div>
 
 
-            {/* --- SECTION 4: Removing Risk --- */}
             <div style={styles.grid}>
                 <div style={styles.flowChartBox}>
                     <h3 style={{ fontSize: "28px", fontWeight: 700, marginBottom: "40px" }}>04. Removing Risk</h3>
@@ -385,12 +365,10 @@ export default function SilvieraDetailFlow() {
                 </div>
             </div>
 
-            {/* Bottom Navigation */}
             <div style={{ textAlign: "center", marginTop: "120px", paddingBottom: "100px", display: "flex", flexDirection: "column", alignItems: "center", gap: "24px" }}>
 
-                {/* ✅ 첫 번째 페이지와 완벽히 동일한 다크버튼 스타일 복구 */}
                 <button
-                    onClick={() => router.push('/work/detail-positioning')} // 경로 맞춤
+                    onClick={() => router.push('/work/detail-positioning')}
                     style={{
                         padding: "16px 32px",
                         backgroundColor: "#191F28",
